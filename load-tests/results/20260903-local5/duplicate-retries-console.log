@@ -1,0 +1,78 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: C:\Users\hp ryzen\Desktop\Spring Boot\TicketSystem\load-tests\k6\duplicate-retries.js
+ web dashboard: http://127.0.0.1:5665
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 25 max VUs, 1m30s max duration (incl. graceful stop):
+              * duplicate_retries: 1 iterations for each of 25 VUs (maxDuration: 1m0s, gracefulStop: 30s)
+
+time="2026-09-03T11:22:03+03:00" level=warning msg="The test run was short, report generation was skipped (not enough data)"
+
+
+  █ THRESHOLDS 
+
+    reservation_server_faults
+    ✓ 'count==0' count=0
+
+    reservation_unexpected_responses
+    ✓ 'count==0' count=0
+
+    reservations_accepted
+    ✓ 'count==25' count=25
+
+    reservations_created
+    ✓ 'count==1' count=1
+
+    reservations_replayed
+    ✓ 'count==24' count=24
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 50      203.671214/s
+    checks_succeeded...: 100.00% 50 out of 50
+    checks_failed......: 0.00%   0 out of 50
+
+    ✓ reservation response has an id
+    ✓ reservation response is pending
+
+    CUSTOM
+    cancellations_succeeded............: 0     0/s
+    errors_idempotency_in_progress.....: 0     0/s
+    errors_rate_limited................: 0     0/s
+    errors_sold_out....................: 0     0/s
+    errors_user_limit..................: 0     0/s
+    reservation_server_faults..........: 0     0/s
+    reservation_unexpected_responses...: 0     0/s
+    reservations_accepted..............: 25    101.835607/s
+    reservations_created...............: 1     4.073424/s
+    reservations_replayed..............: 24    97.762183/s
+    reserve_latency....................: avg=108.39ms min=34.29ms med=119.96ms p(90)=124.83ms p(95)=127.45ms p(99)=128.34ms max=128.41ms
+
+    HTTP
+    http_req_duration..................: avg=100.49ms min=14.46ms med=119.96ms p(90)=124.83ms p(95)=126.96ms p(99)=128.33ms max=128.41ms
+      { expected_response:true }.......: avg=100.49ms min=14.46ms med=119.96ms p(90)=124.83ms p(95)=126.96ms p(99)=128.33ms max=128.41ms
+    http_req_failed....................: 0.00% 0 out of 28
+    http_reqs..........................: 28    114.05588/s
+
+    EXECUTION
+    iteration_duration.................: avg=124.58ms min=70.47ms med=127.46ms p(90)=131.52ms p(95)=132.79ms p(99)=137.39ms max=138.81ms
+    iterations.........................: 25    101.835607/s
+
+    NETWORK
+    data_received......................: 20 kB 82 kB/s
+    data_sent..........................: 16 kB 65 kB/s
+
+
+
+
+running (0m00.2s), 00/25 VUs, 25 complete and 0 interrupted iterations
+duplicate_retries ✓ [ 100% ] 25 VUs  0m00.1s/1m0s  25/25 iters, 1 per VU

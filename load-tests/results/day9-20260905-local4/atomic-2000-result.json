@@ -1,0 +1,33 @@
+{
+  "strategy": "ATOMIC",
+  "virtualUsers": 2000,
+  "attempts": 2000,
+  "responsesCreated": 100,
+  "responsesSoldOut": 1121,
+  "serverOrConnectionFaults": 779,
+  "unexpectedResponses": 0,
+  "p50Milliseconds": 3044.85,
+  "p95Milliseconds": 4291.23,
+  "p99Milliseconds": 4380.99,
+  "iterationsPerSecond": 367.29,
+  "usefulResponsesPerSecond": 224.23,
+  "maxHikariActive": 16,
+  "maxHikariPending": 1848,
+  "maxPostgresActive": 16,
+  "maxPostgresLockWaiters": 15,
+  "inventory": {
+    "total": 100,
+    "available": 0,
+    "held": 100,
+    "sold": 0,
+    "conservationDrift": 0,
+    "heldDrift": 0,
+    "soldDrift": 0,
+    "reservationRows": 100
+  },
+  "zeroOversell": true,
+  "replicasObserved": [
+    "172.22.0.4:8080",
+    "172.22.0.5:8080"
+  ]
+}

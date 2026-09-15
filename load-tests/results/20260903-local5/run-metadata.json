@@ -1,0 +1,18 @@
+{
+  "runId": "20260903-local5",
+  "capturedAtUtc": "2026-09-03T08:21:55.9062161+00:00",
+  "operatingSystem": "Microsoft Windows NT 10.0.26200.0",
+  "cpu": "AMD Ryzen 5 7535HS with Radeon Graphics",
+  "logicalProcessors": 12,
+  "memoryGiB": 15.21,
+  "diskMediaType": "SSD",
+  "java": "java version \"21.0.11\" 2026-04-21 LTS",
+  "k6": "k6.exe v2.1.0 (commit/83a87a41e2, go1.26.4, windows/amd64)",
+  "docker": "29.5.3",
+  "postgres": "16.14",
+  "redis": "Redis server v=7.4.8 sha=00000000:0 malloc=jemalloc-5.3.0 bits=64 build=3235b4981286ba61",
+  "topology": "one Spring Boot process; PostgreSQL and Redis in Docker; k6 on host",
+  "hikariMaximumPoolSize": 20,
+  "rateLimitEnabled": false,
+  "expirySchedulerEnabled": false
+}

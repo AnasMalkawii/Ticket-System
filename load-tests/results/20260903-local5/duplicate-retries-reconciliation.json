@@ -1,0 +1,12 @@
+{
+  "eventName": "day6-duplicate-retries-20260903-local5",
+  "total": 100,
+  "available": 99,
+  "held": 1,
+  "sold": 0,
+  "conservationDrift": 0,
+  "heldDrift": 0,
+  "soldDrift": 0,
+  "reservationRows": 1,
+  "cancelledRows": 0
+}

@@ -1,0 +1,10 @@
+timestamp_utc,event,detail
+2026-09-06T15:00:43.3485541+00:00,traffic-started,5 VUs for 8m
+2026-09-06T15:01:13.3959190+00:00,app1-kill-start,gateway ready status 200
+2026-09-06T15:01:29.0344106+00:00,app1-kill-observed,gateway live status 200
+2026-09-06T15:01:45.4776073+00:00,app1-recovered,app1 and gateway readiness healthy
+2026-09-06T15:02:05.4918128+00:00,redis-outage-start,stopping Redis for 20 seconds
+2026-09-06T15:02:30.6763313+00:00,redis-recovered,Redis healthy
+2026-09-06T15:02:50.6851437+00:00,rabbitmq-outage-start,stopping RabbitMQ for 20 seconds
+2026-09-06T15:03:19.6718793+00:00,rabbitmq-recovered,RabbitMQ healthy; outbox allowed to drain
+2026-09-06T15:03:49.6875417+00:00,postgres-outage-start,gateway ready status 200

@@ -1,0 +1,41 @@
+# Integration-test profile. The datasource is supplied by Testcontainers via
+# @ServiceConnection, so no URL is configured here.
+spring:
+  flyway:
+    locations: classpath:db/migration,classpath:db/seed
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+# Tests invoke expiry batches explicitly. Disabling only the timer avoids background work
+# racing fixtures while keeping the transactional worker bean available for concurrency tests.
+ticketing:
+  payment:
+    # Keep the deterministic timeout drill fast while preserving the production relationship
+    # between deadline and simulated gateway delay.
+    timeout: 150ms
+    mock-timeout-delay: 2s
+  expiry-worker:
+    scheduling-enabled: false
+  security:
+    issuer: ticket-system-test
+    audience: ticket-system-api
+    token-ttl: 1h
+    signing-key: 0123456789abcdef0123456789abcdef-test-only
+    user:
+      id: aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa
+      username: test-user
+      password-hash: "{noop}test-user-password"
+    admin:
+      id: bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb
+      username: test-admin
+      password-hash: "{noop}test-admin-password"
+  # Existing Day 1-4 integration tests exercise the reservation service, not Redis. Dedicated
+  # Day 5 tests enable the limiter against Redis explicitly.
+  rate-limit:
+    enabled: false
+  # The existing PostgreSQL-only suite must not depend on a local broker. Day 7's dedicated
+  # integration test overrides this and supplies its RabbitMQ Testcontainer explicitly.
+  messaging:
+    enabled: false

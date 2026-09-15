@@ -1,0 +1,5 @@
+{
+  "scenario": "sold-out-spike",
+  "k6ExitCode": 99,
+  "performanceThresholdsPassed": false
+}

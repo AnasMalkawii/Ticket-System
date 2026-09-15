@@ -1,0 +1,261 @@
+spring:
+  application:
+    name: ticket-system
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/ticketsystem}
+    username: ${DB_USERNAME:ticketsystem}
+    password: ${DB_PASSWORD:ticketsystem}
+    hikari:
+      # Intentional, not a default. Sized against PostgreSQL max_connections and revisited
+      # with measurements on Day 9 - more connections are not automatically faster.
+      maximum-pool-size: ${DB_POOL_SIZE:8}
+      minimum-idle: ${DB_POOL_MIN_IDLE:2}
+      # Fail fast when the pool is saturated rather than queueing forever (F-15).
+      connection-timeout: ${DB_POOL_CONNECTION_TIMEOUT_MS:3000}
+      validation-timeout: 2000
+      max-lifetime: 1800000
+      # PostgreSQL also receives server-side limits. The pool timeout only bounds waiting for
+      # a connection; these limits bound connection establishment, socket reads, statements,
+      # and row-lock waits once a connection has been acquired.
+      connection-init-sql: "SET statement_timeout TO ${DB_STATEMENT_TIMEOUT_MS:3000}; SET lock_timeout TO ${DB_LOCK_TIMEOUT_MS:2000}"
+      data-source-properties:
+        connectTimeout: ${DB_CONNECT_TIMEOUT_SECONDS:2}
+        socketTimeout: ${DB_SOCKET_TIMEOUT_SECONDS:5}
+        tcpKeepAlive: true
+
+  transaction:
+    # Final application-side guard in addition to PostgreSQL's statement_timeout.
+    default-timeout: 5s
+
+  flyway:
+    enabled: true
+    # Production runs migrations only. The `local` and `test` profiles append
+    # classpath:db/seed, so fixture rows can never reach a real environment.
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+    validate-on-migrate: true
+
+  jpa:
+    # Flyway owns the schema. Hibernate only checks that its mappings match what Flyway
+    # built; it must never create or alter a table.
+    hibernate:
+      ddl-auto: validate
+    # Lazy loading outside a transaction is the classic source of accidental N+1 queries.
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+        # Surfaces N+1 in tests instead of in production.
+        query:
+          fail_on_pagination_over_collection_fetch: true
+
+  threads:
+    virtual:
+      enabled: true
+
+  jackson:
+    deserialization:
+      # The public schemas declare additionalProperties: false. Reject unexpected fields
+      # at the boundary instead of silently accepting misspelled or hostile input.
+      fail-on-unknown-properties: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      connect-timeout: 200ms
+      timeout: 300ms
+      repositories:
+        enabled: false
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    connection-timeout: 2s
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+      # The booking transaction never waits for this. Only the independent outbox publisher
+      # talks to RabbitMQ, and its wait for a broker acknowledgement is explicitly bounded.
+      reply-timeout: 3s
+    listener:
+      simple:
+        # On graceful shutdown, finish a delivery already handed to the consumer instead of
+        # force-closing it. The global Spring lifecycle timeout remains the outer bound.
+        force-stop: false
+        prefetch: 25
+        default-requeue-rejected: false
+        retry:
+          enabled: true
+          max-attempts: 4
+          initial-interval: 250ms
+          multiplier: 2
+          max-interval: 2s
+
+server:
+  shutdown: graceful
+  tomcat:
+    connection-timeout: 2s
+    keep-alive-timeout: 30s
+    # A flash-sale burst must be accepted and backpressured by the application instead of
+    # overflowing Tomcat's small platform-default listen queue and looking like a dead node
+    # to the reverse proxy. Virtual threads handle the parked request tasks cheaply.
+    max-connections: 4096
+    accept-count: 2048
+  max-http-request-header-size: 16KB
+
+spring.lifecycle.timeout-per-shutdown-phase: 20s
+spring.task.scheduling.shutdown:
+  await-termination: true
+  await-termination-period: 10s
+
+# Business rules that must stay consistent with docs/architecture.md section 12.
+ticketing:
+  reservation-batching:
+    # Disabled by default so ordinary traffic has no batching delay. High-burst deployments
+    # may enable it to amortize one hot event-row lock across a short request cohort.
+    enabled: false
+    window: 25ms
+    max-batch-size: 1000
+  database:
+    lock-timeout: 2s
+    statement-timeout: 3s
+  outbound-http:
+    connect-timeout: 500ms
+    request-timeout: 1s
+  payment:
+    # The production HTTP adapter must obey this same end-to-end deadline. The deterministic
+    # mock supports tok_timeout so timeout containment can be tested without a real gateway.
+    timeout: 1s
+    mock-timeout-delay: 5s
+  reservation:
+    ttl: 3m
+    # Bounds duplicate-key waits while the winning transaction is still in flight. Applied
+    # only to the reservation INSERT, then reset before the inventory row lock.
+    # Shorter than the global inventory lock deadline so a duplicate deterministically gets
+    # IDEMPOTENCY_IN_PROGRESS before the winning request's inventory wait can expire.
+    idempotency-wait-timeout: 1s
+    max-quantity-per-request: 4
+    per-user-event-cap: 4
+    # Day 9 keeps both measured implementations available for repeatable comparison. The
+    # conditional UPDATE is the production default after winning the two-replica benchmark;
+    # PESSIMISTIC remains selectable for regression measurements.
+    inventory-strategy: ${INVENTORY_STRATEGY:ATOMIC}
+  expiry-worker:
+    scheduling-enabled: true
+    interval: 10s
+    batch-size: 200
+  security:
+    issuer: ${JWT_ISSUER:ticket-system}
+    audience: ${JWT_AUDIENCE:ticket-system-api}
+    token-ttl: 1h
+    # There is intentionally no committed fallback. Every deployed replica must receive the
+    # same secret (at least 32 bytes) from its environment or secret store.
+    signing-key: ${JWT_SIGNING_KEY}
+    user:
+      id: ${APP_USER_ID}
+      username: ${APP_USER_USERNAME}
+      password-hash: ${APP_USER_PASSWORD_HASH}
+    admin:
+      id: ${APP_ADMIN_ID}
+      username: ${APP_ADMIN_USERNAME}
+      password-hash: ${APP_ADMIN_PASSWORD_HASH}
+  catalog-cache:
+    event-ttl: 60s
+    availability-ttl: 5s
+  rate-limit:
+    enabled: true
+    window: 1m
+    per-user: 10
+    per-ip: 60
+  messaging:
+    enabled: true
+    publisher-scheduling-enabled: true
+    publisher-interval: 1s
+    batch-size: 50
+    confirm-timeout: 3s
+    initial-retry-delay: 250ms
+    max-retry-delay: 30s
+  api:
+    max-request-body-bytes: 16KB
+    max-request-id-length: 128
+
+logging:
+  structured:
+    # Logstash JSON keeps MDC requestId fields machine-searchable in container logs.
+    format:
+      console: logstash
+    json:
+      add:
+        service.name: ${spring.application.name}
+        service.instance: ${INSTANCE_ID:local}
+  pattern:
+    level: "%5p [requestId:%X{requestId:-none}]"
+  level:
+    org.flywaydb: INFO
+
+# Health and Prometheus are public to orchestration and the private monitoring network.
+# Nginx blocks /actuator externally in the Day 10 deployment. The human-readable metrics
+# endpoint remains ADMIN-only in SecurityConfiguration.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name}
+      instance: ${INSTANCE_ID:local}
+    distribution:
+      # Prometheus histogram buckets make fleet-wide p95/p99 calculations aggregatable.
+      percentiles-histogram:
+        http.server.requests: true
+        ticketing.reservation.duration: true
+        ticketing.confirmation.duration: true
+        ticketing.expiry.batch.duration: true
+  health:
+    # Redis accelerates catalog reads and rate limiting but is deliberately fail-open; it
+    # must not remove a replica that can still book correctly against PostgreSQL.
+    redis:
+      enabled: false
+    # RabbitMQ is also off the booking correctness path. An outage creates an outbox backlog
+    # that drains after recovery; it must not report the otherwise-safe HTTP replica as DOWN.
+    rabbit:
+      enabled: false
+  endpoint:
+    health:
+      probes:
+        enabled: true
+        add-additional-paths: true
+      show-details: never
+      group:
+        liveness:
+          include: livenessState
+        # PostgreSQL is the booking authority. A replica without it cannot safely serve and
+        # must leave load-balancer rotation. Redis/Rabbit outages degrade async/fast paths but
+        # do not make synchronous booking unsafe.
+        readiness:
+          include: readinessState,db
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  flyway:
+    locations: classpath:db/migration,classpath:db/seed
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+logging:
+  level:
+    org.hibernate.SQL: DEBUG

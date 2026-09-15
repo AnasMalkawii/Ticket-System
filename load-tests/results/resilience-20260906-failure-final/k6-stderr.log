@@ -1,0 +1,8 @@
+time="2026-09-06T18:03:54+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28100/api/v1/events/01a0773c-6d86-7c94-9f7d-e5a96be6a0c2/reservations\": request timeout"
+time="2026-09-06T18:03:54+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28100/api/v1/events/01a0773c-6d86-7c94-9f7d-e5a96be6a0c2/reservations\": request timeout"
+time="2026-09-06T18:03:55+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28100/api/v1/events/01a0773c-6d86-7c94-9f7d-e5a96be6a0c2/reservations\": request timeout"
+time="2026-09-06T18:04:00+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28100/api/v1/events/01a0773c-6d86-7c94-9f7d-e5a96be6a0c2/reservations\": request timeout"
+time="2026-09-06T18:04:00+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28100/api/v1/events/01a0773c-6d86-7c94-9f7d-e5a96be6a0c2/reservations\": request timeout"
+time="2026-09-06T18:04:00+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28100/api/v1/events/01a0773c-6d86-7c94-9f7d-e5a96be6a0c2/reservations\": request timeout"
+time="2026-09-06T18:04:00+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28100/api/v1/events/01a0773c-6d86-7c94-9f7d-e5a96be6a0c2/reservations\": request timeout"
+time="2026-09-06T18:04:01+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28100/api/v1/events/01a0773c-6d86-7c94-9f7d-e5a96be6a0c2/reservations\": request timeout"

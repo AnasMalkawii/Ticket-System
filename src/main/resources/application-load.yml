@@ -1,0 +1,49 @@
+# Local-only profile used by the reproducible Day 6 k6 harness. It deliberately disables
+# protection/maintenance jobs that would obscure the inventory-lock baseline; production
+# keeps the defaults in application.yml.
+spring:
+  flyway:
+    locations: classpath:db/migration
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          # Flash-sale batches create a reservation and an outbox row per accepted request.
+          # Fewer, larger JDBC groups reduce round trips while the inventory lock is held.
+          batch_size: 250
+
+ticketing:
+  reservation-batching:
+    enabled: true
+    window: 50ms
+    max-batch-size: 1000
+  expiry-worker:
+    scheduling-enabled: false
+  rate-limit:
+    enabled: false
+  # Day 6 measures the synchronous reservation path in isolation. Day 7 has its own
+  # PostgreSQL + RabbitMQ recovery test and enables messaging there.
+  messaging:
+    enabled: false
+  security:
+    issuer: ticket-system-load
+    audience: ticket-system-api
+    token-ttl: 1h
+    signing-key: ${JWT_SIGNING_KEY:day6-load-only-signing-key-0123456789abcdef}
+    user:
+      id: aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa
+      username: load-user
+      # BCrypt for the literal local-only password "password".
+      password-hash: "{bcrypt}$2a$10$E48nxbwy9iQvsYkKValg6ectOZrSx/ZCaZRBcEh5LTZIsUY9mD0uO"
+    admin:
+      id: bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb
+      username: load-admin
+      password-hash: "{bcrypt}$2a$10$E48nxbwy9iQvsYkKValg6ectOZrSx/ZCaZRBcEh5LTZIsUY9mD0uO"
+
+logging:
+  level:
+    root: WARN
+    com.ticketsystem: INFO
+    # k6 records every status and request ID. Avoid writing hundreds of identical stack
+    # traces when the experiment intentionally saturates the three-second pool timeout.
+    com.ticketsystem.shared.api.ApiExceptionHandler: OFF

@@ -1,0 +1,14 @@
+{
+  "runId": "20260905-local4",
+  "capturedAtUtc": "2026-09-05T18:57:39.4561280+00:00",
+  "cpu": "AMD Ryzen 5 7535HS with Radeon Graphics",
+  "logicalProcessors": 12,
+  "memoryGiB": 15.21,
+  "java": "java version \"21.0.11\" 2026-04-21 LTS",
+  "k6": "k6.exe v2.1.0 (commit/83a87a41e2, go1.26.4, windows/amd64)",
+  "docker": "29.5.3",
+  "topology": "Nginx -> two stateless Spring Boot replicas -> one PostgreSQL primary",
+  "hikariPoolPerReplica": 8,
+  "combinedApplicationPool": 16,
+  "postgresMaxConnections": 50
+}

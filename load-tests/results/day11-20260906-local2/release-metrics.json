@@ -1,0 +1,45 @@
+{
+  "runId": "20260906-local2",
+  "capturedAtUtc": "2026-09-06T08:40:34.8139323+00:00",
+  "requestedDuration": "5m",
+  "virtualUsers": 10,
+  "iterations": 17846,
+  "httpRequests": 37485,
+  "reservationsCreated": 17846,
+  "idempotentReplays": 1790,
+  "cancellations": 17846,
+  "serverFaults": 0,
+  "unexpectedResponses": 0,
+  "httpP95Milliseconds": 12.99,
+  "reserveP95Milliseconds": 14.3,
+  "cancelP95Milliseconds": 10.74,
+  "telemetrySamples": 59,
+  "heap": {
+    "initialWindowMedianMiB": 207.67,
+    "finalWindowMedianMiB": 203.47,
+    "growthMiB": -4.2,
+    "peakMiB": 303.21,
+    "allowedGrowthMiB": 103.83,
+    "leakSignal": false
+  },
+  "connections": {
+    "maximumHikariActive": 4,
+    "maximumHikariPending": 0,
+    "finalWindowMaximumPending": 0,
+    "maximumPostgresActive": 3,
+    "configuredHikariMaximum": 16
+  },
+  "reconciliation": {
+    "total": 100,
+    "available": 100,
+    "held": 0,
+    "sold": 0,
+    "conservationDrift": 0,
+    "heldDrift": 0,
+    "soldDrift": 0,
+    "reservationRows": 17846,
+    "cancelledRows": 17846,
+    "pendingRows": 0
+  },
+  "passed": true
+}

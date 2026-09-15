@@ -1,0 +1,78 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: /work/load-tests/k6/high-traffic-500vu-10000.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 500 max VUs, 10m30s max duration (incl. graceful stop):
+              * high_traffic_booking: 500 iterations shared among 500 VUs (maxDuration: 10m0s, gracefulStop: 30s)
+
+
+Run                    [ 100% ] setup()
+high_traffic_booking   [   0% ]
+
+Run                    [ 100% ] setup()
+high_traffic_booking   [   0% ]
+
+running (00m02.9s), 500/500 VUs, 0 complete and 0 interrupted iterations
+high_traffic_booking   [   0% ] 500 VUs  00m00.1s/10m0s  000/500 shared iters
+
+running (00m03.9s), 486/500 VUs, 14 complete and 0 interrupted iterations
+high_traffic_booking   [   3% ] 500 VUs  00m01.1s/10m0s  014/500 shared iters
+
+running (00m04.9s), 327/500 VUs, 173 complete and 0 interrupted iterations
+high_traffic_booking   [  35% ] 500 VUs  00m02.1s/10m0s  173/500 shared iters
+
+running (00m05.9s), 147/500 VUs, 353 complete and 0 interrupted iterations
+high_traffic_booking   [  71% ] 500 VUs  00m03.1s/10m0s  353/500 shared iters
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 994     150.533923/s
+    checks_succeeded...: 100.00% 994 out of 994
+    checks_failed......: 0.00%   0 out of 994
+
+    ✓ reservation response has an id
+    ✓ reservation response is pending
+
+    CUSTOM
+    cancellations_succeeded............: 0      0/s
+    errors_idempotency_in_progress.....: 0      0/s
+    errors_rate_limited................: 0      0/s
+    errors_sold_out....................: 0      0/s
+    errors_user_limit..................: 0      0/s
+    reservation_server_faults..........: 3      0.454328/s
+    reservation_unexpected_responses...: 0      0/s
+    reservations_accepted..............: 497    75.266962/s
+    reservations_created...............: 497    75.266962/s
+    reservations_replayed..............: 0      0/s
+    reserve_latency....................: avg=2.3s  min=775.33ms med=2.39s p(90)=3.32s p(95)=3.45s p(99)=3.53s max=3.55s
+
+    HTTP
+    http_req_duration..................: avg=2.29s min=232.03ms med=2.38s p(90)=3.32s p(95)=3.45s p(99)=3.53s max=3.55s
+      { expected_response:true }.......: avg=2.29s min=232.03ms med=2.37s p(90)=3.32s p(95)=3.45s p(99)=3.53s max=3.55s
+    http_req_failed....................: 0.59%  3 out of 503
+    http_reqs..........................: 503    76.175617/s
+
+    EXECUTION
+    iteration_duration.................: avg=2.34s min=841.9ms  med=2.41s p(90)=3.37s p(95)=3.49s p(99)=3.59s max=3.67s
+    iterations.........................: 500    75.721289/s
+    vus................................: 147    min=0        max=500
+    vus_max............................: 500    min=500      max=500
+
+    NETWORK
+    data_received......................: 389 kB 59 kB/s
+    data_sent..........................: 292 kB 44 kB/s
+
+
+
+
+running (00m06.6s), 000/500 VUs, 500 complete and 0 interrupted iterations
+high_traffic_booking ✓ [ 100% ] 500 VUs  00m03.8s/10m0s  500/500 shared iters

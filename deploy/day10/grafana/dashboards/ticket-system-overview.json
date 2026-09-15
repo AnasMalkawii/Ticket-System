@@ -1,0 +1,214 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {"type": "grafana", "uid": "-- Grafana --"},
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Day 10 operational view for traffic, latency, errors, dependencies, and ticketing outcomes.",
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {"color": {"mode": "thresholds"}, "unit": "reqps"},
+        "overrides": []
+      },
+      "gridPos": {"h": 5, "w": 6, "x": 0, "y": 0},
+      "id": 1,
+      "options": {"colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto", "wideLayout": true},
+      "targets": [
+        {"editorMode": "code", "expr": "sum(rate(http_server_requests_seconds_count{job=\"ticket-system\",instance=~\"$instance\"}[1m]))", "legendFormat": "requests/s", "range": true, "refId": "A"}
+      ],
+      "title": "Traffic",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {"color": {"mode": "thresholds"}, "decimals": 2, "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "red", "value": 5}]}, "unit": "percent"},
+        "overrides": []
+      },
+      "gridPos": {"h": 5, "w": 6, "x": 6, "y": 0},
+      "id": 2,
+      "options": {"colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto", "wideLayout": true},
+      "targets": [
+        {"editorMode": "code", "expr": "(100 * sum(rate(http_server_requests_seconds_count{job=\"ticket-system\",instance=~\"$instance\",status=~\"5..\"}[5m])) / clamp_min(sum(rate(http_server_requests_seconds_count{job=\"ticket-system\",instance=~\"$instance\"}[5m])), 0.001)) or vector(0)", "legendFormat": "5xx rate", "range": true, "refId": "A"}
+      ],
+      "title": "HTTP 5xx Error Rate",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"drawStyle": "line", "fillOpacity": 10, "lineWidth": 2, "showPoints": "never"}, "unit": "s"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "id": 3,
+      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [
+        {"editorMode": "code", "expr": "histogram_quantile(0.95, sum by (le) (rate(http_server_requests_seconds_bucket{job=\"ticket-system\",instance=~\"$instance\"}[5m])))", "legendFormat": "HTTP p95", "range": true, "refId": "A"},
+        {"editorMode": "code", "expr": "histogram_quantile(0.99, sum by (le) (rate(http_server_requests_seconds_bucket{job=\"ticket-system\",instance=~\"$instance\"}[5m])))", "legendFormat": "HTTP p99", "range": true, "refId": "B"}
+      ],
+      "title": "HTTP Latency p95 / p99",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"drawStyle": "line", "fillOpacity": 12, "lineWidth": 2, "showPoints": "never"}, "unit": "short"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 8},
+      "id": 4,
+      "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [
+        {"editorMode": "code", "expr": "hikaricp_connections_active{job=\"ticket-system\",instance=~\"$instance\"}", "legendFormat": "{{instance}} active", "range": true, "refId": "A"},
+        {"editorMode": "code", "expr": "hikaricp_connections_pending{job=\"ticket-system\",instance=~\"$instance\"}", "legendFormat": "{{instance}} pending", "range": true, "refId": "B"},
+        {"editorMode": "code", "expr": "hikaricp_connections_max{job=\"ticket-system\",instance=~\"$instance\"}", "legendFormat": "{{instance}} max", "range": true, "refId": "C"}
+      ],
+      "title": "Database Pool",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"drawStyle": "line", "fillOpacity": 10, "lineWidth": 2, "showPoints": "never"}, "unit": "percentunit"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 8},
+      "id": 5,
+      "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [
+        {"editorMode": "code", "expr": "sum by (instance) (jvm_memory_used_bytes{job=\"ticket-system\",instance=~\"$instance\",area=\"heap\"}) / clamp_min(sum by (instance) (jvm_memory_max_bytes{job=\"ticket-system\",instance=~\"$instance\",area=\"heap\"}), 1)", "legendFormat": "{{instance}} heap", "range": true, "refId": "A"},
+        {"editorMode": "code", "expr": "process_cpu_usage{job=\"ticket-system\",instance=~\"$instance\"}", "legendFormat": "{{instance}} process CPU", "range": true, "refId": "B"}
+      ],
+      "title": "JVM Heap and Process CPU",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"drawStyle": "line", "fillOpacity": 10, "lineWidth": 2, "showPoints": "never"}, "unit": "ops"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 8},
+      "id": 6,
+      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [
+        {"editorMode": "code", "expr": "sum(rate(ticketing_reservation_attempts_total{job=\"ticket-system\",instance=~\"$instance\"}[1m]))", "legendFormat": "attempts", "range": true, "refId": "A"},
+        {"editorMode": "code", "expr": "sum(rate(ticketing_reservation_success_total{job=\"ticket-system\",instance=~\"$instance\"}[1m]))", "legendFormat": "success", "range": true, "refId": "B"},
+        {"editorMode": "code", "expr": "sum(rate(ticketing_reservation_sold_out_total{job=\"ticket-system\",instance=~\"$instance\"}[1m]))", "legendFormat": "sold out", "range": true, "refId": "C"},
+        {"editorMode": "code", "expr": "sum(rate(ticketing_reservation_idempotency_hits_total{job=\"ticket-system\",instance=~\"$instance\"}[1m]))", "legendFormat": "idempotency hits", "range": true, "refId": "D"}
+      ],
+      "title": "Reservation Outcomes",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"drawStyle": "line", "fillOpacity": 10, "lineWidth": 2, "showPoints": "never"}, "unit": "s"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 16},
+      "id": 7,
+      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [
+        {"editorMode": "code", "expr": "histogram_quantile(0.95, sum by (le) (rate(ticketing_reservation_duration_seconds_bucket{job=\"ticket-system\",instance=~\"$instance\"}[5m])))", "legendFormat": "reserve p95", "range": true, "refId": "A"},
+        {"editorMode": "code", "expr": "histogram_quantile(0.99, sum by (le) (rate(ticketing_reservation_duration_seconds_bucket{job=\"ticket-system\",instance=~\"$instance\"}[5m])))", "legendFormat": "reserve p99", "range": true, "refId": "B"}
+      ],
+      "title": "Reservation Transaction p95 / p99",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"drawStyle": "line", "fillOpacity": 10, "lineWidth": 2, "showPoints": "never"}, "unit": "ops"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 16},
+      "id": 8,
+      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [
+        {"editorMode": "code", "expr": "sum(rate(ticketing_confirmation_success_total{job=\"ticket-system\",instance=~\"$instance\"}[5m]))", "legendFormat": "success", "range": true, "refId": "A"},
+        {"editorMode": "code", "expr": "sum by (reason) (rate(ticketing_confirmation_failures_total{job=\"ticket-system\",instance=~\"$instance\"}[5m]))", "legendFormat": "failure: {{reason}}", "range": true, "refId": "B"}
+      ],
+      "title": "Confirmation Outcomes",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"drawStyle": "line", "fillOpacity": 10, "lineWidth": 2, "showPoints": "never"}, "unit": "short"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 16},
+      "id": 9,
+      "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [
+        {"editorMode": "code", "expr": "sum by (queue) (rabbitmq_queue_messages_ready{job=\"rabbitmq\",queue=~\"ticketing.*\"})", "legendFormat": "{{queue}} ready", "range": true, "refId": "A"},
+        {"editorMode": "code", "expr": "sum by (queue) (rabbitmq_queue_messages_unacked{job=\"rabbitmq\",queue=~\"ticketing.*\"})", "legendFormat": "{{queue}} unacked", "range": true, "refId": "B"}
+      ],
+      "title": "RabbitMQ Queue Depth",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "thresholds"}, "mappings": [{"options": {"0": {"color": "red", "text": "DOWN"}, "1": {"color": "green", "text": "UP"}}, "type": "value"}], "thresholds": {"mode": "absolute", "steps": [{"color": "red", "value": null}, {"color": "green", "value": 1}]}}, "overrides": []},
+      "gridPos": {"h": 6, "w": 6, "x": 0, "y": 24},
+      "id": 10,
+      "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "auto", "orientation": "horizontal", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto", "wideLayout": true},
+      "targets": [
+        {"editorMode": "code", "expr": "up{job=\"ticket-system\",instance=~\"$instance\"}", "legendFormat": "{{instance}}", "range": true, "refId": "A"}
+      ],
+      "title": "Replica Health",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"drawStyle": "line", "fillOpacity": 10, "lineWidth": 2, "showPoints": "never"}, "unit": "ops"}, "overrides": []},
+      "gridPos": {"h": 6, "w": 9, "x": 6, "y": 24},
+      "id": 11,
+      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [
+        {"editorMode": "code", "expr": "sum(rate(ticketing_reservation_expired_holds_total{job=\"ticket-system\",instance=~\"$instance\"}[5m]))", "legendFormat": "expired holds/s", "range": true, "refId": "A"},
+        {"editorMode": "code", "expr": "sum(rate(ticketing_expiry_failures_total{job=\"ticket-system\",instance=~\"$instance\"}[5m]))", "legendFormat": "failed batches/s", "range": true, "refId": "B"}
+      ],
+      "title": "Expiry Worker Outcomes",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"drawStyle": "line", "fillOpacity": 10, "lineWidth": 2, "showPoints": "never"}, "unit": "s"}, "overrides": []},
+      "gridPos": {"h": 6, "w": 9, "x": 15, "y": 24},
+      "id": 12,
+      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [
+        {"editorMode": "code", "expr": "histogram_quantile(0.95, sum by (le) (rate(ticketing_expiry_batch_duration_seconds_bucket{job=\"ticket-system\",instance=~\"$instance\"}[5m])))", "legendFormat": "expiry p95", "range": true, "refId": "A"},
+        {"editorMode": "code", "expr": "histogram_quantile(0.99, sum by (le) (rate(ticketing_confirmation_duration_seconds_bucket{job=\"ticket-system\",instance=~\"$instance\"}[5m])))", "legendFormat": "confirmation p99", "range": true, "refId": "B"}
+      ],
+      "title": "Worker and Confirmation Latency",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 41,
+  "tags": ["ticket-system", "day10", "observability"],
+  "templating": {
+    "list": [
+      {
+        "current": {"selected": false, "text": "All", "value": "$__all"},
+        "datasource": {"type": "prometheus", "uid": "prometheus"},
+        "definition": "label_values(up{job=\"ticket-system\"}, instance)",
+        "includeAll": true,
+        "label": "Replica",
+        "multi": true,
+        "name": "instance",
+        "options": [],
+        "query": {"query": "label_values(up{job=\"ticket-system\"}, instance)", "refId": "PrometheusVariableQueryEditor-VariableQuery"},
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {"from": "now-30m", "to": "now"},
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Ticket System - Production Overview",
+  "uid": "ticket-system-day10",
+  "version": 1,
+  "weekStart": ""
+}

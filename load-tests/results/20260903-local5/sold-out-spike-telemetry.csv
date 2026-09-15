@@ -1,0 +1,2 @@
+timestamp_utc,hikari_active,hikari_pending,hikari_max,postgres_active,postgres_lock_waiters
+2026-09-03T08:22:08.9437899+00:00,20,75,20,1,0

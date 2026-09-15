@@ -1,0 +1,87 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: C:\Users\hp ryzen\Desktop\Spring Boot\TicketSystem\load-tests\k6\day9-hot-row.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 500 max VUs, 2m30s max duration (incl. graceful stop):
+              * day9_hot_row: 1 iterations for each of 500 VUs (maxDuration: 2m0s, gracefulStop: 30s)
+
+
+Run            [ 100% ] setup()
+day9_hot_row   [   0% ]
+
+Run            [ 100% ] setup()
+day9_hot_row   [   0% ]
+
+running (0m02.9s), 496/500 VUs, 4 complete and 0 interrupted iterations
+day9_hot_row   [   1% ] 500 VUs  0m00.9s/2m0s  004/500 iters, 1 per VU
+
+running (0m03.9s), 459/500 VUs, 41 complete and 0 interrupted iterations
+day9_hot_row   [   8% ] 500 VUs  0m01.9s/2m0s  041/500 iters, 1 per VU
+
+running (0m04.9s), 392/500 VUs, 108 complete and 0 interrupted iterations
+day9_hot_row   [  22% ] 500 VUs  0m02.9s/2m0s  108/500 iters, 1 per VU
+
+running (0m05.9s), 218/500 VUs, 282 complete and 0 interrupted iterations
+day9_hot_row   [  56% ] 500 VUs  0m03.9s/2m0s  282/500 iters, 1 per VU
+
+running (0m06.9s), 000/500 VUs, 500 complete and 0 interrupted iterations
+day9_hot_row ✓ [ 100% ] 500 VUs  0m04.9s/2m0s  500/500 iters, 1 per VU
+
+
+  █ THRESHOLDS 
+
+    reservation_unexpected_responses
+    ✓ 'count==0' count=0
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 200     29.070559/s
+    checks_succeeded...: 100.00% 200 out of 200
+    checks_failed......: 0.00%   0 out of 200
+
+    ✓ reservation response has an id
+    ✓ reservation response is pending
+
+    CUSTOM
+    cancellations_succeeded............: 0      0/s
+    errors_idempotency_in_progress.....: 0      0/s
+    errors_rate_limited................: 0      0/s
+    errors_sold_out....................: 394    57.269001/s
+    errors_user_limit..................: 0      0/s
+    reservation_server_faults..........: 6      0.872117/s
+    reservation_unexpected_responses...: 0      0/s
+    reservations_accepted..............: 100    14.535279/s
+    reservations_created...............: 100    14.535279/s
+    reservations_replayed..............: 0      0/s
+    reserve_latency....................: avg=2.56s min=70.81ms  med=2.76s p(90)=3.54s p(95)=3.76s p(99)=4.06s max=4.47s
+
+    HTTP
+    http_req_duration..................: avg=2.55s min=70.81ms  med=2.76s p(90)=3.54s p(95)=3.76s p(99)=4.06s max=4.47s
+      { expected_response:true }.......: avg=2.54s min=70.81ms  med=2.76s p(90)=3.54s p(95)=3.76s p(99)=4.07s max=4.47s
+    http_req_failed....................: 1.19%  6 out of 503
+    http_reqs..........................: 503    73.112456/s
+
+    EXECUTION
+    iteration_duration.................: avg=3.56s min=780.72ms med=3.74s p(90)=4.63s p(95)=4.75s p(99)=4.83s max=4.85s
+    iterations.........................: 500    72.676397/s
+    vus................................: 218    min=0        max=496
+    vus_max............................: 500    min=500      max=500
+
+    NETWORK
+    data_received......................: 381 kB 55 kB/s
+    data_sent..........................: 295 kB 43 kB/s
+
+
+
+
+running (0m06.9s), 000/500 VUs, 500 complete and 0 interrupted iterations
+day9_hot_row ✓ [ 100% ] 500 VUs  0m04.9s/2m0s  500/500 iters, 1 per VU

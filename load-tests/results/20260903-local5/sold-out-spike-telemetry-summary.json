@@ -1,0 +1,8 @@
+{
+  "samples": 1,
+  "maxHikariActive": 20.0,
+  "maxHikariPending": 75.0,
+  "configuredHikariMax": 20.0,
+  "maxPostgresActive": 1.0,
+  "maxPostgresLockWaiters": 0.0
+}

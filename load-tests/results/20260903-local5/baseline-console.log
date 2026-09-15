@@ -1,0 +1,93 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: C:\Users\hp ryzen\Desktop\Spring Boot\TicketSystem\load-tests\k6\baseline.js
+ web dashboard: http://127.0.0.1:5665
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 500 max VUs, 2m30s max duration (incl. graceful stop):
+              * baseline_500_vus: 1 iterations for each of 500 VUs (maxDuration: 2m0s, gracefulStop: 30s)
+
+
+running (0m00.9s), 500/500 VUs, 0 complete and 0 interrupted iterations
+baseline_500_vus   [   0% ] 500 VUs  0m00.5s/2m0s  000/500 iters, 1 per VU
+
+running (0m01.9s), 453/500 VUs, 47 complete and 0 interrupted iterations
+baseline_500_vus   [   9% ] 500 VUs  0m01.5s/2m0s  047/500 iters, 1 per VU
+
+running (0m02.9s), 335/500 VUs, 165 complete and 0 interrupted iterations
+baseline_500_vus   [  33% ] 500 VUs  0m02.5s/2m0s  165/500 iters, 1 per VU
+
+running (0m03.9s), 154/500 VUs, 346 complete and 0 interrupted iterations
+baseline_500_vus   [  69% ] 500 VUs  0m03.5s/2m0s  346/500 iters, 1 per VU
+
+
+  █ THRESHOLDS 
+
+    errors_sold_out
+    ✗ 'count==400' count=172
+
+    reservation_server_faults
+    ✗ 'count==0' count=228
+
+    reservation_unexpected_responses
+    ✓ 'count==0' count=0
+
+    reservations_created
+    ✓ 'count==100' count=100
+
+    reserve_latency
+    ✗ 'p(95)<=300' p(95)=3.71s
+    ✗ 'p(99)<=800' p(99)=3.8s
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 200     46.468228/s
+    checks_succeeded...: 100.00% 200 out of 200
+    checks_failed......: 0.00%   0 out of 200
+
+    ✓ reservation response has an id
+    ✓ reservation response is pending
+
+    CUSTOM
+    cancellations_succeeded............: 0      0/s
+    errors_idempotency_in_progress.....: 0      0/s
+    errors_rate_limited................: 0      0/s
+    errors_sold_out....................: 172    39.962676/s
+    errors_user_limit..................: 0      0/s
+    reservation_server_faults..........: 228    52.97378/s
+    reservation_unexpected_responses...: 0      0/s
+    reservations_accepted..............: 100    23.234114/s
+    reservations_created...............: 100    23.234114/s
+    reservations_replayed..............: 0      0/s
+    reserve_latency....................: avg=2.79s min=643.91ms med=3.17s p(90)=3.65s p(95)=3.71s p(99)=3.8s  max=3.88s
+
+    HTTP
+    http_req_duration..................: avg=2.77s min=62.52ms  med=3.14s p(90)=3.65s p(95)=3.71s p(99)=3.8s  max=3.88s
+      { expected_response:true }.......: avg=2.22s min=62.52ms  med=2.21s p(90)=3.37s p(95)=3.76s p(99)=3.81s max=3.88s
+    http_req_failed....................: 45.32% 228 out of 503
+    http_reqs..........................: 503    116.867593/s
+
+    EXECUTION
+    iteration_duration.................: avg=2.79s min=645.52ms med=3.17s p(90)=3.66s p(95)=3.71s p(99)=3.8s  max=3.89s
+    iterations.........................: 500    116.170569/s
+    vus................................: 152    min=152        max=500
+    vus_max............................: 500    min=500        max=500
+
+    NETWORK
+    data_received......................: 338 kB 79 kB/s
+    data_sent..........................: 288 kB 67 kB/s
+
+
+
+
+running (0m04.3s), 000/500 VUs, 500 complete and 0 interrupted iterations
+baseline_500_vus ✓ [ 100% ] 500 VUs  0m03.9s/2m0s  500/500 iters, 1 per VU
+time="2026-09-03T11:22:02+03:00" level=error msg="thresholds on metrics 'errors_sold_out, reservation_server_faults, reserve_latency' have been crossed"

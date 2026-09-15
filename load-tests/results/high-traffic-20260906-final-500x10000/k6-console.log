@@ -1,0 +1,102 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: /work/load-tests/k6/high-traffic-500vu-10000.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 500 max VUs, 10m30s max duration (incl. graceful stop):
+              * high_traffic_booking: 10000 iterations shared among 500 VUs (maxDuration: 10m0s, gracefulStop: 30s)
+
+
+Run                    [ 100% ] setup()
+high_traffic_booking   [   0% ]
+
+running (00m01.9s), 500/500 VUs, 0 complete and 0 interrupted iterations
+high_traffic_booking   [   0% ] 500 VUs  00m00.2s/10m0s  00000/10000 shared iters
+
+running (00m02.9s), 500/500 VUs, 19 complete and 0 interrupted iterations
+high_traffic_booking   [   0% ] 500 VUs  00m01.2s/10m0s  00019/10000 shared iters
+
+running (00m03.9s), 500/500 VUs, 519 complete and 0 interrupted iterations
+high_traffic_booking   [   5% ] 500 VUs  00m02.2s/10m0s  00519/10000 shared iters
+
+running (00m04.9s), 500/500 VUs, 1012 complete and 0 interrupted iterations
+high_traffic_booking   [  10% ] 500 VUs  00m03.2s/10m0s  01012/10000 shared iters
+
+running (00m05.9s), 500/500 VUs, 1574 complete and 0 interrupted iterations
+high_traffic_booking   [  16% ] 500 VUs  00m04.2s/10m0s  01574/10000 shared iters
+
+running (00m06.9s), 500/500 VUs, 2177 complete and 0 interrupted iterations
+high_traffic_booking   [  22% ] 500 VUs  00m05.2s/10m0s  02177/10000 shared iters
+
+running (00m07.9s), 500/500 VUs, 2895 complete and 0 interrupted iterations
+high_traffic_booking   [  29% ] 500 VUs  00m06.2s/10m0s  02895/10000 shared iters
+
+running (00m08.9s), 500/500 VUs, 3736 complete and 0 interrupted iterations
+high_traffic_booking   [  37% ] 500 VUs  00m07.2s/10m0s  03736/10000 shared iters
+
+running (00m09.9s), 500/500 VUs, 4754 complete and 0 interrupted iterations
+high_traffic_booking   [  48% ] 500 VUs  00m08.2s/10m0s  04754/10000 shared iters
+
+running (00m10.9s), 500/500 VUs, 5790 complete and 0 interrupted iterations
+high_traffic_booking   [  58% ] 500 VUs  00m09.2s/10m0s  05790/10000 shared iters
+
+running (00m11.9s), 500/500 VUs, 6874 complete and 0 interrupted iterations
+high_traffic_booking   [  69% ] 500 VUs  00m10.2s/10m0s  06874/10000 shared iters
+
+running (00m12.9s), 500/500 VUs, 8028 complete and 0 interrupted iterations
+high_traffic_booking   [  80% ] 500 VUs  00m11.2s/10m0s  08028/10000 shared iters
+
+running (00m13.9s), 500/500 VUs, 9066 complete and 0 interrupted iterations
+high_traffic_booking   [  91% ] 500 VUs  00m12.2s/10m0s  09066/10000 shared iters
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 20000   1355.897017/s
+    checks_succeeded...: 100.00% 20000 out of 20000
+    checks_failed......: 0.00%   0 out of 20000
+
+    ✓ reservation response has an id
+    ✓ reservation response is pending
+
+    CUSTOM
+    cancellations_succeeded............: 0      0/s
+    errors_idempotency_in_progress.....: 0      0/s
+    errors_rate_limited................: 0      0/s
+    errors_sold_out....................: 0      0/s
+    errors_user_limit..................: 0      0/s
+    reservation_server_faults..........: 0      0/s
+    reservation_unexpected_responses...: 0      0/s
+    reservations_accepted..............: 10000  677.948508/s
+    reservations_created...............: 10000  677.948508/s
+    reservations_replayed..............: 0      0/s
+    reserve_latency....................: avg=635.38ms min=96.73ms med=538.73ms p(90)=1s p(95)=1.28s p(99)=1.93s max=2.01s
+
+    HTTP
+    http_req_duration..................: avg=635.36ms min=96.73ms med=538.75ms p(90)=1s p(95)=1.28s p(99)=1.93s max=2.01s
+      { expected_response:true }.......: avg=635.36ms min=96.73ms med=538.75ms p(90)=1s p(95)=1.28s p(99)=1.93s max=2.01s
+    http_req_failed....................: 0.00%  0 out of 10003
+    http_reqs..........................: 10003  678.151893/s
+
+    EXECUTION
+    iteration_duration.................: avg=638.33ms min=97.01ms med=539.7ms  p(90)=1s p(95)=1.31s p(99)=1.96s max=2.11s
+    iterations.........................: 10000  677.948508/s
+    vus................................: 500    min=0          max=500
+    vus_max............................: 500    min=500        max=500
+
+    NETWORK
+    data_received......................: 7.7 MB 521 kB/s
+    data_sent..........................: 5.8 MB 394 kB/s
+
+
+
+
+running (00m14.8s), 000/500 VUs, 10000 complete and 0 interrupted iterations
+high_traffic_booking ✓ [ 100% ] 500 VUs  00m13.1s/10m0s  10000/10000 shared iters

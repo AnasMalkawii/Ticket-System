@@ -1,0 +1,85 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: C:\Users\hp ryzen\Desktop\Spring Boot\TicketSystem\load-tests\k6\day9-hot-row.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 2000 max VUs, 2m30s max duration (incl. graceful stop):
+              * day9_hot_row: 1 iterations for each of 2000 VUs (maxDuration: 2m0s, gracefulStop: 30s)
+
+
+running (0m00.7s), 1988/2000 VUs, 12 complete and 0 interrupted iterations
+day9_hot_row   [   1% ] 2000 VUs  0m00.6s/2m0s  0012/2000 iters, 1 per VU
+
+running (0m01.7s), 1965/2000 VUs, 35 complete and 0 interrupted iterations
+day9_hot_row   [   2% ] 2000 VUs  0m01.6s/2m0s  0035/2000 iters, 1 per VU
+
+running (0m02.7s), 1896/2000 VUs, 104 complete and 0 interrupted iterations
+day9_hot_row   [   5% ] 2000 VUs  0m02.6s/2m0s  0104/2000 iters, 1 per VU
+
+running (0m03.7s), 1322/2000 VUs, 678 complete and 0 interrupted iterations
+day9_hot_row   [  34% ] 2000 VUs  0m03.6s/2m0s  0678/2000 iters, 1 per VU
+
+running (0m04.7s), 0553/2000 VUs, 1447 complete and 0 interrupted iterations
+day9_hot_row   [  72% ] 2000 VUs  0m04.6s/2m0s  1447/2000 iters, 1 per VU
+time="2026-09-05T21:57:35+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-d8d7-7e4f-a157-3ac3ee2120fb/reservations\": request timeout"
+time="2026-09-05T21:57:35+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-d8d7-7e4f-a157-3ac3ee2120fb/reservations\": request timeout"
+time="2026-09-05T21:57:35+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-d8d7-7e4f-a157-3ac3ee2120fb/reservations\": request timeout"
+time="2026-09-05T21:57:36+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-d8d7-7e4f-a157-3ac3ee2120fb/reservations\": request timeout"
+
+
+  █ THRESHOLDS 
+
+    reservation_unexpected_responses
+    ✓ 'count==0' count=0
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 200     36.728573/s
+    checks_succeeded...: 100.00% 200 out of 200
+    checks_failed......: 0.00%   0 out of 200
+
+    ✓ reservation response has an id
+    ✓ reservation response is pending
+
+    CUSTOM
+    cancellations_succeeded............: 0      0/s
+    errors_idempotency_in_progress.....: 0      0/s
+    errors_rate_limited................: 0      0/s
+    errors_sold_out....................: 1121   205.863651/s
+    errors_user_limit..................: 0      0/s
+    reservation_server_faults..........: 779    143.057791/s
+    reservation_unexpected_responses...: 0      0/s
+    reservations_accepted..............: 100    18.364286/s
+    reservations_created...............: 100    18.364286/s
+    reservations_replayed..............: 0      0/s
+    reserve_latency....................: avg=2.9s  min=56.62ms med=3.04s p(90)=4.14s p(95)=4.29s p(99)=4.38s max=5.05s
+
+    HTTP
+    http_req_duration..................: avg=2.89s min=11.69ms med=3.04s p(90)=4.14s p(95)=4.29s p(99)=4.38s max=5.05s
+      { expected_response:true }.......: avg=2.77s min=11.69ms med=2.3s  p(90)=4.26s p(95)=4.31s p(99)=4.4s  max=4.96s
+    http_req_failed....................: 38.89% 779 out of 2003
+    http_reqs..........................: 2003   367.836657/s
+
+    EXECUTION
+    iteration_duration.................: avg=3.9s  min=58.97ms med=3.99s p(90)=4.92s p(95)=5.02s p(99)=5.24s max=5.3s 
+    iterations.........................: 2000   367.285728/s
+    vus................................: 553    min=553         max=1988
+    vus_max............................: 2000   min=2000        max=2000
+
+    NETWORK
+    data_received......................: 1.5 MB 281 kB/s
+    data_sent..........................: 1.2 MB 215 kB/s
+
+
+
+
+running (0m05.4s), 0000/2000 VUs, 2000 complete and 0 interrupted iterations
+day9_hot_row ✓ [ 100% ] 2000 VUs  0m05.3s/2m0s  2000/2000 iters, 1 per VU

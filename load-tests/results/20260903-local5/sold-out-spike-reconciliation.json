@@ -1,0 +1,12 @@
+{
+  "eventName": "day6-sold-out-spike-20260903-local5",
+  "total": 5,
+  "available": 0,
+  "held": 5,
+  "sold": 0,
+  "conservationDrift": 0,
+  "heldDrift": 0,
+  "soldDrift": 0,
+  "reservationRows": 2,
+  "cancelledRows": 0
+}

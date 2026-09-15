@@ -1,0 +1,7 @@
+target
+tmp
+.git
+.idea
+load-tests/results
+docs
+*.log

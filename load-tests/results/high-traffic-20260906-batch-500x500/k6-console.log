@@ -1,0 +1,69 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: /work/load-tests/k6/high-traffic-500vu-10000.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 500 max VUs, 10m30s max duration (incl. graceful stop):
+              * high_traffic_booking: 500 iterations shared among 500 VUs (maxDuration: 10m0s, gracefulStop: 30s)
+
+
+Run                    [ 100% ] setup()
+high_traffic_booking   [   0% ]
+
+running (00m01.9s), 500/500 VUs, 0 complete and 0 interrupted iterations
+high_traffic_booking   [   0% ] 500 VUs  00m00.3s/10m0s  000/500 shared iters
+
+running (00m02.9s), 494/500 VUs, 6 complete and 0 interrupted iterations
+high_traffic_booking   [   1% ] 500 VUs  00m01.2s/10m0s  006/500 shared iters
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 1000    262.158792/s
+    checks_succeeded...: 100.00% 1000 out of 1000
+    checks_failed......: 0.00%   0 out of 1000
+
+    ✓ reservation response has an id
+    ✓ reservation response is pending
+
+    CUSTOM
+    cancellations_succeeded............: 0      0/s
+    errors_idempotency_in_progress.....: 0      0/s
+    errors_rate_limited................: 0      0/s
+    errors_sold_out....................: 0      0/s
+    errors_user_limit..................: 0      0/s
+    reservation_server_faults..........: 0      0/s
+    reservation_unexpected_responses...: 0      0/s
+    reservations_accepted..............: 500    131.079396/s
+    reservations_created...............: 500    131.079396/s
+    reservations_replayed..............: 0      0/s
+    reserve_latency....................: avg=1.61s min=1.03s    med=1.55s p(90)=1.85s p(95)=1.87s p(99)=1.9s  max=2s   
+
+    HTTP
+    http_req_duration..................: avg=1.61s min=201.62ms med=1.5s  p(90)=1.85s p(95)=1.87s p(99)=1.9s  max=2s   
+      { expected_response:true }.......: avg=1.61s min=201.62ms med=1.5s  p(90)=1.85s p(95)=1.87s p(99)=1.9s  max=2s   
+    http_req_failed....................: 0.00%  0 out of 503
+    http_reqs..........................: 503    131.865873/s
+
+    EXECUTION
+    iteration_duration.................: avg=1.69s min=1.03s    med=1.64s p(90)=1.98s p(95)=2s    p(99)=2.03s max=2.08s
+    iterations.........................: 500    131.079396/s
+    vus................................: 494    min=0        max=500
+    vus_max............................: 500    min=500      max=500
+
+    NETWORK
+    data_received......................: 386 kB 101 kB/s
+    data_sent..........................: 291 kB 76 kB/s
+
+
+
+
+running (00m03.8s), 000/500 VUs, 500 complete and 0 interrupted iterations
+high_traffic_booking ✓ [ 100% ] 500 VUs  00m02.1s/10m0s  500/500 shared iters

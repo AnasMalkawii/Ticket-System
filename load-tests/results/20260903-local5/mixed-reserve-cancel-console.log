@@ -1,0 +1,90 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: C:\Users\hp ryzen\Desktop\Spring Boot\TicketSystem\load-tests\k6\mixed-reserve-cancel.js
+ web dashboard: http://127.0.0.1:5665
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 100 max VUs, 2m30s max duration (incl. graceful stop):
+              * mixed_reserve_cancel: 1 iterations for each of 100 VUs (maxDuration: 2m0s, gracefulStop: 30s)
+
+
+running (0m01.0s), 066/100 VUs, 34 complete and 0 interrupted iterations
+mixed_reserve_cancel   [  34% ] 100 VUs  0m00.9s/2m0s  034/100 iters, 1 per VU
+time="2026-09-03T11:22:06+03:00" level=warning msg="The test run was short, report generation was skipped (not enough data)"
+
+
+  █ THRESHOLDS 
+
+    cancel_latency
+    ✗ 'p(95)<=250' p(95)=969.89ms
+    ✗ 'p(99)<=700' p(99)=1s
+
+    cancellations_succeeded
+    ✓ 'count==50' count=50
+
+    reservation_server_faults
+    ✓ 'count==0' count=0
+
+    reservation_unexpected_responses
+    ✓ 'count==0' count=0
+
+    reservations_created
+    ✓ 'count==100' count=100
+
+    reserve_latency
+    ✗ 'p(95)<=300' p(95)=1.52s
+    ✗ 'p(99)<=800' p(99)=1.64s
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 200     111.980823/s
+    checks_succeeded...: 100.00% 200 out of 200
+    checks_failed......: 0.00%   0 out of 200
+
+    ✓ reservation response has an id
+    ✓ reservation response is pending
+
+    CUSTOM
+    cancel_latency.....................: avg=561.5ms  min=33.59ms  med=474.84ms p(90)=950.29ms p(95)=969.89ms p(99)=1s    max=1.03s
+    cancellations_succeeded............: 50     27.995206/s
+    errors_idempotency_in_progress.....: 0      0/s
+    errors_rate_limited................: 0      0/s
+    errors_sold_out....................: 0      0/s
+    errors_user_limit..................: 0      0/s
+    reservation_server_faults..........: 0      0/s
+    reservation_unexpected_responses...: 0      0/s
+    reservations_accepted..............: 100    55.990411/s
+    reservations_created...............: 100    55.990411/s
+    reservations_replayed..............: 0      0/s
+    reserve_latency....................: avg=786.55ms min=118.93ms med=778.69ms p(90)=1.28s    p(95)=1.52s    p(99)=1.64s max=1.65s
+
+    HTTP
+    http_req_duration..................: avg=698.24ms min=13.79ms  med=695.86ms p(90)=1.21s    p(95)=1.3s     p(99)=1.63s max=1.65s
+      { expected_response:true }.......: avg=698.24ms min=13.79ms  med=695.86ms p(90)=1.21s    p(95)=1.3s     p(99)=1.63s max=1.65s
+    http_req_failed....................: 0.00%  0 out of 153
+    http_reqs..........................: 153    85.665329/s
+
+    EXECUTION
+    iteration_duration.................: avg=1.07s    min=139.85ms med=1.23s    p(90)=1.58s    p(95)=1.63s    p(99)=1.65s max=1.66s
+    iterations.........................: 100    55.990411/s
+    vus................................: 66     min=66       max=66 
+    vus_max............................: 100    min=100      max=100
+
+    NETWORK
+    data_received......................: 104 kB 58 kB/s
+    data_sent..........................: 81 kB  45 kB/s
+
+
+
+
+running (0m01.8s), 000/100 VUs, 100 complete and 0 interrupted iterations
+mixed_reserve_cancel ✓ [ 100% ] 100 VUs  0m01.7s/2m0s  100/100 iters, 1 per VU
+time="2026-09-03T11:22:07+03:00" level=error msg="thresholds on metrics 'cancel_latency, reserve_latency' have been crossed"

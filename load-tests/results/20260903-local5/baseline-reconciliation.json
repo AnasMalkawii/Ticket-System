@@ -1,0 +1,12 @@
+{
+  "eventName": "day6-baseline-20260903-local5",
+  "total": 100,
+  "available": 0,
+  "held": 100,
+  "sold": 0,
+  "conservationDrift": 0,
+  "heldDrift": 0,
+  "soldDrift": 0,
+  "reservationRows": 100,
+  "cancelledRows": 0
+}

@@ -1,0 +1,5 @@
+{
+  "scenario": "duplicate-retries",
+  "k6ExitCode": 0,
+  "performanceThresholdsPassed": true
+}

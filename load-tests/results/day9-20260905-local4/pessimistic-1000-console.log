@@ -1,0 +1,95 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: C:\Users\hp ryzen\Desktop\Spring Boot\TicketSystem\load-tests\k6\day9-hot-row.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 1000 max VUs, 2m30s max duration (incl. graceful stop):
+              * day9_hot_row: 1 iterations for each of 1000 VUs (maxDuration: 2m0s, gracefulStop: 30s)
+
+
+running (0m00.8s), 0973/1000 VUs, 27 complete and 0 interrupted iterations
+day9_hot_row   [   3% ] 1000 VUs  0m00.7s/2m0s  0027/1000 iters, 1 per VU
+
+running (0m01.8s), 0923/1000 VUs, 77 complete and 0 interrupted iterations
+day9_hot_row   [   8% ] 1000 VUs  0m01.7s/2m0s  0077/1000 iters, 1 per VU
+
+running (0m02.8s), 0779/1000 VUs, 221 complete and 0 interrupted iterations
+day9_hot_row   [  22% ] 1000 VUs  0m02.7s/2m0s  0221/1000 iters, 1 per VU
+
+running (0m03.8s), 0563/1000 VUs, 437 complete and 0 interrupted iterations
+day9_hot_row   [  44% ] 1000 VUs  0m03.7s/2m0s  0437/1000 iters, 1 per VU
+
+running (0m04.8s), 0276/1000 VUs, 724 complete and 0 interrupted iterations
+day9_hot_row   [  72% ] 1000 VUs  0m04.7s/2m0s  0724/1000 iters, 1 per VU
+time="2026-09-05T21:56:42+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-07eb-77ec-8cc2-62c481f6674f/reservations\": request timeout"
+time="2026-09-05T21:56:42+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-07eb-77ec-8cc2-62c481f6674f/reservations\": request timeout"
+time="2026-09-05T21:56:42+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-07eb-77ec-8cc2-62c481f6674f/reservations\": request timeout"
+time="2026-09-05T21:56:42+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-07eb-77ec-8cc2-62c481f6674f/reservations\": request timeout"
+time="2026-09-05T21:56:42+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-07eb-77ec-8cc2-62c481f6674f/reservations\": request timeout"
+time="2026-09-05T21:56:42+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-07eb-77ec-8cc2-62c481f6674f/reservations\": request timeout"
+time="2026-09-05T21:56:42+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-07eb-77ec-8cc2-62c481f6674f/reservations\": request timeout"
+time="2026-09-05T21:56:42+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-07eb-77ec-8cc2-62c481f6674f/reservations\": request timeout"
+time="2026-09-05T21:56:42+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-07eb-77ec-8cc2-62c481f6674f/reservations\": request timeout"
+time="2026-09-05T21:56:43+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-07eb-77ec-8cc2-62c481f6674f/reservations\": request timeout"
+time="2026-09-05T21:56:43+03:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:28090/api/v1/events/01a072ee-07eb-77ec-8cc2-62c481f6674f/reservations\": request timeout"
+
+running (0m05.8s), 0012/1000 VUs, 988 complete and 0 interrupted iterations
+day9_hot_row   [  99% ] 1000 VUs  0m05.7s/2m0s  0988/1000 iters, 1 per VU
+
+
+  █ THRESHOLDS 
+
+    reservation_unexpected_responses
+    ✓ 'count==0' count=0
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 200     33.911413/s
+    checks_succeeded...: 100.00% 200 out of 200
+    checks_failed......: 0.00%   0 out of 200
+
+    ✓ reservation response has an id
+    ✓ reservation response is pending
+
+    CUSTOM
+    cancellations_succeeded............: 0      0/s
+    errors_idempotency_in_progress.....: 0      0/s
+    errors_rate_limited................: 0      0/s
+    errors_sold_out....................: 706    119.707289/s
+    errors_user_limit..................: 0      0/s
+    reservation_server_faults..........: 194    32.894071/s
+    reservation_unexpected_responses...: 0      0/s
+    reservations_accepted..............: 100    16.955707/s
+    reservations_created...............: 100    16.955707/s
+    reservations_replayed..............: 0      0/s
+    reserve_latency....................: avg=2.69s min=65.78ms med=3.01s p(90)=3.58s p(95)=4.22s p(99)=4.99s max=5s   
+
+    HTTP
+    http_req_duration..................: avg=2.68s min=43.17ms med=3.01s p(90)=3.58s p(95)=4.21s p(99)=4.99s max=5s   
+      { expected_response:true }.......: avg=2.54s min=43.17ms med=2.94s p(90)=3.57s p(95)=3.86s p(99)=4.92s max=4.99s
+    http_req_failed....................: 19.34% 194 out of 1003
+    http_reqs..........................: 1003   170.065738/s
+
+    EXECUTION
+    iteration_duration.................: avg=3.69s min=69.16ms med=3.92s p(90)=5.24s p(95)=5.44s p(99)=5.69s max=5.72s
+    iterations.........................: 1000   169.557066/s
+    vus................................: 12     min=12          max=973 
+    vus_max............................: 1000   min=1000        max=1000
+
+    NETWORK
+    data_received......................: 753 kB 128 kB/s
+    data_sent..........................: 590 kB 100 kB/s
+
+
+
+
+running (0m05.9s), 0000/1000 VUs, 1000 complete and 0 interrupted iterations
+day9_hot_row ✓ [ 100% ] 1000 VUs  0m05.7s/2m0s  1000/1000 iters, 1 per VU

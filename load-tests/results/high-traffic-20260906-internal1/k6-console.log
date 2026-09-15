@@ -1,0 +1,127 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: /work/load-tests/k6/high-traffic-500vu-10000.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 500 max VUs, 10m30s max duration (incl. graceful stop):
+              * high_traffic_booking: 10000 iterations shared among 500 VUs (maxDuration: 10m0s, gracefulStop: 30s)
+
+
+Run                    [ 100% ] setup()
+high_traffic_booking   [   0% ]
+
+running (00m01.9s), 500/500 VUs, 0 complete and 0 interrupted iterations
+high_traffic_booking   [   0% ] 500 VUs  00m00.1s/10m0s  00000/10000 shared iters
+
+running (00m02.9s), 500/500 VUs, 7 complete and 0 interrupted iterations
+high_traffic_booking   [   0% ] 500 VUs  00m01.1s/10m0s  00007/10000 shared iters
+
+running (00m03.9s), 500/500 VUs, 3306 complete and 0 interrupted iterations
+high_traffic_booking   [  33% ] 500 VUs  00m02.1s/10m0s  03306/10000 shared iters
+
+running (00m04.9s), 419/500 VUs, 9581 complete and 0 interrupted iterations
+high_traffic_booking   [  96% ] 500 VUs  00m03.1s/10m0s  09581/10000 shared iters
+
+running (00m05.9s), 131/500 VUs, 9869 complete and 0 interrupted iterations
+high_traffic_booking   [  99% ] 500 VUs  00m04.1s/10m0s  09869/10000 shared iters
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+
+running (00m06.9s), 030/500 VUs, 9970 complete and 0 interrupted iterations
+high_traffic_booking   [ 100% ] 500 VUs  00m05.1s/10m0s  09970/10000 shared iters
+time="2026-09-06T09:02:00Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+time="2026-09-06T09:02:01Z" level=warning msg="Request Failed" error="Post \"http://nginx:8080/api/v1/events/01a075f3-e954-7e2e-9097-2cf16a85c3ce/reservations\": request timeout"
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 280     37.375943/s
+    checks_succeeded...: 100.00% 280 out of 280
+    checks_failed......: 0.00%   0 out of 280
+
+    ✓ reservation response has an id
+    ✓ reservation response is pending
+
+    CUSTOM
+    cancellations_succeeded............: 0      0/s
+    errors_idempotency_in_progress.....: 0      0/s
+    errors_rate_limited................: 0      0/s
+    errors_sold_out....................: 0      0/s
+    errors_user_limit..................: 0      0/s
+    reservation_server_faults..........: 9860   1316.167134/s
+    reservation_unexpected_responses...: 0      0/s
+    reservations_accepted..............: 140    18.687971/s
+    reservations_created...............: 140    18.687971/s
+    reservations_replayed..............: 0      0/s
+    reserve_latency....................: avg=177.74ms min=123.81µs med=7.97ms p(90)=46.67ms p(95)=1.02s p(99)=4.08s max=5s   
+
+    HTTP
+    http_req_duration..................: avg=177.87ms min=123.81µs med=7.97ms p(90)=46.82ms p(95)=1.02s p(99)=4.08s max=5s   
+      { expected_response:true }.......: avg=3.06s    min=185.63ms med=3.12s  p(90)=4.57s   p(95)=4.83s p(99)=4.92s max=4.94s
+    http_req_failed....................: 98.57% 9860 out of 10003
+    http_reqs..........................: 10003  1335.255562/s
+
+    EXECUTION
+    iteration_duration.................: avg=183.02ms min=275.94µs med=10.2ms p(90)=58.71ms p(95)=1.04s p(99)=4.13s max=5.03s
+    iterations.........................: 10000  1334.855106/s
+    vus................................: 30     min=0             max=500
+    vus_max............................: 500    min=500           max=500
+
+    NETWORK
+    data_received......................: 3.7 MB 487 kB/s
+    data_sent..........................: 5.8 MB 768 kB/s
+
+
+
+
+running (00m07.5s), 000/500 VUs, 10000 complete and 0 interrupted iterations
+high_traffic_booking ✓ [ 100% ] 500 VUs  00m05.7s/10m0s  10000/10000 shared iters

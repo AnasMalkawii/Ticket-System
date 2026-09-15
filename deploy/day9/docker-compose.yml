@@ -1,0 +1,91 @@
+x-app: &app
+  image: ticket-system-day9:local
+  build:
+    context: ../..
+    dockerfile: Dockerfile
+  environment: &app-environment
+    SPRING_PROFILES_ACTIVE: load
+    SERVER_PORT: 8080
+    DB_URL: jdbc:postgresql://postgres:5432/ticketsystem
+    DB_USERNAME: ticketsystem
+    DB_PASSWORD: ticketsystem
+    DB_POOL_SIZE: 8
+    DB_POOL_MIN_IDLE: 2
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+    INVENTORY_STRATEGY: ${INVENTORY_STRATEGY:-ATOMIC}
+    JWT_SIGNING_KEY: day9-shared-signing-key-0123456789abcdef
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  healthcheck:
+    test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:8080/readyz"]
+    interval: 2s
+    timeout: 2s
+    retries: 45
+    start_period: 20s
+  restart: "no"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    command: ["postgres", "-c", "max_connections=50"]
+    environment:
+      POSTGRES_DB: ticketsystem
+      POSTGRES_USER: ticketsystem
+      POSTGRES_PASSWORD: ticketsystem
+    ports:
+      - "127.0.0.1:${DAY9_DB_PORT:-25432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ticketsystem -d ticketsystem"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "127.0.0.1:${DAY9_REDIS_PORT:-26379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+
+  app1:
+    <<: *app
+    container_name: ticket-system-day9-app1
+    environment:
+      <<: *app-environment
+      INSTANCE_ID: app1
+    ports:
+      - "127.0.0.1:${DAY9_APP1_PORT:-28081}:8080"
+
+  app2:
+    <<: *app
+    container_name: ticket-system-day9-app2
+    environment:
+      <<: *app-environment
+      INSTANCE_ID: app2
+    ports:
+      - "127.0.0.1:${DAY9_APP2_PORT:-28082}:8080"
+
+  nginx:
+    image: nginx:1.27-alpine
+    depends_on:
+      app1:
+        condition: service_healthy
+      app2:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${DAY9_NGINX_PORT:-28090}:8080"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:8080/livez"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    restart: "no"

@@ -1,0 +1,182 @@
+{
+    "root_group": {
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {},
+        "checks": {},
+        "name": ""
+    },
+    "metrics": {
+        "http_req_failed": {
+            "passes": 392,
+            "fails": 113,
+            "value": 0.7762376237623763
+        },
+        "iteration_duration": {
+            "p(99)": 719.881321,
+            "max": 760.2642,
+            "avg": 159.42865179999998,
+            "min": 35.6089,
+            "med": 72.61185,
+            "p(90)": 534.5959300000001,
+            "p(95)": 648.0758199999999
+        },
+        "reserve_latency": {
+            "max": 712.6387,
+            "avg": 96.0862262,
+            "min": 0,
+            "med": 0,
+            "p(90)": 484.7125100000001,
+            "p(95)": 595.4435499999998,
+            "p(99)": 676.744157,
+            "thresholds": {
+                "p(95)<=300": true,
+                "p(99)<=800": false
+            }
+        },
+        "http_req_sending": {
+            "avg": 0.3504908910891091,
+            "min": 0,
+            "med": 0,
+            "p(90)": 1.0108,
+            "p(95)": 1.5891,
+            "p(99)": 3.172059999999994,
+            "max": 60.0567
+        },
+        "reservation_unexpected_responses": {
+            "count": 0,
+            "rate": 0,
+            "thresholds": {
+                "count==0": false
+            }
+        },
+        "errors_rate_limited": {
+            "count": 0,
+            "rate": 0
+        },
+        "http_reqs": {
+            "count": 505,
+            "rate": 552.2922918916164
+        },
+        "http_req_duration": {
+            "min": 0,
+            "med": 0,
+            "p(90)": 481.83960000000013,
+            "p(95)": 595.15822,
+            "p(99)": 676.5089639999999,
+            "max": 712.6387,
+            "avg": 95.41438871287129
+        },
+        "http_req_duration{expected_response:true}": {
+            "avg": 426.40943628318587,
+            "min": 11.9073,
+            "med": 466.2722,
+            "p(90)": 653.78232,
+            "p(95)": 673.5628599999999,
+            "p(99)": 702.992316,
+            "max": 712.6387
+        },
+        "http_req_receiving": {
+            "p(95)": 0.58482,
+            "p(99)": 1.1221519999999985,
+            "max": 2.2084,
+            "avg": 0.09599465346534651,
+            "min": 0,
+            "med": 0,
+            "p(90)": 0.52832
+        },
+        "iterations": {
+            "count": 500,
+            "rate": 546.824051377838
+        },
+        "reservations_accepted": {
+            "count": 0,
+            "rate": 0
+        },
+        "cancellations_succeeded": {
+            "count": 0,
+            "rate": 0
+        },
+        "http_req_connecting": {
+            "max": 74.4026,
+            "avg": 9.256256039603961,
+            "min": 0,
+            "med": 0,
+            "p(90)": 48.79566,
+            "p(95)": 51.0303,
+            "p(99)": 68.333332
+        },
+        "data_received": {
+            "count": 76604,
+            "rate": 83777.81926349581
+        },
+        "errors_sold_out": {
+            "count": 108,
+            "rate": 118.11399509761301,
+            "thresholds": {
+                "count==500": true
+            }
+        },
+        "reservations_created": {
+            "count": 0,
+            "rate": 0,
+            "thresholds": {
+                "count==0": false
+            }
+        },
+        "http_req_waiting": {
+            "p(95)": 593.27482,
+            "p(99)": 674.9553199999999,
+            "max": 711.5801,
+            "avg": 94.96790316831682,
+            "min": 0,
+            "med": 0,
+            "p(90)": 480.9404000000001
+        },
+        "data_sent": {
+            "rate": 70398.12837438287,
+            "count": 64370
+        },
+        "errors_idempotency_in_progress": {
+            "count": 0,
+            "rate": 0
+        },
+        "http_req_blocked": {
+            "med": 0,
+            "p(90)": 48.8195,
+            "p(95)": 51.0303,
+            "p(99)": 68.333332,
+            "max": 74.4026,
+            "avg": 9.270115643564356,
+            "min": 0
+        },
+        "reservations_replayed": {
+            "count": 0,
+            "rate": 0
+        },
+        "errors_user_limit": {
+            "count": 0,
+            "rate": 0
+        },
+        "http_req_tls_handshaking": {
+            "p(99)": 0,
+            "max": 0,
+            "avg": 0,
+            "min": 0,
+            "med": 0,
+            "p(90)": 0,
+            "p(95)": 0
+        },
+        "reservation_server_faults": {
+            "count": 392,
+            "rate": 428.71005628022505,
+            "thresholds": {
+                "count==0": true
+            }
+        }
+    },
+    "setup_data": {
+        "eventId": "01a0665c-6b70-7e7f-8a4e-efa8e2f08d1b",
+        "eventName": "day6-sold-out-spike-20260903-local5"
+    }
+}

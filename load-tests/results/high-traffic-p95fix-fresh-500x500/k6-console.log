@@ -1,0 +1,69 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: /work/load-tests/k6/high-traffic-500vu-10000.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 500 max VUs, 10m30s max duration (incl. graceful stop):
+              * high_traffic_booking: 500 iterations shared among 500 VUs (maxDuration: 10m0s, gracefulStop: 30s)
+
+
+Run                    [ 100% ] setup()
+high_traffic_booking   [   0% ]
+
+Run                    [ 100% ] setup()
+high_traffic_booking   [   0% ]
+
+running (00m02.9s), 323/500 VUs, 177 complete and 0 interrupted iterations
+high_traffic_booking   [  35% ] 500 VUs  00m00.8s/10m0s  177/500 shared iters
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 1000    333.697107/s
+    checks_succeeded...: 100.00% 1000 out of 1000
+    checks_failed......: 0.00%   0 out of 1000
+
+    ✓ reservation response has an id
+    ✓ reservation response is pending
+
+    CUSTOM
+    cancellations_succeeded............: 0      0/s
+    errors_idempotency_in_progress.....: 0      0/s
+    errors_rate_limited................: 0      0/s
+    errors_sold_out....................: 0      0/s
+    errors_user_limit..................: 0      0/s
+    reservation_server_faults..........: 0      0/s
+    reservation_unexpected_responses...: 0      0/s
+    reservations_accepted..............: 500    166.848554/s
+    reservations_created...............: 500    166.848554/s
+    reservations_replayed..............: 0      0/s
+    reserve_latency....................: avg=702.56ms min=550.62ms med=715.2ms  p(90)=783.24ms p(95)=795.13ms p(99)=802.48ms max=810.21ms
+
+    HTTP
+    http_req_duration..................: avg=702.43ms min=330.22ms med=715.24ms p(90)=783.82ms p(95)=795.27ms p(99)=802.68ms max=872.45ms
+      { expected_response:true }.......: avg=702.43ms min=330.22ms med=715.24ms p(90)=783.82ms p(95)=795.27ms p(99)=802.68ms max=872.45ms
+    http_req_failed....................: 0.00%  0 out of 503
+    http_reqs..........................: 503    167.849645/s
+
+    EXECUTION
+    iteration_duration.................: avg=725.16ms min=567.06ms med=727.69ms p(90)=801.13ms p(95)=814.13ms p(99)=851.62ms max=888.79ms
+    iterations.........................: 500    166.848554/s
+    vus................................: 323    min=0        max=323
+    vus_max............................: 500    min=500      max=500
+
+    NETWORK
+    data_received......................: 386 kB 129 kB/s
+    data_sent..........................: 290 kB 97 kB/s
+
+
+
+
+running (00m03.0s), 000/500 VUs, 500 complete and 0 interrupted iterations
+high_traffic_booking ✓ [ 100% ] 500 VUs  00m00.9s/10m0s  500/500 shared iters

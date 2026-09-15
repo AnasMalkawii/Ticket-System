@@ -1,0 +1,33 @@
+{
+  "strategy": "PESSIMISTIC",
+  "virtualUsers": 1000,
+  "attempts": 1000,
+  "responsesCreated": 100,
+  "responsesSoldOut": 706,
+  "serverOrConnectionFaults": 194,
+  "unexpectedResponses": 0,
+  "p50Milliseconds": 3019.04,
+  "p95Milliseconds": 4225.02,
+  "p99Milliseconds": 4998.73,
+  "iterationsPerSecond": 169.56,
+  "usefulResponsesPerSecond": 136.66,
+  "maxHikariActive": 16,
+  "maxHikariPending": 830,
+  "maxPostgresActive": 15,
+  "maxPostgresLockWaiters": 14,
+  "inventory": {
+    "total": 100,
+    "available": 0,
+    "held": 100,
+    "sold": 0,
+    "conservationDrift": 0,
+    "heldDrift": 0,
+    "soldDrift": 0,
+    "reservationRows": 100
+  },
+  "zeroOversell": true,
+  "replicasObserved": [
+    "172.22.0.4:8080",
+    "172.22.0.5:8080"
+  ]
+}

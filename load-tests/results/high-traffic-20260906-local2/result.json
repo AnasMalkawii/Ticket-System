@@ -1,0 +1,48 @@
+{
+  "runId": "20260906-local2",
+  "capturedAtUtc": "2026-09-06T08:58:24.2040620+00:00",
+  "topology": "Nginx -> two stateless Spring Boot replicas -> PostgreSQL 16",
+  "virtualUsers": 500,
+  "reservationRequests": 10000,
+  "setupRequestsExcluded": 3,
+  "reservationsCreated": 314,
+  "soldOut": 0,
+  "userLimit": 0,
+  "idempotencyInProgress": 0,
+  "rateLimited": 0,
+  "serverOrTransportFaults": 9686,
+  "unexpectedResponses": 0,
+  "accountedResponses": 10000,
+  "availabilityPercent": 3.14,
+  "reserveLatencyMilliseconds": {
+    "median": 0.0,
+    "p95": 0.0,
+    "p99": 4993.05,
+    "maximum": 5178.12
+  },
+  "completedRequestsPerSecond": 961.88,
+  "peakConnections": {
+    "hikariActive": 16,
+    "hikariPending": 3,
+    "hikariConfiguredMaximum": 16,
+    "postgresActive": 16
+  },
+  "reconciliation": {
+    "total": 10000,
+    "available": 9676,
+    "held": 324,
+    "sold": 0,
+    "conservationDrift": 0,
+    "heldDrift": 0,
+    "soldDrift": 0,
+    "reservationRows": 324
+  },
+  "gates": {
+    "correctness": false,
+    "exactRequestAccounting": true,
+    "latencyP95AtMost300msAndP99AtMost800ms": false,
+    "availabilityAtLeast99Point9Percent": false
+  },
+  "k6ExitCode": 0,
+  "goodOverall": false
+}

@@ -1,0 +1,5 @@
+{
+  "scenario": "baseline",
+  "k6ExitCode": 99,
+  "performanceThresholdsPassed": false
+}

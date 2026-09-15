@@ -1,0 +1,878 @@
+openapi: 3.1.0
+
+info:
+  title: Ticket Booking System API
+  version: 1.0.0
+  summary: High-concurrency ticket reservation API with zero-oversell guarantees.
+  description: |
+    Reservation API for general-admission event tickets, designed to stay correct under
+    flash-sale contention.
+
+    ## Booking flow
+
+    1. `POST /events/{eventId}/reservations` places a **hold** (`PENDING`) and decrements
+       available inventory inside a single database transaction. The hold has a short TTL
+       (3 minutes by default).
+    2. `POST /reservations/{reservationId}/confirm` pays for the hold and converts it to
+       `CONFIRMED`, creating an order.
+    3. `DELETE /reservations/{reservationId}` cancels the hold and returns inventory.
+    4. A hold not confirmed before `expiresAt` is released automatically by a background
+       worker and becomes `EXPIRED`.
+
+    ## Idempotency
+
+    `POST /events/{eventId}/reservations` **requires** an `Idempotency-Key` header. The key
+    is enforced by a UNIQUE constraint in PostgreSQL, so retries are safe across application
+    replicas.
+
+    - Retrying with the same key returns the **original** reservation with the original
+      status code and the header `Idempotency-Replayed: true`. A second hold is never
+      created.
+    - Reusing a key with a different request body returns `409 IDEMPOTENCY_KEY_CONFLICT`.
+    - If an identical request is still in flight, the retry may return
+      `409 IDEMPOTENCY_IN_PROGRESS` with `Retry-After`. This is safe to retry.
+
+    This is what makes a client timeout recoverable: the client cannot tell whether its
+    request committed, so it retries with the same key and learns the true outcome.
+
+    ## Error semantics
+
+    Errors use RFC 9457 `application/problem+json` and always carry a stable machine-readable
+    `code`. Business rejections such as `SOLD_OUT` are **4xx, not 5xx** — they mean the
+    system worked and the answer was no. Clients and load tests branch on `code`, never on
+    the human-readable `detail`.
+
+    ## Consistency note
+
+    `GET /events/{eventId}/availability` is **advisory**. It may be served from cache and can
+    be stale. It is safe for display and never authoritative: only the reserve transaction
+    decides whether a ticket exists.
+  contact:
+    name: Backend
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Local development
+  - url: http://localhost/api/v1
+    description: Docker Compose behind Nginx (two app replicas)
+
+tags:
+  - name: Catalog
+    description: Public event browsing. Cached, eventually consistent, never authoritative.
+  - name: Reservations
+    description: The critical path. Transactional, idempotent, zero-oversell.
+  - name: Admin
+    description: Catalog management. Requires the ADMIN role.
+  - name: Auth
+    description: Token issuance.
+
+security:
+  - bearerAuth: []
+
+paths:
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Obtain a JWT access token
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Token issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+  /events:
+    get:
+      tags: [Catalog]
+      summary: List events
+      description: |
+        Paginated catalog listing. Served from cache (60 s TTL) and therefore eventually
+        consistent. Ticket counts shown here are advisory.
+      operationId: listEvents
+      security: []
+      parameters:
+        - name: status
+          in: query
+          description: Filter by sale status.
+          schema:
+            $ref: '#/components/schemas/EventStatus'
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 0, default: 0 }
+        - name: size
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+      responses:
+        '200':
+          description: A page of events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventPage'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+  /events/{eventId}:
+    get:
+      tags: [Catalog]
+      summary: Get event details
+      operationId: getEvent
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/EventId'
+      responses:
+        '200':
+          description: Event details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+  /events/{eventId}/availability:
+    get:
+      tags: [Catalog]
+      summary: Advisory ticket availability
+      description: |
+        **Advisory only.** May be served from a 5 s cache and can be stale by the time it is
+        read. Safe for display; never a guarantee that a reservation will succeed. Only the
+        reserve transaction decides whether a ticket exists.
+      operationId: getAvailability
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/EventId'
+      responses:
+        '200':
+          description: Advisory availability snapshot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Availability'
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+  /events/{eventId}/reservations:
+    post:
+      tags: [Reservations]
+      summary: Reserve tickets (create a hold)
+      description: |
+        Creates a `PENDING` hold and decrements available inventory inside one PostgreSQL
+        transaction guarded by a `SELECT ... FOR UPDATE` row lock. Sale window, quantity,
+        per-user cap, and availability are all validated **after** the lock is acquired, so
+        no interleaving can oversell.
+
+        `Idempotency-Key` is **required**. Retrying with the same key returns the original
+        reservation and sets `Idempotency-Replayed: true`.
+
+        The hold is released automatically at `expiresAt` if it is not confirmed.
+      operationId: createReservation
+      parameters:
+        - $ref: '#/components/parameters/EventId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReservationRequest'
+            examples:
+              single:
+                summary: Reserve one ticket
+                value: { quantity: 1 }
+              pair:
+                summary: Reserve two tickets
+                value: { quantity: 2 }
+      responses:
+        '201':
+          description: |
+            Hold created. Also returned for an idempotent replay of a successful request, in
+            which case `Idempotency-Replayed: true` is set and no new hold was created.
+          headers:
+            Location:
+              description: URI of the created reservation.
+              schema: { type: string, format: uri-reference }
+            Idempotency-Replayed:
+              $ref: '#/components/headers/IdempotencyReplayed'
+            X-Request-Id:
+              $ref: '#/components/headers/RequestId'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+        '400':
+          description: |
+            Validation failure. Codes: `VALIDATION_ERROR`, `INVALID_QUANTITY`,
+            `IDEMPOTENCY_KEY_REQUIRED`.
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+              examples:
+                missingKey:
+                  summary: Idempotency-Key header absent
+                  value:
+                    type: https://ticketsystem.dev/problems/idempotency-key-required
+                    title: Idempotency key required
+                    status: 400
+                    detail: The Idempotency-Key header is mandatory for this operation.
+                    code: IDEMPOTENCY_KEY_REQUIRED
+                    traceId: 0f9c2b1e-4c1a-4a9e-9f0a-9b2c3d4e5f60
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404':
+          description: Event not found. Code `EVENT_NOT_FOUND`.
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+        '409':
+          description: |
+            The request was understood and correctly refused. Codes: `SOLD_OUT`,
+            `SALE_NOT_STARTED`, `SALE_ENDED`, `USER_LIMIT_EXCEEDED`,
+            `IDEMPOTENCY_KEY_CONFLICT`, `IDEMPOTENCY_IN_PROGRESS`.
+
+            These are not server errors and do not consume the availability error budget.
+          headers:
+            Retry-After:
+              $ref: '#/components/headers/RetryAfter'
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+              examples:
+                soldOut:
+                  summary: No tickets left at commit time
+                  value:
+                    type: https://ticketsystem.dev/problems/sold-out
+                    title: Sold out
+                    status: 409
+                    detail: Event 7f3a1c0e-9a1b-4f2c-9d3e-1a2b3c4d5e6f has no remaining tickets.
+                    code: SOLD_OUT
+                    traceId: 0f9c2b1e-4c1a-4a9e-9f0a-9b2c3d4e5f60
+                userLimit:
+                  summary: Per-user cap would be exceeded
+                  value:
+                    type: https://ticketsystem.dev/problems/user-limit-exceeded
+                    title: User limit exceeded
+                    status: 409
+                    detail: You may hold at most 4 tickets for this event; you already hold 3.
+                    code: USER_LIMIT_EXCEEDED
+                    traceId: 0f9c2b1e-4c1a-4a9e-9f0a-9b2c3d4e5f60
+                keyConflict:
+                  summary: Same key reused with a different body
+                  value:
+                    type: https://ticketsystem.dev/problems/idempotency-key-conflict
+                    title: Idempotency key conflict
+                    status: 409
+                    detail: This Idempotency-Key was already used with a different request payload.
+                    code: IDEMPOTENCY_KEY_CONFLICT
+                    traceId: 0f9c2b1e-4c1a-4a9e-9f0a-9b2c3d4e5f60
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '500': { $ref: '#/components/responses/InternalError' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /reservations/{reservationId}:
+    get:
+      tags: [Reservations]
+      summary: Get reservation state
+      description: |
+        Read-only. Safe to poll after a client timeout to discover whether a hold exists.
+        Only the owner or an admin may read a reservation.
+      operationId: getReservation
+      parameters:
+        - $ref: '#/components/parameters/ReservationId'
+      responses:
+        '200':
+          description: Reservation state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+    delete:
+      tags: [Reservations]
+      summary: Cancel a hold and return inventory
+      description: |
+        Transitions a `PENDING` reservation to `CANCELLED` and returns the held quantity to
+        available inventory, exactly once.
+
+        Naturally idempotent through the state guard: the transition is only legal from
+        `PENDING`, so a repeat call returns `409 INVALID_STATE` rather than releasing
+        inventory twice. If cancellation races the expiry worker, exactly one transition
+        wins and inventory is returned once.
+      operationId: cancelReservation
+      parameters:
+        - $ref: '#/components/parameters/ReservationId'
+        - $ref: '#/components/parameters/RequestId'
+      responses:
+        '200':
+          description: Hold cancelled and inventory returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409':
+          description: |
+            Not cancellable from the current state. Codes: `INVALID_STATE` (already
+            confirmed, cancelled, or expired).
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+              examples:
+                alreadyExpired:
+                  summary: The expiry worker won the race
+                  value:
+                    type: https://ticketsystem.dev/problems/invalid-state
+                    title: Invalid state transition
+                    status: 409
+                    detail: Reservation is EXPIRED and cannot be cancelled. Inventory was already returned.
+                    code: INVALID_STATE
+                    traceId: 0f9c2b1e-4c1a-4a9e-9f0a-9b2c3d4e5f60
+        '500': { $ref: '#/components/responses/InternalError' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /reservations/{reservationId}/confirm:
+    post:
+      tags: [Reservations]
+      summary: Confirm a hold and create an order
+      description: |
+        Charges the (deterministic mock) payment gateway and transitions the reservation
+        from `PENDING` to `CONFIRMED`, moving the quantity from `held` to `sold` and
+        creating exactly one order.
+
+        Payment is called **outside** the inventory lock, so a slow gateway cannot block
+        other buyers. A `UNIQUE` constraint on `ticket_order.reservation_id` plus the state guard
+        make double confirmation impossible even under retried or duplicated delivery.
+
+        A hold whose `expiresAt` has passed cannot be confirmed; it returns
+        `409 RESERVATION_EXPIRED`.
+      operationId: confirmReservation
+      parameters:
+        - $ref: '#/components/parameters/ReservationId'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmReservationRequest'
+      responses:
+        '200':
+          description: Reservation confirmed and order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmationResult'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '402':
+          description: Payment declined by the gateway. Code `PAYMENT_DECLINED`. The hold remains `PENDING` and may be retried until it expires.
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+        '504':
+          description: Payment deadline exceeded. Code `DEPENDENCY_TIMEOUT`. The gateway call is not retried; the hold remains `PENDING`.
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409':
+          description: |
+            Not confirmable from the current state. Codes: `RESERVATION_EXPIRED`,
+            `INVALID_STATE` (already confirmed or cancelled).
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+              examples:
+                expired:
+                  summary: TTL elapsed before confirmation
+                  value:
+                    type: https://ticketsystem.dev/problems/reservation-expired
+                    title: Reservation expired
+                    status: 409
+                    detail: This hold expired at 2026-08-22T10:31:00Z and its tickets were returned to the pool.
+                    code: RESERVATION_EXPIRED
+                    traceId: 0f9c2b1e-4c1a-4a9e-9f0a-9b2c3d4e5f60
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '500': { $ref: '#/components/responses/InternalError' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+        '504':
+          description: Payment gateway timed out. The hold remains `PENDING`; the client may retry until `expiresAt`. Never blind-retried server-side, because payment is not idempotent on its own.
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+
+  /admin/events:
+    post:
+      tags: [Admin]
+      summary: Create an event and its inventory
+      description: |
+        Creates the event and its `ticket_inventory` row in one transaction with
+        `available = total`, `held = 0`, `sold = 0`.
+      operationId: createEvent
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEventRequest'
+      responses:
+        '201':
+          description: Event created
+          headers:
+            Location:
+              schema: { type: string, format: uri-reference }
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+  /admin/events/{eventId}:
+    patch:
+      tags: [Admin]
+      summary: Update event metadata
+      description: |
+        Updates catalog metadata and invalidates the cached catalog entry.
+
+        Total inventory may only be **increased**, never reduced below `held + sold`; the
+        database rejects any update that would violate
+        `available + held + sold = total` or drive a counter negative.
+      operationId: updateEvent
+      parameters:
+        - $ref: '#/components/parameters/EventId'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEventRequest'
+      responses:
+        '200':
+          description: Event updated and cache invalidated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409':
+          description: Update would violate an inventory invariant. Code `INVALID_STATE`.
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT bearer token from `POST /auth/login`. Claims carry the user id and role
+        (`USER` or `ADMIN`). The application is stateless, so any replica accepts any
+        valid token.
+
+  parameters:
+    EventId:
+      name: eventId
+      in: path
+      required: true
+      description: Event identifier.
+      schema: { type: string, format: uuid }
+      example: 7f3a1c0e-9a1b-4f2c-9d3e-1a2b3c4d5e6f
+
+    ReservationId:
+      name: reservationId
+      in: path
+      required: true
+      description: Reservation identifier.
+      schema: { type: string, format: uuid }
+      example: 2b7c4d5e-6f70-4812-9a3b-4c5d6e7f8091
+
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: |
+        Client-generated unique key for this logical request, typically a UUID v4. Enforced
+        by a UNIQUE constraint in PostgreSQL, so it is safe across replicas and restarts.
+
+        Retry the *same* key to retry the *same* request. Use a new key for a new intent.
+      schema:
+        type: string
+        minLength: 8
+        maxLength: 128
+        pattern: '^[A-Za-z0-9._:-]+$'
+      example: 3f1b0a2c-7d4e-4a19-8b60-1c2d3e4f5a6b
+
+    RequestId:
+      name: X-Request-Id
+      in: header
+      required: false
+      description: |
+        Optional correlation id. If absent, the server generates one. It is echoed on the
+        response, attached to every log line for the request, and propagated onto emitted
+        outbox events.
+      schema: { type: string, maxLength: 128 }
+
+  headers:
+    RetryAfter:
+      description: Seconds to wait before retrying.
+      schema: { type: integer, minimum: 0 }
+    IdempotencyReplayed:
+      description: |
+        Present and `true` when the response is a replay of an earlier request carrying the
+        same `Idempotency-Key`. No new state was created.
+      schema: { type: boolean }
+    RequestId:
+      description: Correlation id for this request, for log lookup.
+      schema: { type: string }
+
+  responses:
+    BadRequest:
+      description: Malformed request. Codes `VALIDATION_ERROR`, `INVALID_QUANTITY`, `IDEMPOTENCY_KEY_REQUIRED`.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    Unauthorized:
+      description: Missing, malformed, or expired token. Code `UNAUTHORIZED`.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    Forbidden:
+      description: Authenticated but not permitted — wrong role, or not the owner of the resource. Code `FORBIDDEN`.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    NotFound:
+      description: Resource does not exist. Codes `EVENT_NOT_FOUND`, `RESERVATION_NOT_FOUND`.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    TooManyRequests:
+      description: |
+        Rate limit exceeded. Code `RATE_LIMITED`. Deliberately distinct from `SOLD_OUT` —
+        this says nothing about ticket availability.
+      headers:
+        Retry-After:
+          $ref: '#/components/headers/RetryAfter'
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    InternalError:
+      description: |
+        Unexpected server fault. Code `INTERNAL_ERROR`. Always paired with a logged
+        `traceId`. Counts against the availability error budget.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    ServiceUnavailable:
+      description: |
+        A dependency is unavailable or a bounded wait was exceeded (lock timeout, connection
+        pool timeout, database unreachable). Safe to retry with backoff — the transaction
+        rolled back, so no partial inventory movement occurred.
+      headers:
+        Retry-After:
+          $ref: '#/components/headers/RetryAfter'
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    GatewayTimeout:
+      description: |
+        A bounded remote call exceeded its deadline. Code `DEPENDENCY_TIMEOUT`. A purchase
+        action is never retried blindly; its reservation remains unchanged.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+
+  schemas:
+
+    Problem:
+      type: object
+      description: RFC 9457 problem detail with a stable machine-readable `code`.
+      required: [type, title, status, code]
+      properties:
+        type:
+          type: string
+          format: uri
+          description: URI identifying the problem type.
+        title:
+          type: string
+          description: Short human-readable summary. Stable per `type`.
+        status:
+          type: integer
+          description: HTTP status code.
+        detail:
+          type: string
+          description: Human-readable explanation of this occurrence. Never parse this.
+        instance:
+          type: string
+          format: uri-reference
+          description: URI of the specific occurrence.
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        traceId:
+          type: string
+          description: Correlation id for log lookup.
+      additionalProperties: true
+
+    ErrorCode:
+      type: string
+      description: |
+        Stable machine-readable outcome. Clients and load tests branch on this value.
+
+        Business rejections (`SOLD_OUT`, `SALE_NOT_STARTED`, `SALE_ENDED`,
+        `USER_LIMIT_EXCEEDED`, `RESERVATION_EXPIRED`, `INVALID_STATE`) mean the system
+        worked correctly and refused. They do not consume the availability error budget.
+      enum:
+        - VALIDATION_ERROR
+        - INVALID_QUANTITY
+        - IDEMPOTENCY_KEY_REQUIRED
+        - IDEMPOTENCY_KEY_CONFLICT
+        - IDEMPOTENCY_IN_PROGRESS
+        - UNAUTHORIZED
+        - FORBIDDEN
+        - EVENT_NOT_FOUND
+        - RESERVATION_NOT_FOUND
+        - SALE_NOT_STARTED
+        - SALE_ENDED
+        - SOLD_OUT
+        - USER_LIMIT_EXCEEDED
+        - RESERVATION_EXPIRED
+        - INVALID_STATE
+        - PAYMENT_DECLINED
+        - RATE_LIMITED
+        - DEPENDENCY_UNAVAILABLE
+        - DEPENDENCY_TIMEOUT
+        - INTERNAL_ERROR
+
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username: { type: string, minLength: 1, maxLength: 64 }
+        password: { type: string, minLength: 8, maxLength: 128, format: password }
+
+    LoginResponse:
+      type: object
+      required: [accessToken, tokenType, expiresIn]
+      properties:
+        accessToken: { type: string }
+        tokenType: { type: string, const: Bearer }
+        expiresIn: { type: integer, description: Token lifetime in seconds., example: 3600 }
+        role: { type: string, enum: [USER, ADMIN] }
+
+    EventStatus:
+      type: string
+      enum: [SCHEDULED, ON_SALE, SOLD_OUT, CLOSED, CANCELLED]
+
+    Event:
+      type: object
+      required: [id, name, venue, status, saleStartsAt]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string, example: Aurora Live - Opening Night }
+        venue: { type: string, example: Riverside Arena }
+        startsAt: { type: string, format: date-time }
+        saleStartsAt: { type: string, format: date-time }
+        saleEndsAt: { type: string, format: date-time }
+        status: { $ref: '#/components/schemas/EventStatus' }
+        priceMinor:
+          type: integer
+          description: Unit price in minor currency units (for example cents).
+          example: 4500
+        currency: { type: string, minLength: 3, maxLength: 3, example: EUR }
+        availability: { $ref: '#/components/schemas/Availability' }
+
+    EventPage:
+      type: object
+      required: [content, page, size, totalElements]
+      properties:
+        content:
+          type: array
+          items: { $ref: '#/components/schemas/Event' }
+        page: { type: integer }
+        size: { type: integer }
+        totalElements: { type: integer }
+        totalPages: { type: integer }
+
+    Availability:
+      type: object
+      description: |
+        **Advisory snapshot.** May be cached and stale. Never a guarantee that a reservation
+        will succeed; only the reserve transaction decides that.
+      required: [eventId, available, advisory]
+      properties:
+        eventId: { type: string, format: uuid }
+        total: { type: integer, minimum: 0, example: 100 }
+        available: { type: integer, minimum: 0, example: 37 }
+        advisory:
+          type: boolean
+          const: true
+          description: Always `true`. A reminder that this value is not authoritative.
+        asOf:
+          type: string
+          format: date-time
+          description: When this snapshot was taken.
+
+    CreateReservationRequest:
+      type: object
+      required: [quantity]
+      properties:
+        quantity:
+          type: integer
+          minimum: 1
+          maximum: 4
+          description: |
+            Tickets to hold. Bounded to limit the blast radius of a single request. The
+            per-user cap for an event (4 by default) is enforced separately, inside the
+            same serialized reservation transaction.
+          example: 2
+      additionalProperties: false
+
+    ReservationStatus:
+      type: string
+      description: |
+        `PENDING` is the only non-terminal state. `CONFIRMED`, `CANCELLED`, and `EXPIRED`
+        are terminal; there are no transitions out of them.
+      enum: [PENDING, CONFIRMED, CANCELLED, EXPIRED]
+
+    Reservation:
+      type: object
+      required: [id, eventId, quantity, status, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        eventId: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        quantity: { type: integer, minimum: 1, example: 2 }
+        status: { $ref: '#/components/schemas/ReservationStatus' }
+        expiresAt:
+          type: string
+          format: date-time
+          description: |
+            The hold deadline, assigned at creation. Retained after the reservation reaches a
+            terminal state, so a client can see when a hold lapsed. Server time is
+            authoritative; clients must not rely on their own clock.
+          example: '2026-08-22T10:31:00Z'
+        terminatedAt:
+          type: [string, "null"]
+          format: date-time
+          description: |
+            When the reservation reached a terminal state, or null while it is still
+            `PENDING`.
+          example: null
+        totalAmountMinor:
+          type: integer
+          description: Amount payable on confirmation, in minor currency units.
+          example: 9000
+        currency: { type: string, example: EUR }
+        createdAt: { type: string, format: date-time }
+        orderId:
+          type: [string, "null"]
+          format: uuid
+          description: Set once the reservation is `CONFIRMED`.
+
+    ConfirmReservationRequest:
+      type: object
+      description: |
+        Optional payment instruction. The v1.0 gateway is a deterministic mock: the token
+        value selects the outcome, which makes retry and failure paths testable without a
+        real provider.
+      properties:
+        paymentToken:
+          type: string
+          maxLength: 128
+          description: |
+            Mock gateway token. `tok_ok` authorises, `tok_declined` declines,
+            `tok_timeout` simulates a gateway timeout. Defaults to `tok_ok`.
+          example: tok_ok
+      additionalProperties: false
+
+    ConfirmationResult:
+      type: object
+      required: [reservation, order]
+      properties:
+        reservation: { $ref: '#/components/schemas/Reservation' }
+        order: { $ref: '#/components/schemas/Order' }
+
+    Order:
+      type: object
+      required: [id, reservationId, status, amountMinor, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        reservationId:
+          type: string
+          format: uuid
+          description: Unique — one order per reservation, enforced by the database (I5).
+        status: { type: string, enum: [PAID, FAILED] }
+        amountMinor: { type: integer, example: 9000 }
+        currency: { type: string, example: EUR }
+        createdAt: { type: string, format: date-time }
+
+    CreateEventRequest:
+      type: object
+      required: [name, venue, saleStartsAt, totalTickets, priceMinor, currency]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 200 }
+        venue: { type: string, minLength: 1, maxLength: 200 }
+        startsAt: { type: string, format: date-time }
+        saleStartsAt: { type: string, format: date-time }
+        saleEndsAt: { type: string, format: date-time }
+        totalTickets:
+          type: integer
+          minimum: 1
+          description: Initial inventory. Sets available = total, held = 0, sold = 0.
+          example: 100
+        priceMinor: { type: integer, minimum: 0, example: 4500 }
+        currency: { type: string, minLength: 3, maxLength: 3, example: EUR }
+      additionalProperties: false
+
+    UpdateEventRequest:
+      type: object
+      description: |
+        Partial update. Inventory may only be increased; the database rejects any change
+        that would break `available + held + sold = total` or drive a counter negative.
+      properties:
+        name: { type: string, minLength: 1, maxLength: 200 }
+        venue: { type: string, minLength: 1, maxLength: 200 }
+        startsAt: { type: string, format: date-time }
+        saleStartsAt: { type: string, format: date-time }
+        saleEndsAt: { type: string, format: date-time }
+        status: { $ref: '#/components/schemas/EventStatus' }
+        priceMinor: { type: integer, minimum: 0 }
+        addTickets:
+          type: integer
+          minimum: 1
+          description: Increase total and available inventory by this amount.
+      additionalProperties: false

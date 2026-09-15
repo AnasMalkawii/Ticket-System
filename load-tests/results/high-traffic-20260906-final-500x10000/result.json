@@ -1,0 +1,73 @@
+{
+  "runId": "20260906-final-500x10000",
+  "capturedAtUtc": "2026-09-06T13:50:36.7637639+00:00",
+  "topology": "Nginx -> two stateless Spring Boot replicas -> PostgreSQL 16",
+  "loadGeneratorPath": "Docker internal network",
+  "virtualUsers": 500,
+  "reservationRequests": 10000,
+  "setupRequestsExcluded": 3,
+  "reservationsCreated": 10000,
+  "soldOut": 0,
+  "userLimit": 0,
+  "idempotencyInProgress": 0,
+  "rateLimited": 0,
+  "serverOrTransportFaults": 0,
+  "unexpectedResponses": 0,
+  "accountedResponses": 10000,
+  "availabilityPercent": 100.0,
+  "reserveLatencyMilliseconds": {
+    "median": 538.74,
+    "p95": 1285.95,
+    "p99": 1933.91,
+    "maximum": 2018.45
+  },
+  "completedRequestsPerSecond": 677.95,
+  "successfulReservationsPerSecond": 677.95,
+  "expectedResponseLatencyMilliseconds": {
+    "median": 538.75,
+    "p95": 1285.92,
+    "p99": 1933.89
+  },
+  "peakConnections": {
+    "hikariActive": 4,
+    "hikariPending": 0,
+    "hikariConfiguredMaximum": 8,
+    "postgresActive": 4
+  },
+  "gatewayDiagnostics": {
+    "reservationStatus201": 10000,
+    "reservationStatus499": 0,
+    "reservationStatus502": 0,
+    "reservationStatus503": 0,
+    "noLiveUpstreamErrors": 0,
+    "upstreamTimeoutErrors": 0
+  },
+  "applicationPoolTimeouts": {
+    "app1": 0,
+    "app2": 0
+  },
+  "serviceRestarts": {
+    "nginx": 0,
+    "app1": 0,
+    "app2": 0
+  },
+  "reconciliation": {
+    "total": 10000,
+    "available": 0,
+    "held": 10000,
+    "sold": 0,
+    "conservationDrift": 0,
+    "heldDrift": 0,
+    "soldDrift": 0,
+    "reservationRows": 10000
+  },
+  "gates": {
+    "correctness": true,
+    "exactRequestAccounting": true,
+    "latencyP95AtMost300msAndP99AtMost800ms": false,
+    "availabilityAtLeast99Point9Percent": true,
+    "availabilityAtLeast99Point99Percent": true
+  },
+  "k6ExitCode": 0,
+  "goodOverall": false
+}

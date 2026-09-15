@@ -1,0 +1,12 @@
+{
+  "eventName": "day6-mixed-reserve-cancel-20260903-local5",
+  "total": 100,
+  "available": 50,
+  "held": 50,
+  "sold": 0,
+  "conservationDrift": 0,
+  "heldDrift": 0,
+  "soldDrift": 0,
+  "reservationRows": 100,
+  "cancelledRows": 50
+}

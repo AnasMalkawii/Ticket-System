@@ -1,0 +1,1527 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: C:\Users\hp ryzen\Desktop\Spring Boot\TicketSystem\load-tests\k6\resilience-failure-drill.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 5 max VUs, 8m45s max duration (incl. graceful stop):
+              * failure_drill: 5 looping VUs for 8m0s (gracefulStop: 45s)
+
+
+Run             [ 100% ] setup()
+failure_drill   [   0% ]
+
+Run             [ 100% ] setup()
+failure_drill   [   0% ]
+
+running (0m03.0s), 5/5 VUs, 10 complete and 0 interrupted iterations
+failure_drill   [   0% ] 5 VUs  0m00.7s/8m0s
+
+running (0m04.0s), 5/5 VUs, 35 complete and 0 interrupted iterations
+failure_drill   [   0% ] 5 VUs  0m01.7s/8m0s
+
+running (0m05.0s), 5/5 VUs, 65 complete and 0 interrupted iterations
+failure_drill   [   1% ] 5 VUs  0m02.7s/8m0s
+
+running (0m06.0s), 5/5 VUs, 90 complete and 0 interrupted iterations
+failure_drill   [   1% ] 5 VUs  0m03.7s/8m0s
+
+running (0m07.0s), 5/5 VUs, 118 complete and 0 interrupted iterations
+failure_drill   [   1% ] 5 VUs  0m04.7s/8m0s
+
+running (0m08.0s), 5/5 VUs, 145 complete and 0 interrupted iterations
+failure_drill   [   1% ] 5 VUs  0m05.7s/8m0s
+
+running (0m09.0s), 5/5 VUs, 175 complete and 0 interrupted iterations
+failure_drill   [   1% ] 5 VUs  0m06.7s/8m0s
+
+running (0m10.0s), 5/5 VUs, 203 complete and 0 interrupted iterations
+failure_drill   [   2% ] 5 VUs  0m07.7s/8m0s
+
+running (0m11.0s), 5/5 VUs, 230 complete and 0 interrupted iterations
+failure_drill   [   2% ] 5 VUs  0m08.7s/8m0s
+
+running (0m12.0s), 5/5 VUs, 260 complete and 0 interrupted iterations
+failure_drill   [   2% ] 5 VUs  0m09.7s/8m0s
+
+running (0m13.0s), 5/5 VUs, 290 complete and 0 interrupted iterations
+failure_drill   [   2% ] 5 VUs  0m10.7s/8m0s
+
+running (0m14.0s), 5/5 VUs, 320 complete and 0 interrupted iterations
+failure_drill   [   2% ] 5 VUs  0m11.7s/8m0s
+
+running (0m15.0s), 5/5 VUs, 350 complete and 0 interrupted iterations
+failure_drill   [   3% ] 5 VUs  0m12.7s/8m0s
+
+running (0m16.0s), 5/5 VUs, 378 complete and 0 interrupted iterations
+failure_drill   [   3% ] 5 VUs  0m13.7s/8m0s
+
+running (0m17.0s), 5/5 VUs, 405 complete and 0 interrupted iterations
+failure_drill   [   3% ] 5 VUs  0m14.7s/8m0s
+
+running (0m18.0s), 5/5 VUs, 435 complete and 0 interrupted iterations
+failure_drill   [   3% ] 5 VUs  0m15.7s/8m0s
+
+running (0m19.0s), 5/5 VUs, 465 complete and 0 interrupted iterations
+failure_drill   [   3% ] 5 VUs  0m16.7s/8m0s
+
+running (0m20.0s), 5/5 VUs, 495 complete and 0 interrupted iterations
+failure_drill   [   4% ] 5 VUs  0m17.7s/8m0s
+
+running (0m21.0s), 5/5 VUs, 525 complete and 0 interrupted iterations
+failure_drill   [   4% ] 5 VUs  0m18.7s/8m0s
+
+running (0m22.0s), 5/5 VUs, 555 complete and 0 interrupted iterations
+failure_drill   [   4% ] 5 VUs  0m19.7s/8m0s
+
+running (0m23.0s), 5/5 VUs, 585 complete and 0 interrupted iterations
+failure_drill   [   4% ] 5 VUs  0m20.7s/8m0s
+
+running (0m24.0s), 5/5 VUs, 615 complete and 0 interrupted iterations
+failure_drill   [   5% ] 5 VUs  0m21.7s/8m0s
+
+running (0m25.0s), 5/5 VUs, 645 complete and 0 interrupted iterations
+failure_drill   [   5% ] 5 VUs  0m22.7s/8m0s
+
+running (0m26.0s), 5/5 VUs, 675 complete and 0 interrupted iterations
+failure_drill   [   5% ] 5 VUs  0m23.7s/8m0s
+
+running (0m27.0s), 5/5 VUs, 705 complete and 0 interrupted iterations
+failure_drill   [   5% ] 5 VUs  0m24.7s/8m0s
+
+running (0m28.0s), 5/5 VUs, 735 complete and 0 interrupted iterations
+failure_drill   [   5% ] 5 VUs  0m25.7s/8m0s
+
+running (0m29.0s), 5/5 VUs, 765 complete and 0 interrupted iterations
+failure_drill   [   6% ] 5 VUs  0m26.7s/8m0s
+
+running (0m30.0s), 5/5 VUs, 795 complete and 0 interrupted iterations
+failure_drill   [   6% ] 5 VUs  0m27.7s/8m0s
+
+running (0m31.0s), 5/5 VUs, 807 complete and 0 interrupted iterations
+failure_drill   [   6% ] 5 VUs  0m28.7s/8m0s
+
+running (0m32.0s), 5/5 VUs, 819 complete and 0 interrupted iterations
+failure_drill   [   6% ] 5 VUs  0m29.7s/8m0s
+
+running (0m33.0s), 5/5 VUs, 831 complete and 0 interrupted iterations
+failure_drill   [   6% ] 5 VUs  0m30.7s/8m0s
+
+running (0m34.0s), 5/5 VUs, 845 complete and 0 interrupted iterations
+failure_drill   [   7% ] 5 VUs  0m31.7s/8m0s
+
+running (0m35.0s), 5/5 VUs, 859 complete and 0 interrupted iterations
+failure_drill   [   7% ] 5 VUs  0m32.7s/8m0s
+
+running (0m36.0s), 5/5 VUs, 871 complete and 0 interrupted iterations
+failure_drill   [   7% ] 5 VUs  0m33.7s/8m0s
+
+running (0m37.0s), 5/5 VUs, 885 complete and 0 interrupted iterations
+failure_drill   [   7% ] 5 VUs  0m34.7s/8m0s
+
+running (0m38.0s), 5/5 VUs, 899 complete and 0 interrupted iterations
+failure_drill   [   7% ] 5 VUs  0m35.7s/8m0s
+
+running (0m39.0s), 5/5 VUs, 911 complete and 0 interrupted iterations
+failure_drill   [   8% ] 5 VUs  0m36.7s/8m0s
+
+running (0m40.0s), 5/5 VUs, 923 complete and 0 interrupted iterations
+failure_drill   [   8% ] 5 VUs  0m37.7s/8m0s
+
+running (0m41.0s), 5/5 VUs, 937 complete and 0 interrupted iterations
+failure_drill   [   8% ] 5 VUs  0m38.7s/8m0s
+
+running (0m42.0s), 5/5 VUs, 949 complete and 0 interrupted iterations
+failure_drill   [   8% ] 5 VUs  0m39.7s/8m0s
+
+running (0m43.0s), 5/5 VUs, 963 complete and 0 interrupted iterations
+failure_drill   [   8% ] 5 VUs  0m40.7s/8m0s
+
+running (0m44.0s), 5/5 VUs, 975 complete and 0 interrupted iterations
+failure_drill   [   9% ] 5 VUs  0m41.7s/8m0s
+
+running (0m45.0s), 5/5 VUs, 989 complete and 0 interrupted iterations
+failure_drill   [   9% ] 5 VUs  0m42.7s/8m0s
+
+running (0m46.0s), 5/5 VUs, 1001 complete and 0 interrupted iterations
+failure_drill   [   9% ] 5 VUs  0m43.7s/8m0s
+
+running (0m47.0s), 5/5 VUs, 1015 complete and 0 interrupted iterations
+failure_drill   [   9% ] 5 VUs  0m44.7s/8m0s
+
+running (0m48.0s), 5/5 VUs, 1039 complete and 0 interrupted iterations
+failure_drill   [  10% ] 5 VUs  0m45.7s/8m0s
+
+running (0m49.0s), 5/5 VUs, 1069 complete and 0 interrupted iterations
+failure_drill   [  10% ] 5 VUs  0m46.7s/8m0s
+
+running (0m50.0s), 5/5 VUs, 1099 complete and 0 interrupted iterations
+failure_drill   [  10% ] 5 VUs  0m47.7s/8m0s
+
+running (0m51.0s), 5/5 VUs, 1128 complete and 0 interrupted iterations
+failure_drill   [  10% ] 5 VUs  0m48.7s/8m0s
+
+running (0m52.0s), 5/5 VUs, 1158 complete and 0 interrupted iterations
+failure_drill   [  10% ] 5 VUs  0m49.7s/8m0s
+
+running (0m53.0s), 5/5 VUs, 1188 complete and 0 interrupted iterations
+failure_drill   [  11% ] 5 VUs  0m50.7s/8m0s
+
+running (0m54.0s), 5/5 VUs, 1215 complete and 0 interrupted iterations
+failure_drill   [  11% ] 5 VUs  0m51.7s/8m0s
+
+running (0m55.0s), 5/5 VUs, 1244 complete and 0 interrupted iterations
+failure_drill   [  11% ] 5 VUs  0m52.7s/8m0s
+
+running (0m56.0s), 5/5 VUs, 1274 complete and 0 interrupted iterations
+failure_drill   [  11% ] 5 VUs  0m53.7s/8m0s
+
+running (0m57.0s), 5/5 VUs, 1304 complete and 0 interrupted iterations
+failure_drill   [  11% ] 5 VUs  0m54.7s/8m0s
+
+running (0m58.0s), 5/5 VUs, 1334 complete and 0 interrupted iterations
+failure_drill   [  12% ] 5 VUs  0m55.7s/8m0s
+
+running (0m59.0s), 5/5 VUs, 1364 complete and 0 interrupted iterations
+failure_drill   [  12% ] 5 VUs  0m56.7s/8m0s
+
+running (1m00.0s), 5/5 VUs, 1394 complete and 0 interrupted iterations
+failure_drill   [  12% ] 5 VUs  0m57.7s/8m0s
+
+running (1m01.0s), 5/5 VUs, 1409 complete and 0 interrupted iterations
+failure_drill   [  12% ] 5 VUs  0m58.7s/8m0s
+
+running (1m02.0s), 5/5 VUs, 1437 complete and 0 interrupted iterations
+failure_drill   [  12% ] 5 VUs  0m59.7s/8m0s
+
+running (1m03.0s), 5/5 VUs, 1467 complete and 0 interrupted iterations
+failure_drill   [  13% ] 5 VUs  1m00.7s/8m0s
+
+running (1m04.0s), 5/5 VUs, 1497 complete and 0 interrupted iterations
+failure_drill   [  13% ] 5 VUs  1m01.7s/8m0s
+
+running (1m05.0s), 5/5 VUs, 1527 complete and 0 interrupted iterations
+failure_drill   [  13% ] 5 VUs  1m02.7s/8m0s
+
+running (1m06.0s), 5/5 VUs, 1555 complete and 0 interrupted iterations
+failure_drill   [  13% ] 5 VUs  1m03.7s/8m0s
+
+running (1m07.0s), 5/5 VUs, 1587 complete and 0 interrupted iterations
+failure_drill   [  13% ] 5 VUs  1m04.7s/8m0s
+
+running (1m08.0s), 5/5 VUs, 1617 complete and 0 interrupted iterations
+failure_drill   [  14% ] 5 VUs  1m05.7s/8m0s
+
+running (1m09.0s), 5/5 VUs, 1645 complete and 0 interrupted iterations
+failure_drill   [  14% ] 5 VUs  1m06.7s/8m0s
+
+running (1m10.0s), 5/5 VUs, 1675 complete and 0 interrupted iterations
+failure_drill   [  14% ] 5 VUs  1m07.7s/8m0s
+
+running (1m11.0s), 5/5 VUs, 1705 complete and 0 interrupted iterations
+failure_drill   [  14% ] 5 VUs  1m08.7s/8m0s
+
+running (1m12.0s), 5/5 VUs, 1735 complete and 0 interrupted iterations
+failure_drill   [  15% ] 5 VUs  1m09.7s/8m0s
+
+running (1m13.0s), 5/5 VUs, 1762 complete and 0 interrupted iterations
+failure_drill   [  15% ] 5 VUs  1m10.7s/8m0s
+
+running (1m14.0s), 5/5 VUs, 1792 complete and 0 interrupted iterations
+failure_drill   [  15% ] 5 VUs  1m11.7s/8m0s
+
+running (1m15.0s), 5/5 VUs, 1822 complete and 0 interrupted iterations
+failure_drill   [  15% ] 5 VUs  1m12.7s/8m0s
+
+running (1m16.0s), 5/5 VUs, 1852 complete and 0 interrupted iterations
+failure_drill   [  15% ] 5 VUs  1m13.7s/8m0s
+
+running (1m17.0s), 5/5 VUs, 1882 complete and 0 interrupted iterations
+failure_drill   [  16% ] 5 VUs  1m14.7s/8m0s
+
+running (1m18.0s), 5/5 VUs, 1912 complete and 0 interrupted iterations
+failure_drill   [  16% ] 5 VUs  1m15.7s/8m0s
+
+running (1m19.0s), 5/5 VUs, 1942 complete and 0 interrupted iterations
+failure_drill   [  16% ] 5 VUs  1m16.7s/8m0s
+
+running (1m20.0s), 5/5 VUs, 1975 complete and 0 interrupted iterations
+failure_drill   [  16% ] 5 VUs  1m17.7s/8m0s
+
+running (1m21.0s), 5/5 VUs, 2007 complete and 0 interrupted iterations
+failure_drill   [  16% ] 5 VUs  1m18.7s/8m0s
+
+running (1m22.0s), 5/5 VUs, 2037 complete and 0 interrupted iterations
+failure_drill   [  17% ] 5 VUs  1m19.7s/8m0s
+
+running (1m23.0s), 5/5 VUs, 2067 complete and 0 interrupted iterations
+failure_drill   [  17% ] 5 VUs  1m20.7s/8m0s
+
+running (1m24.0s), 5/5 VUs, 2097 complete and 0 interrupted iterations
+failure_drill   [  17% ] 5 VUs  1m21.7s/8m0s
+
+running (1m25.0s), 5/5 VUs, 2125 complete and 0 interrupted iterations
+failure_drill   [  17% ] 5 VUs  1m22.7s/8m0s
+
+running (1m26.0s), 5/5 VUs, 2155 complete and 0 interrupted iterations
+failure_drill   [  17% ] 5 VUs  1m23.7s/8m0s
+
+running (1m27.0s), 5/5 VUs, 2187 complete and 0 interrupted iterations
+failure_drill   [  18% ] 5 VUs  1m24.7s/8m0s
+
+running (1m28.0s), 5/5 VUs, 2217 complete and 0 interrupted iterations
+failure_drill   [  18% ] 5 VUs  1m25.7s/8m0s
+
+running (1m29.0s), 5/5 VUs, 2247 complete and 0 interrupted iterations
+failure_drill   [  18% ] 5 VUs  1m26.7s/8m0s
+
+running (1m30.0s), 5/5 VUs, 2277 complete and 0 interrupted iterations
+failure_drill   [  18% ] 5 VUs  1m27.7s/8m0s
+
+running (1m31.0s), 5/5 VUs, 2307 complete and 0 interrupted iterations
+failure_drill   [  18% ] 5 VUs  1m28.7s/8m0s
+
+running (1m32.0s), 5/5 VUs, 2337 complete and 0 interrupted iterations
+failure_drill   [  19% ] 5 VUs  1m29.7s/8m0s
+
+running (1m33.0s), 5/5 VUs, 2367 complete and 0 interrupted iterations
+failure_drill   [  19% ] 5 VUs  1m30.7s/8m0s
+
+running (1m34.0s), 5/5 VUs, 2397 complete and 0 interrupted iterations
+failure_drill   [  19% ] 5 VUs  1m31.7s/8m0s
+
+running (1m35.0s), 5/5 VUs, 2427 complete and 0 interrupted iterations
+failure_drill   [  19% ] 5 VUs  1m32.7s/8m0s
+
+running (1m36.0s), 5/5 VUs, 2457 complete and 0 interrupted iterations
+failure_drill   [  20% ] 5 VUs  1m33.7s/8m0s
+
+running (1m37.0s), 5/5 VUs, 2487 complete and 0 interrupted iterations
+failure_drill   [  20% ] 5 VUs  1m34.7s/8m0s
+
+running (1m38.0s), 5/5 VUs, 2517 complete and 0 interrupted iterations
+failure_drill   [  20% ] 5 VUs  1m35.7s/8m0s
+
+running (1m39.0s), 5/5 VUs, 2549 complete and 0 interrupted iterations
+failure_drill   [  20% ] 5 VUs  1m36.7s/8m0s
+
+running (1m40.0s), 5/5 VUs, 2582 complete and 0 interrupted iterations
+failure_drill   [  20% ] 5 VUs  1m37.7s/8m0s
+
+running (1m41.0s), 5/5 VUs, 2612 complete and 0 interrupted iterations
+failure_drill   [  21% ] 5 VUs  1m38.7s/8m0s
+
+running (1m42.0s), 5/5 VUs, 2642 complete and 0 interrupted iterations
+failure_drill   [  21% ] 5 VUs  1m39.7s/8m0s
+
+running (1m43.0s), 5/5 VUs, 2672 complete and 0 interrupted iterations
+failure_drill   [  21% ] 5 VUs  1m40.7s/8m0s
+
+running (1m44.0s), 5/5 VUs, 2702 complete and 0 interrupted iterations
+failure_drill   [  21% ] 5 VUs  1m41.7s/8m0s
+
+running (1m45.0s), 5/5 VUs, 2732 complete and 0 interrupted iterations
+failure_drill   [  21% ] 5 VUs  1m42.7s/8m0s
+
+running (1m46.0s), 5/5 VUs, 2762 complete and 0 interrupted iterations
+failure_drill   [  22% ] 5 VUs  1m43.7s/8m0s
+
+running (1m47.0s), 5/5 VUs, 2792 complete and 0 interrupted iterations
+failure_drill   [  22% ] 5 VUs  1m44.7s/8m0s
+
+running (1m48.0s), 5/5 VUs, 2822 complete and 0 interrupted iterations
+failure_drill   [  22% ] 5 VUs  1m45.7s/8m0s
+
+running (1m49.0s), 5/5 VUs, 2855 complete and 0 interrupted iterations
+failure_drill   [  22% ] 5 VUs  1m46.7s/8m0s
+
+running (1m50.0s), 5/5 VUs, 2882 complete and 0 interrupted iterations
+failure_drill   [  22% ] 5 VUs  1m47.7s/8m0s
+
+running (1m51.0s), 5/5 VUs, 2917 complete and 0 interrupted iterations
+failure_drill   [  23% ] 5 VUs  1m48.7s/8m0s
+
+running (1m52.0s), 5/5 VUs, 2947 complete and 0 interrupted iterations
+failure_drill   [  23% ] 5 VUs  1m49.7s/8m0s
+
+running (1m53.0s), 5/5 VUs, 2977 complete and 0 interrupted iterations
+failure_drill   [  23% ] 5 VUs  1m50.7s/8m0s
+
+running (1m54.0s), 5/5 VUs, 3007 complete and 0 interrupted iterations
+failure_drill   [  23% ] 5 VUs  1m51.7s/8m0s
+
+running (1m55.0s), 5/5 VUs, 3037 complete and 0 interrupted iterations
+failure_drill   [  23% ] 5 VUs  1m52.7s/8m0s
+
+running (1m56.0s), 5/5 VUs, 3067 complete and 0 interrupted iterations
+failure_drill   [  24% ] 5 VUs  1m53.7s/8m0s
+
+running (1m57.0s), 5/5 VUs, 3097 complete and 0 interrupted iterations
+failure_drill   [  24% ] 5 VUs  1m54.7s/8m0s
+
+running (1m58.0s), 5/5 VUs, 3127 complete and 0 interrupted iterations
+failure_drill   [  24% ] 5 VUs  1m55.7s/8m0s
+
+running (1m59.0s), 5/5 VUs, 3162 complete and 0 interrupted iterations
+failure_drill   [  24% ] 5 VUs  1m56.7s/8m0s
+
+running (2m00.0s), 5/5 VUs, 3192 complete and 0 interrupted iterations
+failure_drill   [  25% ] 5 VUs  1m57.7s/8m0s
+
+running (2m01.0s), 5/5 VUs, 3222 complete and 0 interrupted iterations
+failure_drill   [  25% ] 5 VUs  1m58.7s/8m0s
+
+running (2m02.0s), 5/5 VUs, 3252 complete and 0 interrupted iterations
+failure_drill   [  25% ] 5 VUs  1m59.7s/8m0s
+
+running (2m03.0s), 5/5 VUs, 3282 complete and 0 interrupted iterations
+failure_drill   [  25% ] 5 VUs  2m00.7s/8m0s
+
+running (2m04.0s), 5/5 VUs, 3312 complete and 0 interrupted iterations
+failure_drill   [  25% ] 5 VUs  2m01.7s/8m0s
+
+running (2m05.0s), 5/5 VUs, 3342 complete and 0 interrupted iterations
+failure_drill   [  26% ] 5 VUs  2m02.7s/8m0s
+
+running (2m06.0s), 5/5 VUs, 3372 complete and 0 interrupted iterations
+failure_drill   [  26% ] 5 VUs  2m03.7s/8m0s
+
+running (2m07.0s), 5/5 VUs, 3407 complete and 0 interrupted iterations
+failure_drill   [  26% ] 5 VUs  2m04.7s/8m0s
+
+running (2m08.0s), 5/5 VUs, 3437 complete and 0 interrupted iterations
+failure_drill   [  26% ] 5 VUs  2m05.7s/8m0s
+
+running (2m09.0s), 5/5 VUs, 3467 complete and 0 interrupted iterations
+failure_drill   [  26% ] 5 VUs  2m06.7s/8m0s
+
+running (2m10.0s), 5/5 VUs, 3497 complete and 0 interrupted iterations
+failure_drill   [  27% ] 5 VUs  2m07.7s/8m0s
+
+running (2m11.0s), 5/5 VUs, 3527 complete and 0 interrupted iterations
+failure_drill   [  27% ] 5 VUs  2m08.7s/8m0s
+
+running (2m12.0s), 5/5 VUs, 3557 complete and 0 interrupted iterations
+failure_drill   [  27% ] 5 VUs  2m09.7s/8m0s
+
+running (2m13.0s), 5/5 VUs, 3587 complete and 0 interrupted iterations
+failure_drill   [  27% ] 5 VUs  2m10.7s/8m0s
+
+running (2m14.0s), 5/5 VUs, 3622 complete and 0 interrupted iterations
+failure_drill   [  27% ] 5 VUs  2m11.7s/8m0s
+
+running (2m15.0s), 5/5 VUs, 3652 complete and 0 interrupted iterations
+failure_drill   [  28% ] 5 VUs  2m12.7s/8m0s
+
+running (2m16.0s), 5/5 VUs, 3682 complete and 0 interrupted iterations
+failure_drill   [  28% ] 5 VUs  2m13.7s/8m0s
+
+running (2m17.0s), 5/5 VUs, 3712 complete and 0 interrupted iterations
+failure_drill   [  28% ] 5 VUs  2m14.7s/8m0s
+
+running (2m18.0s), 5/5 VUs, 3742 complete and 0 interrupted iterations
+failure_drill   [  28% ] 5 VUs  2m15.7s/8m0s
+
+running (2m19.0s), 5/5 VUs, 3772 complete and 0 interrupted iterations
+failure_drill   [  28% ] 5 VUs  2m16.7s/8m0s
+
+running (2m20.0s), 5/5 VUs, 3802 complete and 0 interrupted iterations
+failure_drill   [  29% ] 5 VUs  2m17.7s/8m0s
+
+running (2m21.0s), 5/5 VUs, 3837 complete and 0 interrupted iterations
+failure_drill   [  29% ] 5 VUs  2m18.7s/8m0s
+
+running (2m22.0s), 5/5 VUs, 3867 complete and 0 interrupted iterations
+failure_drill   [  29% ] 5 VUs  2m19.7s/8m0s
+
+running (2m23.0s), 5/5 VUs, 3897 complete and 0 interrupted iterations
+failure_drill   [  29% ] 5 VUs  2m20.7s/8m0s
+
+running (2m24.0s), 5/5 VUs, 3927 complete and 0 interrupted iterations
+failure_drill   [  30% ] 5 VUs  2m21.7s/8m0s
+
+running (2m25.0s), 5/5 VUs, 3957 complete and 0 interrupted iterations
+failure_drill   [  30% ] 5 VUs  2m22.7s/8m0s
+
+running (2m26.0s), 5/5 VUs, 3987 complete and 0 interrupted iterations
+failure_drill   [  30% ] 5 VUs  2m23.7s/8m0s
+
+running (2m27.0s), 5/5 VUs, 4020 complete and 0 interrupted iterations
+failure_drill   [  30% ] 5 VUs  2m24.7s/8m0s
+
+running (2m28.0s), 5/5 VUs, 4052 complete and 0 interrupted iterations
+failure_drill   [  30% ] 5 VUs  2m25.7s/8m0s
+
+running (2m29.0s), 5/5 VUs, 4082 complete and 0 interrupted iterations
+failure_drill   [  31% ] 5 VUs  2m26.7s/8m0s
+
+running (2m30.0s), 5/5 VUs, 4112 complete and 0 interrupted iterations
+failure_drill   [  31% ] 5 VUs  2m27.7s/8m0s
+
+running (2m31.0s), 5/5 VUs, 4142 complete and 0 interrupted iterations
+failure_drill   [  31% ] 5 VUs  2m28.7s/8m0s
+
+running (2m32.0s), 5/5 VUs, 4172 complete and 0 interrupted iterations
+failure_drill   [  31% ] 5 VUs  2m29.7s/8m0s
+
+running (2m33.0s), 5/5 VUs, 4202 complete and 0 interrupted iterations
+failure_drill   [  31% ] 5 VUs  2m30.7s/8m0s
+
+running (2m34.0s), 5/5 VUs, 4237 complete and 0 interrupted iterations
+failure_drill   [  32% ] 5 VUs  2m31.7s/8m0s
+
+running (2m35.0s), 5/5 VUs, 4267 complete and 0 interrupted iterations
+failure_drill   [  32% ] 5 VUs  2m32.7s/8m0s
+
+running (2m36.0s), 5/5 VUs, 4297 complete and 0 interrupted iterations
+failure_drill   [  32% ] 5 VUs  2m33.7s/8m0s
+
+running (2m37.0s), 5/5 VUs, 4327 complete and 0 interrupted iterations
+failure_drill   [  32% ] 5 VUs  2m34.7s/8m0s
+
+running (2m38.0s), 5/5 VUs, 4357 complete and 0 interrupted iterations
+failure_drill   [  32% ] 5 VUs  2m35.7s/8m0s
+
+running (2m39.0s), 5/5 VUs, 4387 complete and 0 interrupted iterations
+failure_drill   [  33% ] 5 VUs  2m36.7s/8m0s
+
+running (2m40.0s), 5/5 VUs, 4422 complete and 0 interrupted iterations
+failure_drill   [  33% ] 5 VUs  2m37.7s/8m0s
+
+running (2m41.0s), 5/5 VUs, 4452 complete and 0 interrupted iterations
+failure_drill   [  33% ] 5 VUs  2m38.7s/8m0s
+
+running (2m42.0s), 5/5 VUs, 4482 complete and 0 interrupted iterations
+failure_drill   [  33% ] 5 VUs  2m39.7s/8m0s
+
+running (2m43.0s), 5/5 VUs, 4512 complete and 0 interrupted iterations
+failure_drill   [  33% ] 5 VUs  2m40.7s/8m0s
+
+running (2m44.0s), 5/5 VUs, 4542 complete and 0 interrupted iterations
+failure_drill   [  34% ] 5 VUs  2m41.7s/8m0s
+
+running (2m45.0s), 5/5 VUs, 4572 complete and 0 interrupted iterations
+failure_drill   [  34% ] 5 VUs  2m42.7s/8m0s
+
+running (2m46.0s), 5/5 VUs, 4605 complete and 0 interrupted iterations
+failure_drill   [  34% ] 5 VUs  2m43.7s/8m0s
+
+running (2m47.0s), 5/5 VUs, 4637 complete and 0 interrupted iterations
+failure_drill   [  34% ] 5 VUs  2m44.7s/8m0s
+
+running (2m48.0s), 5/5 VUs, 4667 complete and 0 interrupted iterations
+failure_drill   [  35% ] 5 VUs  2m45.7s/8m0s
+
+running (2m49.0s), 5/5 VUs, 4697 complete and 0 interrupted iterations
+failure_drill   [  35% ] 5 VUs  2m46.7s/8m0s
+
+running (2m50.0s), 5/5 VUs, 4727 complete and 0 interrupted iterations
+failure_drill   [  35% ] 5 VUs  2m47.7s/8m0s
+
+running (2m51.0s), 5/5 VUs, 4757 complete and 0 interrupted iterations
+failure_drill   [  35% ] 5 VUs  2m48.7s/8m0s
+
+running (2m52.0s), 5/5 VUs, 4787 complete and 0 interrupted iterations
+failure_drill   [  35% ] 5 VUs  2m49.7s/8m0s
+
+running (2m53.0s), 5/5 VUs, 4817 complete and 0 interrupted iterations
+failure_drill   [  36% ] 5 VUs  2m50.7s/8m0s
+
+running (2m54.0s), 5/5 VUs, 4847 complete and 0 interrupted iterations
+failure_drill   [  36% ] 5 VUs  2m51.7s/8m0s
+
+running (2m55.0s), 5/5 VUs, 4878 complete and 0 interrupted iterations
+failure_drill   [  36% ] 5 VUs  2m52.7s/8m0s
+
+running (2m56.0s), 5/5 VUs, 4912 complete and 0 interrupted iterations
+failure_drill   [  36% ] 5 VUs  2m53.7s/8m0s
+
+running (2m57.0s), 5/5 VUs, 4942 complete and 0 interrupted iterations
+failure_drill   [  36% ] 5 VUs  2m54.7s/8m0s
+
+running (2m58.0s), 5/5 VUs, 4972 complete and 0 interrupted iterations
+failure_drill   [  37% ] 5 VUs  2m55.7s/8m0s
+
+running (2m59.0s), 5/5 VUs, 5002 complete and 0 interrupted iterations
+failure_drill   [  37% ] 5 VUs  2m56.7s/8m0s
+
+running (3m00.0s), 5/5 VUs, 5032 complete and 0 interrupted iterations
+failure_drill   [  37% ] 5 VUs  2m57.7s/8m0s
+
+running (3m01.0s), 5/5 VUs, 5062 complete and 0 interrupted iterations
+failure_drill   [  37% ] 5 VUs  2m58.7s/8m0s
+
+running (3m02.0s), 5/5 VUs, 5092 complete and 0 interrupted iterations
+failure_drill   [  37% ] 5 VUs  2m59.7s/8m0s
+
+running (3m03.0s), 5/5 VUs, 5127 complete and 0 interrupted iterations
+failure_drill   [  38% ] 5 VUs  3m00.7s/8m0s
+
+running (3m04.0s), 5/5 VUs, 5157 complete and 0 interrupted iterations
+failure_drill   [  38% ] 5 VUs  3m01.7s/8m0s
+
+running (3m05.0s), 5/5 VUs, 5187 complete and 0 interrupted iterations
+failure_drill   [  38% ] 5 VUs  3m02.7s/8m0s
+
+running (3m06.0s), 5/5 VUs, 5217 complete and 0 interrupted iterations
+failure_drill   [  38% ] 5 VUs  3m03.7s/8m0s
+
+running (3m07.0s), 5/5 VUs, 5247 complete and 0 interrupted iterations
+failure_drill   [  38% ] 5 VUs  3m04.7s/8m0s
+
+running (3m08.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  39% ] 5 VUs  3m05.7s/8m0s
+
+running (3m09.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  39% ] 5 VUs  3m06.7s/8m0s
+
+running (3m10.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  39% ] 5 VUs  3m07.7s/8m0s
+
+running (3m11.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  39% ] 5 VUs  3m08.7s/8m0s
+
+running (3m12.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  40% ] 5 VUs  3m09.7s/8m0s
+
+running (3m13.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  40% ] 5 VUs  3m10.7s/8m0s
+
+running (3m14.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  40% ] 5 VUs  3m11.7s/8m0s
+
+running (3m15.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  40% ] 5 VUs  3m12.7s/8m0s
+
+running (3m16.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  40% ] 5 VUs  3m13.7s/8m0s
+
+running (3m17.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  41% ] 5 VUs  3m14.7s/8m0s
+
+running (3m18.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  41% ] 5 VUs  3m15.7s/8m0s
+
+running (3m19.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  41% ] 5 VUs  3m16.7s/8m0s
+
+running (3m20.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  41% ] 5 VUs  3m17.7s/8m0s
+
+running (3m21.0s), 5/5 VUs, 5268 complete and 0 interrupted iterations
+failure_drill   [  41% ] 5 VUs  3m18.7s/8m0s
+
+running (3m22.0s), 5/5 VUs, 5272 complete and 0 interrupted iterations
+failure_drill   [  42% ] 5 VUs  3m19.7s/8m0s
+
+running (3m23.0s), 5/5 VUs, 5293 complete and 0 interrupted iterations
+failure_drill   [  42% ] 5 VUs  3m20.7s/8m0s
+
+running (3m24.0s), 5/5 VUs, 5323 complete and 0 interrupted iterations
+failure_drill   [  42% ] 5 VUs  3m21.7s/8m0s
+
+running (3m25.0s), 5/5 VUs, 5353 complete and 0 interrupted iterations
+failure_drill   [  42% ] 5 VUs  3m22.7s/8m0s
+
+running (3m26.0s), 5/5 VUs, 5383 complete and 0 interrupted iterations
+failure_drill   [  42% ] 5 VUs  3m23.7s/8m0s
+
+running (3m27.0s), 5/5 VUs, 5415 complete and 0 interrupted iterations
+failure_drill   [  43% ] 5 VUs  3m24.7s/8m0s
+
+running (3m28.0s), 5/5 VUs, 5443 complete and 0 interrupted iterations
+failure_drill   [  43% ] 5 VUs  3m25.7s/8m0s
+
+running (3m29.0s), 5/5 VUs, 5473 complete and 0 interrupted iterations
+failure_drill   [  43% ] 5 VUs  3m26.7s/8m0s
+
+running (3m30.0s), 5/5 VUs, 5503 complete and 0 interrupted iterations
+failure_drill   [  43% ] 5 VUs  3m27.7s/8m0s
+
+running (3m31.0s), 5/5 VUs, 5538 complete and 0 interrupted iterations
+failure_drill   [  43% ] 5 VUs  3m28.7s/8m0s
+
+running (3m32.0s), 5/5 VUs, 5568 complete and 0 interrupted iterations
+failure_drill   [  44% ] 5 VUs  3m29.7s/8m0s
+
+running (3m33.0s), 5/5 VUs, 5598 complete and 0 interrupted iterations
+failure_drill   [  44% ] 5 VUs  3m30.7s/8m0s
+
+running (3m34.0s), 5/5 VUs, 5628 complete and 0 interrupted iterations
+failure_drill   [  44% ] 5 VUs  3m31.7s/8m0s
+
+running (3m35.0s), 5/5 VUs, 5658 complete and 0 interrupted iterations
+failure_drill   [  44% ] 5 VUs  3m32.7s/8m0s
+
+running (3m36.0s), 5/5 VUs, 5688 complete and 0 interrupted iterations
+failure_drill   [  45% ] 5 VUs  3m33.7s/8m0s
+
+running (3m37.0s), 5/5 VUs, 5723 complete and 0 interrupted iterations
+failure_drill   [  45% ] 5 VUs  3m34.7s/8m0s
+
+running (3m38.0s), 5/5 VUs, 5753 complete and 0 interrupted iterations
+failure_drill   [  45% ] 5 VUs  3m35.7s/8m0s
+
+running (3m39.0s), 5/5 VUs, 5783 complete and 0 interrupted iterations
+failure_drill   [  45% ] 5 VUs  3m36.7s/8m0s
+
+running (3m40.0s), 5/5 VUs, 5813 complete and 0 interrupted iterations
+failure_drill   [  45% ] 5 VUs  3m37.7s/8m0s
+
+running (3m41.0s), 5/5 VUs, 5843 complete and 0 interrupted iterations
+failure_drill   [  46% ] 5 VUs  3m38.7s/8m0s
+
+running (3m42.0s), 5/5 VUs, 5876 complete and 0 interrupted iterations
+failure_drill   [  46% ] 5 VUs  3m39.7s/8m0s
+
+running (3m43.0s), 5/5 VUs, 5908 complete and 0 interrupted iterations
+failure_drill   [  46% ] 5 VUs  3m40.7s/8m0s
+
+running (3m44.0s), 5/5 VUs, 5938 complete and 0 interrupted iterations
+failure_drill   [  46% ] 5 VUs  3m41.7s/8m0s
+
+running (3m45.0s), 5/5 VUs, 5968 complete and 0 interrupted iterations
+failure_drill   [  46% ] 5 VUs  3m42.7s/8m0s
+
+running (3m46.0s), 5/5 VUs, 5998 complete and 0 interrupted iterations
+failure_drill   [  47% ] 5 VUs  3m43.7s/8m0s
+
+running (3m47.0s), 5/5 VUs, 6028 complete and 0 interrupted iterations
+failure_drill   [  47% ] 5 VUs  3m44.7s/8m0s
+
+running (3m48.0s), 5/5 VUs, 6063 complete and 0 interrupted iterations
+failure_drill   [  47% ] 5 VUs  3m45.7s/8m0s
+
+running (3m49.0s), 5/5 VUs, 6093 complete and 0 interrupted iterations
+failure_drill   [  47% ] 5 VUs  3m46.7s/8m0s
+
+running (3m50.0s), 5/5 VUs, 6123 complete and 0 interrupted iterations
+failure_drill   [  47% ] 5 VUs  3m47.7s/8m0s
+
+running (3m51.0s), 5/5 VUs, 6153 complete and 0 interrupted iterations
+failure_drill   [  48% ] 5 VUs  3m48.7s/8m0s
+
+running (3m52.0s), 5/5 VUs, 6183 complete and 0 interrupted iterations
+failure_drill   [  48% ] 5 VUs  3m49.7s/8m0s
+
+running (3m53.0s), 5/5 VUs, 6215 complete and 0 interrupted iterations
+failure_drill   [  48% ] 5 VUs  3m50.7s/8m0s
+
+running (3m54.0s), 5/5 VUs, 6248 complete and 0 interrupted iterations
+failure_drill   [  48% ] 5 VUs  3m51.7s/8m0s
+
+running (3m55.0s), 5/5 VUs, 6278 complete and 0 interrupted iterations
+failure_drill   [  48% ] 5 VUs  3m52.7s/8m0s
+
+running (3m56.0s), 5/5 VUs, 6308 complete and 0 interrupted iterations
+failure_drill   [  49% ] 5 VUs  3m53.7s/8m0s
+
+running (3m57.0s), 5/5 VUs, 6338 complete and 0 interrupted iterations
+failure_drill   [  49% ] 5 VUs  3m54.7s/8m0s
+
+running (3m58.0s), 5/5 VUs, 6368 complete and 0 interrupted iterations
+failure_drill   [  49% ] 5 VUs  3m55.7s/8m0s
+
+running (3m59.0s), 5/5 VUs, 6401 complete and 0 interrupted iterations
+failure_drill   [  49% ] 5 VUs  3m56.7s/8m0s
+
+running (4m00.0s), 5/5 VUs, 6433 complete and 0 interrupted iterations
+failure_drill   [  50% ] 5 VUs  3m57.7s/8m0s
+
+running (4m01.0s), 5/5 VUs, 6463 complete and 0 interrupted iterations
+failure_drill   [  50% ] 5 VUs  3m58.7s/8m0s
+
+running (4m02.0s), 5/5 VUs, 6493 complete and 0 interrupted iterations
+failure_drill   [  50% ] 5 VUs  3m59.7s/8m0s
+
+running (4m03.0s), 5/5 VUs, 6523 complete and 0 interrupted iterations
+failure_drill   [  50% ] 5 VUs  4m00.7s/8m0s
+
+running (4m04.0s), 5/5 VUs, 6553 complete and 0 interrupted iterations
+failure_drill   [  50% ] 5 VUs  4m01.7s/8m0s
+
+running (4m05.0s), 5/5 VUs, 6588 complete and 0 interrupted iterations
+failure_drill   [  51% ] 5 VUs  4m02.7s/8m0s
+
+running (4m06.0s), 5/5 VUs, 6618 complete and 0 interrupted iterations
+failure_drill   [  51% ] 5 VUs  4m03.7s/8m0s
+
+running (4m07.0s), 5/5 VUs, 6648 complete and 0 interrupted iterations
+failure_drill   [  51% ] 5 VUs  4m04.7s/8m0s
+
+running (4m08.0s), 5/5 VUs, 6678 complete and 0 interrupted iterations
+failure_drill   [  51% ] 5 VUs  4m05.7s/8m0s
+
+running (4m09.0s), 5/5 VUs, 6708 complete and 0 interrupted iterations
+failure_drill   [  51% ] 5 VUs  4m06.7s/8m0s
+
+running (4m10.0s), 5/5 VUs, 6738 complete and 0 interrupted iterations
+failure_drill   [  52% ] 5 VUs  4m07.7s/8m0s
+
+running (4m11.0s), 5/5 VUs, 6773 complete and 0 interrupted iterations
+failure_drill   [  52% ] 5 VUs  4m08.7s/8m0s
+
+running (4m12.0s), 5/5 VUs, 6803 complete and 0 interrupted iterations
+failure_drill   [  52% ] 5 VUs  4m09.7s/8m0s
+
+running (4m13.0s), 5/5 VUs, 6833 complete and 0 interrupted iterations
+failure_drill   [  52% ] 5 VUs  4m10.7s/8m0s
+
+running (4m14.0s), 5/5 VUs, 6863 complete and 0 interrupted iterations
+failure_drill   [  52% ] 5 VUs  4m11.7s/8m0s
+
+running (4m15.0s), 5/5 VUs, 6893 complete and 0 interrupted iterations
+failure_drill   [  53% ] 5 VUs  4m12.7s/8m0s
+
+running (4m16.0s), 5/5 VUs, 6925 complete and 0 interrupted iterations
+failure_drill   [  53% ] 5 VUs  4m13.7s/8m0s
+
+running (4m17.0s), 5/5 VUs, 6958 complete and 0 interrupted iterations
+failure_drill   [  53% ] 5 VUs  4m14.7s/8m0s
+
+running (4m18.0s), 5/5 VUs, 6988 complete and 0 interrupted iterations
+failure_drill   [  53% ] 5 VUs  4m15.7s/8m0s
+
+running (4m19.0s), 5/5 VUs, 7018 complete and 0 interrupted iterations
+failure_drill   [  53% ] 5 VUs  4m16.7s/8m0s
+
+running (4m20.0s), 5/5 VUs, 7048 complete and 0 interrupted iterations
+failure_drill   [  54% ] 5 VUs  4m17.7s/8m0s
+
+running (4m21.0s), 5/5 VUs, 7078 complete and 0 interrupted iterations
+failure_drill   [  54% ] 5 VUs  4m18.7s/8m0s
+
+running (4m22.0s), 5/5 VUs, 7108 complete and 0 interrupted iterations
+failure_drill   [  54% ] 5 VUs  4m19.7s/8m0s
+
+running (4m23.0s), 5/5 VUs, 7143 complete and 0 interrupted iterations
+failure_drill   [  54% ] 5 VUs  4m20.7s/8m0s
+
+running (4m24.0s), 5/5 VUs, 7173 complete and 0 interrupted iterations
+failure_drill   [  55% ] 5 VUs  4m21.7s/8m0s
+
+running (4m25.0s), 5/5 VUs, 7203 complete and 0 interrupted iterations
+failure_drill   [  55% ] 5 VUs  4m22.7s/8m0s
+
+running (4m26.0s), 5/5 VUs, 7233 complete and 0 interrupted iterations
+failure_drill   [  55% ] 5 VUs  4m23.7s/8m0s
+
+running (4m27.0s), 5/5 VUs, 7263 complete and 0 interrupted iterations
+failure_drill   [  55% ] 5 VUs  4m24.7s/8m0s
+
+running (4m28.0s), 5/5 VUs, 7293 complete and 0 interrupted iterations
+failure_drill   [  55% ] 5 VUs  4m25.7s/8m0s
+
+running (4m29.0s), 5/5 VUs, 7328 complete and 0 interrupted iterations
+failure_drill   [  56% ] 5 VUs  4m26.7s/8m0s
+
+running (4m30.0s), 5/5 VUs, 7358 complete and 0 interrupted iterations
+failure_drill   [  56% ] 5 VUs  4m27.7s/8m0s
+
+running (4m31.0s), 5/5 VUs, 7388 complete and 0 interrupted iterations
+failure_drill   [  56% ] 5 VUs  4m28.7s/8m0s
+
+running (4m32.0s), 5/5 VUs, 7418 complete and 0 interrupted iterations
+failure_drill   [  56% ] 5 VUs  4m29.7s/8m0s
+
+running (4m33.0s), 5/5 VUs, 7453 complete and 0 interrupted iterations
+failure_drill   [  56% ] 5 VUs  4m30.7s/8m0s
+
+running (4m34.0s), 5/5 VUs, 7483 complete and 0 interrupted iterations
+failure_drill   [  57% ] 5 VUs  4m31.7s/8m0s
+
+running (4m35.0s), 5/5 VUs, 7513 complete and 0 interrupted iterations
+failure_drill   [  57% ] 5 VUs  4m32.7s/8m0s
+
+running (4m36.0s), 5/5 VUs, 7543 complete and 0 interrupted iterations
+failure_drill   [  57% ] 5 VUs  4m33.7s/8m0s
+
+running (4m37.0s), 5/5 VUs, 7573 complete and 0 interrupted iterations
+failure_drill   [  57% ] 5 VUs  4m34.7s/8m0s
+
+running (4m38.0s), 5/5 VUs, 7608 complete and 0 interrupted iterations
+failure_drill   [  57% ] 5 VUs  4m35.7s/8m0s
+
+running (4m39.0s), 5/5 VUs, 7638 complete and 0 interrupted iterations
+failure_drill   [  58% ] 5 VUs  4m36.7s/8m0s
+
+running (4m40.0s), 5/5 VUs, 7668 complete and 0 interrupted iterations
+failure_drill   [  58% ] 5 VUs  4m37.7s/8m0s
+
+running (4m41.0s), 5/5 VUs, 7698 complete and 0 interrupted iterations
+failure_drill   [  58% ] 5 VUs  4m38.7s/8m0s
+
+running (4m42.0s), 5/5 VUs, 7733 complete and 0 interrupted iterations
+failure_drill   [  58% ] 5 VUs  4m39.7s/8m0s
+
+running (4m43.0s), 5/5 VUs, 7763 complete and 0 interrupted iterations
+failure_drill   [  58% ] 5 VUs  4m40.7s/8m0s
+
+running (4m44.0s), 5/5 VUs, 7793 complete and 0 interrupted iterations
+failure_drill   [  59% ] 5 VUs  4m41.7s/8m0s
+
+running (4m45.0s), 5/5 VUs, 7823 complete and 0 interrupted iterations
+failure_drill   [  59% ] 5 VUs  4m42.7s/8m0s
+
+running (4m46.0s), 5/5 VUs, 7853 complete and 0 interrupted iterations
+failure_drill   [  59% ] 5 VUs  4m43.7s/8m0s
+
+running (4m47.0s), 5/5 VUs, 7888 complete and 0 interrupted iterations
+failure_drill   [  59% ] 5 VUs  4m44.7s/8m0s
+
+running (4m48.0s), 5/5 VUs, 7918 complete and 0 interrupted iterations
+failure_drill   [  60% ] 5 VUs  4m45.7s/8m0s
+
+running (4m49.0s), 5/5 VUs, 7948 complete and 0 interrupted iterations
+failure_drill   [  60% ] 5 VUs  4m46.7s/8m0s
+
+running (4m50.0s), 5/5 VUs, 7978 complete and 0 interrupted iterations
+failure_drill   [  60% ] 5 VUs  4m47.7s/8m0s
+
+running (4m51.0s), 5/5 VUs, 8008 complete and 0 interrupted iterations
+failure_drill   [  60% ] 5 VUs  4m48.7s/8m0s
+
+running (4m52.0s), 5/5 VUs, 8043 complete and 0 interrupted iterations
+failure_drill   [  60% ] 5 VUs  4m49.7s/8m0s
+
+running (4m53.0s), 5/5 VUs, 8073 complete and 0 interrupted iterations
+failure_drill   [  61% ] 5 VUs  4m50.7s/8m0s
+
+running (4m54.0s), 5/5 VUs, 8103 complete and 0 interrupted iterations
+failure_drill   [  61% ] 5 VUs  4m51.7s/8m0s
+
+running (4m55.0s), 5/5 VUs, 8133 complete and 0 interrupted iterations
+failure_drill   [  61% ] 5 VUs  4m52.7s/8m0s
+
+running (4m56.0s), 5/5 VUs, 8168 complete and 0 interrupted iterations
+failure_drill   [  61% ] 5 VUs  4m53.7s/8m0s
+
+running (4m57.0s), 5/5 VUs, 8198 complete and 0 interrupted iterations
+failure_drill   [  61% ] 5 VUs  4m54.7s/8m0s
+
+running (4m58.0s), 5/5 VUs, 8228 complete and 0 interrupted iterations
+failure_drill   [  62% ] 5 VUs  4m55.7s/8m0s
+
+running (4m59.0s), 5/5 VUs, 8258 complete and 0 interrupted iterations
+failure_drill   [  62% ] 5 VUs  4m56.7s/8m0s
+
+running (5m00.0s), 5/5 VUs, 8288 complete and 0 interrupted iterations
+failure_drill   [  62% ] 5 VUs  4m57.7s/8m0s
+
+running (5m01.0s), 5/5 VUs, 8323 complete and 0 interrupted iterations
+failure_drill   [  62% ] 5 VUs  4m58.7s/8m0s
+
+running (5m02.0s), 5/5 VUs, 8353 complete and 0 interrupted iterations
+failure_drill   [  62% ] 5 VUs  4m59.7s/8m0s
+
+running (5m03.0s), 5/5 VUs, 8383 complete and 0 interrupted iterations
+failure_drill   [  63% ] 5 VUs  5m00.7s/8m0s
+
+running (5m04.0s), 5/5 VUs, 8413 complete and 0 interrupted iterations
+failure_drill   [  63% ] 5 VUs  5m01.7s/8m0s
+
+running (5m05.0s), 5/5 VUs, 8443 complete and 0 interrupted iterations
+failure_drill   [  63% ] 5 VUs  5m02.7s/8m0s
+
+running (5m06.0s), 5/5 VUs, 8478 complete and 0 interrupted iterations
+failure_drill   [  63% ] 5 VUs  5m03.7s/8m0s
+
+running (5m07.0s), 5/5 VUs, 8508 complete and 0 interrupted iterations
+failure_drill   [  63% ] 5 VUs  5m04.7s/8m0s
+
+running (5m08.0s), 5/5 VUs, 8538 complete and 0 interrupted iterations
+failure_drill   [  64% ] 5 VUs  5m05.7s/8m0s
+
+running (5m09.0s), 5/5 VUs, 8568 complete and 0 interrupted iterations
+failure_drill   [  64% ] 5 VUs  5m06.7s/8m0s
+
+running (5m10.0s), 5/5 VUs, 8598 complete and 0 interrupted iterations
+failure_drill   [  64% ] 5 VUs  5m07.7s/8m0s
+
+running (5m11.0s), 5/5 VUs, 8633 complete and 0 interrupted iterations
+failure_drill   [  64% ] 5 VUs  5m08.7s/8m0s
+
+running (5m12.0s), 5/5 VUs, 8663 complete and 0 interrupted iterations
+failure_drill   [  65% ] 5 VUs  5m09.7s/8m0s
+
+running (5m13.0s), 5/5 VUs, 8693 complete and 0 interrupted iterations
+failure_drill   [  65% ] 5 VUs  5m10.7s/8m0s
+
+running (5m14.0s), 5/5 VUs, 8723 complete and 0 interrupted iterations
+failure_drill   [  65% ] 5 VUs  5m11.7s/8m0s
+
+running (5m15.0s), 5/5 VUs, 8753 complete and 0 interrupted iterations
+failure_drill   [  65% ] 5 VUs  5m12.7s/8m0s
+
+running (5m16.0s), 5/5 VUs, 8788 complete and 0 interrupted iterations
+failure_drill   [  65% ] 5 VUs  5m13.7s/8m0s
+
+running (5m17.0s), 5/5 VUs, 8818 complete and 0 interrupted iterations
+failure_drill   [  66% ] 5 VUs  5m14.7s/8m0s
+
+running (5m18.0s), 5/5 VUs, 8848 complete and 0 interrupted iterations
+failure_drill   [  66% ] 5 VUs  5m15.7s/8m0s
+
+running (5m19.0s), 5/5 VUs, 8878 complete and 0 interrupted iterations
+failure_drill   [  66% ] 5 VUs  5m16.7s/8m0s
+
+running (5m20.0s), 5/5 VUs, 8908 complete and 0 interrupted iterations
+failure_drill   [  66% ] 5 VUs  5m17.7s/8m0s
+
+running (5m21.0s), 5/5 VUs, 8938 complete and 0 interrupted iterations
+failure_drill   [  66% ] 5 VUs  5m18.7s/8m0s
+
+running (5m22.0s), 5/5 VUs, 8968 complete and 0 interrupted iterations
+failure_drill   [  67% ] 5 VUs  5m19.7s/8m0s
+
+running (5m23.0s), 5/5 VUs, 9003 complete and 0 interrupted iterations
+failure_drill   [  67% ] 5 VUs  5m20.7s/8m0s
+
+running (5m24.0s), 5/5 VUs, 9033 complete and 0 interrupted iterations
+failure_drill   [  67% ] 5 VUs  5m21.7s/8m0s
+
+running (5m25.0s), 5/5 VUs, 9063 complete and 0 interrupted iterations
+failure_drill   [  67% ] 5 VUs  5m22.7s/8m0s
+
+running (5m26.0s), 5/5 VUs, 9093 complete and 0 interrupted iterations
+failure_drill   [  67% ] 5 VUs  5m23.7s/8m0s
+
+running (5m27.0s), 5/5 VUs, 9123 complete and 0 interrupted iterations
+failure_drill   [  68% ] 5 VUs  5m24.7s/8m0s
+
+running (5m28.0s), 5/5 VUs, 9158 complete and 0 interrupted iterations
+failure_drill   [  68% ] 5 VUs  5m25.7s/8m0s
+
+running (5m29.0s), 5/5 VUs, 9188 complete and 0 interrupted iterations
+failure_drill   [  68% ] 5 VUs  5m26.7s/8m0s
+
+running (5m30.0s), 5/5 VUs, 9218 complete and 0 interrupted iterations
+failure_drill   [  68% ] 5 VUs  5m27.7s/8m0s
+
+running (5m31.0s), 5/5 VUs, 9248 complete and 0 interrupted iterations
+failure_drill   [  68% ] 5 VUs  5m28.7s/8m0s
+
+running (5m32.0s), 5/5 VUs, 9278 complete and 0 interrupted iterations
+failure_drill   [  69% ] 5 VUs  5m29.7s/8m0s
+
+running (5m33.0s), 5/5 VUs, 9310 complete and 0 interrupted iterations
+failure_drill   [  69% ] 5 VUs  5m30.7s/8m0s
+
+running (5m34.0s), 5/5 VUs, 9343 complete and 0 interrupted iterations
+failure_drill   [  69% ] 5 VUs  5m31.7s/8m0s
+
+running (5m35.0s), 5/5 VUs, 9373 complete and 0 interrupted iterations
+failure_drill   [  69% ] 5 VUs  5m32.7s/8m0s
+
+running (5m36.0s), 5/5 VUs, 9403 complete and 0 interrupted iterations
+failure_drill   [  70% ] 5 VUs  5m33.7s/8m0s
+
+running (5m37.0s), 5/5 VUs, 9433 complete and 0 interrupted iterations
+failure_drill   [  70% ] 5 VUs  5m34.7s/8m0s
+
+running (5m38.0s), 5/5 VUs, 9463 complete and 0 interrupted iterations
+failure_drill   [  70% ] 5 VUs  5m35.7s/8m0s
+
+running (5m39.0s), 5/5 VUs, 9498 complete and 0 interrupted iterations
+failure_drill   [  70% ] 5 VUs  5m36.7s/8m0s
+
+running (5m40.0s), 5/5 VUs, 9528 complete and 0 interrupted iterations
+failure_drill   [  70% ] 5 VUs  5m37.7s/8m0s
+
+running (5m41.0s), 5/5 VUs, 9558 complete and 0 interrupted iterations
+failure_drill   [  71% ] 5 VUs  5m38.7s/8m0s
+
+running (5m42.0s), 5/5 VUs, 9588 complete and 0 interrupted iterations
+failure_drill   [  71% ] 5 VUs  5m39.7s/8m0s
+
+running (5m43.0s), 5/5 VUs, 9618 complete and 0 interrupted iterations
+failure_drill   [  71% ] 5 VUs  5m40.7s/8m0s
+
+running (5m44.0s), 5/5 VUs, 9653 complete and 0 interrupted iterations
+failure_drill   [  71% ] 5 VUs  5m41.7s/8m0s
+
+running (5m45.0s), 5/5 VUs, 9683 complete and 0 interrupted iterations
+failure_drill   [  71% ] 5 VUs  5m42.7s/8m0s
+
+running (5m46.0s), 5/5 VUs, 9713 complete and 0 interrupted iterations
+failure_drill   [  72% ] 5 VUs  5m43.7s/8m0s
+
+running (5m47.0s), 5/5 VUs, 9743 complete and 0 interrupted iterations
+failure_drill   [  72% ] 5 VUs  5m44.7s/8m0s
+
+running (5m48.0s), 5/5 VUs, 9778 complete and 0 interrupted iterations
+failure_drill   [  72% ] 5 VUs  5m45.7s/8m0s
+
+running (5m49.0s), 5/5 VUs, 9808 complete and 0 interrupted iterations
+failure_drill   [  72% ] 5 VUs  5m46.7s/8m0s
+
+running (5m50.0s), 5/5 VUs, 9838 complete and 0 interrupted iterations
+failure_drill   [  72% ] 5 VUs  5m47.7s/8m0s
+
+running (5m51.0s), 5/5 VUs, 9868 complete and 0 interrupted iterations
+failure_drill   [  73% ] 5 VUs  5m48.7s/8m0s
+
+running (5m52.0s), 5/5 VUs, 9898 complete and 0 interrupted iterations
+failure_drill   [  73% ] 5 VUs  5m49.7s/8m0s
+
+running (5m53.0s), 5/5 VUs, 9933 complete and 0 interrupted iterations
+failure_drill   [  73% ] 5 VUs  5m50.7s/8m0s
+
+running (5m54.0s), 5/5 VUs, 9963 complete and 0 interrupted iterations
+failure_drill   [  73% ] 5 VUs  5m51.7s/8m0s
+
+running (5m55.0s), 5/5 VUs, 9993 complete and 0 interrupted iterations
+failure_drill   [  73% ] 5 VUs  5m52.7s/8m0s
+
+running (5m56.0s), 5/5 VUs, 10023 complete and 0 interrupted iterations
+failure_drill   [  74% ] 5 VUs  5m53.7s/8m0s
+
+running (5m57.0s), 5/5 VUs, 10058 complete and 0 interrupted iterations
+failure_drill   [  74% ] 5 VUs  5m54.7s/8m0s
+
+running (5m58.0s), 5/5 VUs, 10088 complete and 0 interrupted iterations
+failure_drill   [  74% ] 5 VUs  5m55.7s/8m0s
+
+running (5m59.0s), 5/5 VUs, 10118 complete and 0 interrupted iterations
+failure_drill   [  74% ] 5 VUs  5m56.7s/8m0s
+
+running (6m00.0s), 5/5 VUs, 10148 complete and 0 interrupted iterations
+failure_drill   [  75% ] 5 VUs  5m57.7s/8m0s
+
+running (6m01.0s), 5/5 VUs, 10178 complete and 0 interrupted iterations
+failure_drill   [  75% ] 5 VUs  5m58.7s/8m0s
+
+running (6m02.0s), 5/5 VUs, 10210 complete and 0 interrupted iterations
+failure_drill   [  75% ] 5 VUs  5m59.7s/8m0s
+
+running (6m03.0s), 5/5 VUs, 10243 complete and 0 interrupted iterations
+failure_drill   [  75% ] 5 VUs  6m00.7s/8m0s
+
+running (6m04.0s), 5/5 VUs, 10273 complete and 0 interrupted iterations
+failure_drill   [  75% ] 5 VUs  6m01.7s/8m0s
+
+running (6m05.0s), 5/5 VUs, 10303 complete and 0 interrupted iterations
+failure_drill   [  76% ] 5 VUs  6m02.7s/8m0s
+
+running (6m06.0s), 5/5 VUs, 10333 complete and 0 interrupted iterations
+failure_drill   [  76% ] 5 VUs  6m03.7s/8m0s
+
+running (6m07.0s), 5/5 VUs, 10368 complete and 0 interrupted iterations
+failure_drill   [  76% ] 5 VUs  6m04.7s/8m0s
+
+running (6m08.0s), 5/5 VUs, 10398 complete and 0 interrupted iterations
+failure_drill   [  76% ] 5 VUs  6m05.7s/8m0s
+
+running (6m09.0s), 5/5 VUs, 10428 complete and 0 interrupted iterations
+failure_drill   [  76% ] 5 VUs  6m06.7s/8m0s
+
+running (6m10.0s), 5/5 VUs, 10458 complete and 0 interrupted iterations
+failure_drill   [  77% ] 5 VUs  6m07.7s/8m0s
+
+running (6m11.0s), 5/5 VUs, 10488 complete and 0 interrupted iterations
+failure_drill   [  77% ] 5 VUs  6m08.7s/8m0s
+
+running (6m12.0s), 5/5 VUs, 10523 complete and 0 interrupted iterations
+failure_drill   [  77% ] 5 VUs  6m09.7s/8m0s
+
+running (6m13.0s), 5/5 VUs, 10553 complete and 0 interrupted iterations
+failure_drill   [  77% ] 5 VUs  6m10.7s/8m0s
+
+running (6m14.0s), 5/5 VUs, 10583 complete and 0 interrupted iterations
+failure_drill   [  77% ] 5 VUs  6m11.7s/8m0s
+
+running (6m15.0s), 5/5 VUs, 10613 complete and 0 interrupted iterations
+failure_drill   [  78% ] 5 VUs  6m12.7s/8m0s
+
+running (6m16.0s), 5/5 VUs, 10645 complete and 0 interrupted iterations
+failure_drill   [  78% ] 5 VUs  6m13.7s/8m0s
+
+running (6m17.0s), 5/5 VUs, 10678 complete and 0 interrupted iterations
+failure_drill   [  78% ] 5 VUs  6m14.7s/8m0s
+
+running (6m18.0s), 5/5 VUs, 10708 complete and 0 interrupted iterations
+failure_drill   [  78% ] 5 VUs  6m15.7s/8m0s
+
+running (6m19.0s), 5/5 VUs, 10738 complete and 0 interrupted iterations
+failure_drill   [  78% ] 5 VUs  6m16.7s/8m0s
+
+running (6m20.0s), 5/5 VUs, 10768 complete and 0 interrupted iterations
+failure_drill   [  79% ] 5 VUs  6m17.7s/8m0s
+
+running (6m21.0s), 5/5 VUs, 10798 complete and 0 interrupted iterations
+failure_drill   [  79% ] 5 VUs  6m18.7s/8m0s
+
+running (6m22.0s), 5/5 VUs, 10833 complete and 0 interrupted iterations
+failure_drill   [  79% ] 5 VUs  6m19.7s/8m0s
+
+running (6m23.0s), 5/5 VUs, 10863 complete and 0 interrupted iterations
+failure_drill   [  79% ] 5 VUs  6m20.7s/8m0s
+
+running (6m24.0s), 5/5 VUs, 10893 complete and 0 interrupted iterations
+failure_drill   [  80% ] 5 VUs  6m21.7s/8m0s
+
+running (6m25.0s), 5/5 VUs, 10923 complete and 0 interrupted iterations
+failure_drill   [  80% ] 5 VUs  6m22.7s/8m0s
+
+running (6m26.0s), 5/5 VUs, 10958 complete and 0 interrupted iterations
+failure_drill   [  80% ] 5 VUs  6m23.7s/8m0s
+
+running (6m27.0s), 5/5 VUs, 10988 complete and 0 interrupted iterations
+failure_drill   [  80% ] 5 VUs  6m24.7s/8m0s
+
+running (6m28.0s), 5/5 VUs, 11018 complete and 0 interrupted iterations
+failure_drill   [  80% ] 5 VUs  6m25.7s/8m0s
+
+running (6m29.0s), 5/5 VUs, 11048 complete and 0 interrupted iterations
+failure_drill   [  81% ] 5 VUs  6m26.7s/8m0s
+
+running (6m30.0s), 5/5 VUs, 11078 complete and 0 interrupted iterations
+failure_drill   [  81% ] 5 VUs  6m27.7s/8m0s
+
+running (6m31.0s), 5/5 VUs, 11108 complete and 0 interrupted iterations
+failure_drill   [  81% ] 5 VUs  6m28.7s/8m0s
+
+running (6m32.0s), 5/5 VUs, 11141 complete and 0 interrupted iterations
+failure_drill   [  81% ] 5 VUs  6m29.7s/8m0s
+
+running (6m33.0s), 5/5 VUs, 11173 complete and 0 interrupted iterations
+failure_drill   [  81% ] 5 VUs  6m30.7s/8m0s
+
+running (6m34.0s), 5/5 VUs, 11203 complete and 0 interrupted iterations
+failure_drill   [  82% ] 5 VUs  6m31.7s/8m0s
+
+running (6m35.0s), 5/5 VUs, 11233 complete and 0 interrupted iterations
+failure_drill   [  82% ] 5 VUs  6m32.7s/8m0s
+
+running (6m36.0s), 5/5 VUs, 11263 complete and 0 interrupted iterations
+failure_drill   [  82% ] 5 VUs  6m33.7s/8m0s
+
+running (6m37.0s), 5/5 VUs, 11295 complete and 0 interrupted iterations
+failure_drill   [  82% ] 5 VUs  6m34.7s/8m0s
+
+running (6m38.0s), 5/5 VUs, 11328 complete and 0 interrupted iterations
+failure_drill   [  82% ] 5 VUs  6m35.7s/8m0s
+
+running (6m39.0s), 5/5 VUs, 11358 complete and 0 interrupted iterations
+failure_drill   [  83% ] 5 VUs  6m36.7s/8m0s
+
+running (6m40.0s), 5/5 VUs, 11388 complete and 0 interrupted iterations
+failure_drill   [  83% ] 5 VUs  6m37.7s/8m0s
+
+running (6m41.0s), 5/5 VUs, 11418 complete and 0 interrupted iterations
+failure_drill   [  83% ] 5 VUs  6m38.7s/8m0s
+
+running (6m42.0s), 5/5 VUs, 11453 complete and 0 interrupted iterations
+failure_drill   [  83% ] 5 VUs  6m39.7s/8m0s
+
+running (6m43.0s), 5/5 VUs, 11483 complete and 0 interrupted iterations
+failure_drill   [  83% ] 5 VUs  6m40.7s/8m0s
+
+running (6m44.0s), 5/5 VUs, 11513 complete and 0 interrupted iterations
+failure_drill   [  84% ] 5 VUs  6m41.7s/8m0s
+
+running (6m45.0s), 5/5 VUs, 11543 complete and 0 interrupted iterations
+failure_drill   [  84% ] 5 VUs  6m42.7s/8m0s
+
+running (6m46.0s), 5/5 VUs, 11578 complete and 0 interrupted iterations
+failure_drill   [  84% ] 5 VUs  6m43.7s/8m0s
+
+running (6m47.0s), 5/5 VUs, 11608 complete and 0 interrupted iterations
+failure_drill   [  84% ] 5 VUs  6m44.7s/8m0s
+
+running (6m48.0s), 5/5 VUs, 11638 complete and 0 interrupted iterations
+failure_drill   [  85% ] 5 VUs  6m45.7s/8m0s
+
+running (6m49.0s), 5/5 VUs, 11668 complete and 0 interrupted iterations
+failure_drill   [  85% ] 5 VUs  6m46.7s/8m0s
+
+running (6m50.0s), 5/5 VUs, 11698 complete and 0 interrupted iterations
+failure_drill   [  85% ] 5 VUs  6m47.7s/8m0s
+
+running (6m51.0s), 5/5 VUs, 11733 complete and 0 interrupted iterations
+failure_drill   [  85% ] 5 VUs  6m48.7s/8m0s
+
+running (6m52.0s), 5/5 VUs, 11763 complete and 0 interrupted iterations
+failure_drill   [  85% ] 5 VUs  6m49.7s/8m0s
+
+running (6m53.0s), 5/5 VUs, 11793 complete and 0 interrupted iterations
+failure_drill   [  86% ] 5 VUs  6m50.7s/8m0s
+
+running (6m54.0s), 5/5 VUs, 11823 complete and 0 interrupted iterations
+failure_drill   [  86% ] 5 VUs  6m51.7s/8m0s
+
+running (6m55.0s), 5/5 VUs, 11858 complete and 0 interrupted iterations
+failure_drill   [  86% ] 5 VUs  6m52.7s/8m0s
+
+running (6m56.0s), 5/5 VUs, 11888 complete and 0 interrupted iterations
+failure_drill   [  86% ] 5 VUs  6m53.7s/8m0s
+
+running (6m57.0s), 5/5 VUs, 11918 complete and 0 interrupted iterations
+failure_drill   [  86% ] 5 VUs  6m54.7s/8m0s
+
+running (6m58.0s), 5/5 VUs, 11948 complete and 0 interrupted iterations
+failure_drill   [  87% ] 5 VUs  6m55.7s/8m0s
+
+running (6m59.0s), 5/5 VUs, 11981 complete and 0 interrupted iterations
+failure_drill   [  87% ] 5 VUs  6m56.7s/8m0s
+
+running (7m00.0s), 5/5 VUs, 12013 complete and 0 interrupted iterations
+failure_drill   [  87% ] 5 VUs  6m57.7s/8m0s
+
+running (7m01.0s), 5/5 VUs, 12043 complete and 0 interrupted iterations
+failure_drill   [  87% ] 5 VUs  6m58.7s/8m0s
+
+running (7m02.0s), 5/5 VUs, 12073 complete and 0 interrupted iterations
+failure_drill   [  87% ] 5 VUs  6m59.7s/8m0s
+
+running (7m03.0s), 5/5 VUs, 12103 complete and 0 interrupted iterations
+failure_drill   [  88% ] 5 VUs  7m00.7s/8m0s
+
+running (7m04.0s), 5/5 VUs, 12138 complete and 0 interrupted iterations
+failure_drill   [  88% ] 5 VUs  7m01.7s/8m0s
+
+running (7m05.0s), 5/5 VUs, 12168 complete and 0 interrupted iterations
+failure_drill   [  88% ] 5 VUs  7m02.7s/8m0s
+
+running (7m06.0s), 5/5 VUs, 12198 complete and 0 interrupted iterations
+failure_drill   [  88% ] 5 VUs  7m03.7s/8m0s
+
+running (7m07.0s), 5/5 VUs, 12228 complete and 0 interrupted iterations
+failure_drill   [  88% ] 5 VUs  7m04.7s/8m0s
+
+running (7m08.0s), 5/5 VUs, 12258 complete and 0 interrupted iterations
+failure_drill   [  89% ] 5 VUs  7m05.7s/8m0s
+
+running (7m09.0s), 5/5 VUs, 12293 complete and 0 interrupted iterations
+failure_drill   [  89% ] 5 VUs  7m06.7s/8m0s
+
+running (7m10.0s), 5/5 VUs, 12323 complete and 0 interrupted iterations
+failure_drill   [  89% ] 5 VUs  7m07.7s/8m0s
+
+running (7m11.0s), 5/5 VUs, 12353 complete and 0 interrupted iterations
+failure_drill   [  89% ] 5 VUs  7m08.7s/8m0s
+
+running (7m12.0s), 5/5 VUs, 12383 complete and 0 interrupted iterations
+failure_drill   [  90% ] 5 VUs  7m09.7s/8m0s
+
+running (7m13.0s), 5/5 VUs, 12413 complete and 0 interrupted iterations
+failure_drill   [  90% ] 5 VUs  7m10.7s/8m0s
+
+running (7m14.0s), 5/5 VUs, 12448 complete and 0 interrupted iterations
+failure_drill   [  90% ] 5 VUs  7m11.7s/8m0s
+
+running (7m15.0s), 5/5 VUs, 12478 complete and 0 interrupted iterations
+failure_drill   [  90% ] 5 VUs  7m12.7s/8m0s
+
+running (7m16.0s), 5/5 VUs, 12508 complete and 0 interrupted iterations
+failure_drill   [  90% ] 5 VUs  7m13.7s/8m0s
+
+running (7m17.0s), 5/5 VUs, 12538 complete and 0 interrupted iterations
+failure_drill   [  91% ] 5 VUs  7m14.7s/8m0s
+
+running (7m18.0s), 5/5 VUs, 12573 complete and 0 interrupted iterations
+failure_drill   [  91% ] 5 VUs  7m15.7s/8m0s
+
+running (7m19.0s), 5/5 VUs, 12603 complete and 0 interrupted iterations
+failure_drill   [  91% ] 5 VUs  7m16.7s/8m0s
+
+running (7m20.0s), 5/5 VUs, 12633 complete and 0 interrupted iterations
+failure_drill   [  91% ] 5 VUs  7m17.7s/8m0s
+
+running (7m21.0s), 5/5 VUs, 12663 complete and 0 interrupted iterations
+failure_drill   [  91% ] 5 VUs  7m18.7s/8m0s
+
+running (7m22.0s), 5/5 VUs, 12698 complete and 0 interrupted iterations
+failure_drill   [  92% ] 5 VUs  7m19.7s/8m0s
+
+running (7m23.0s), 5/5 VUs, 12728 complete and 0 interrupted iterations
+failure_drill   [  92% ] 5 VUs  7m20.7s/8m0s
+
+running (7m24.0s), 5/5 VUs, 12758 complete and 0 interrupted iterations
+failure_drill   [  92% ] 5 VUs  7m21.7s/8m0s
+
+running (7m25.0s), 5/5 VUs, 12788 complete and 0 interrupted iterations
+failure_drill   [  92% ] 5 VUs  7m22.7s/8m0s
+
+running (7m26.0s), 5/5 VUs, 12823 complete and 0 interrupted iterations
+failure_drill   [  92% ] 5 VUs  7m23.7s/8m0s
+
+running (7m27.0s), 5/5 VUs, 12853 complete and 0 interrupted iterations
+failure_drill   [  93% ] 5 VUs  7m24.7s/8m0s
+
+running (7m28.0s), 5/5 VUs, 12883 complete and 0 interrupted iterations
+failure_drill   [  93% ] 5 VUs  7m25.7s/8m0s
+
+running (7m29.0s), 5/5 VUs, 12913 complete and 0 interrupted iterations
+failure_drill   [  93% ] 5 VUs  7m26.7s/8m0s
+
+running (7m30.0s), 5/5 VUs, 12943 complete and 0 interrupted iterations
+failure_drill   [  93% ] 5 VUs  7m27.7s/8m0s
+
+running (7m31.0s), 5/5 VUs, 12973 complete and 0 interrupted iterations
+failure_drill   [  93% ] 5 VUs  7m28.7s/8m0s
+
+running (7m32.0s), 5/5 VUs, 13008 complete and 0 interrupted iterations
+failure_drill   [  94% ] 5 VUs  7m29.7s/8m0s
+
+running (7m33.0s), 5/5 VUs, 13038 complete and 0 interrupted iterations
+failure_drill   [  94% ] 5 VUs  7m30.7s/8m0s
+
+running (7m34.0s), 5/5 VUs, 13068 complete and 0 interrupted iterations
+failure_drill   [  94% ] 5 VUs  7m31.7s/8m0s
+
+running (7m35.0s), 5/5 VUs, 13098 complete and 0 interrupted iterations
+failure_drill   [  94% ] 5 VUs  7m32.7s/8m0s
+
+running (7m36.0s), 5/5 VUs, 13130 complete and 0 interrupted iterations
+failure_drill   [  95% ] 5 VUs  7m33.7s/8m0s
+
+running (7m37.0s), 5/5 VUs, 13163 complete and 0 interrupted iterations
+failure_drill   [  95% ] 5 VUs  7m34.7s/8m0s
+
+running (7m38.0s), 5/5 VUs, 13193 complete and 0 interrupted iterations
+failure_drill   [  95% ] 5 VUs  7m35.7s/8m0s
+
+running (7m39.0s), 5/5 VUs, 13223 complete and 0 interrupted iterations
+failure_drill   [  95% ] 5 VUs  7m36.7s/8m0s
+
+running (7m40.0s), 5/5 VUs, 13256 complete and 0 interrupted iterations
+failure_drill   [  95% ] 5 VUs  7m37.7s/8m0s
+
+running (7m41.0s), 5/5 VUs, 13288 complete and 0 interrupted iterations
+failure_drill   [  96% ] 5 VUs  7m38.7s/8m0s
+
+running (7m42.0s), 5/5 VUs, 13318 complete and 0 interrupted iterations
+failure_drill   [  96% ] 5 VUs  7m39.7s/8m0s
+
+running (7m43.0s), 5/5 VUs, 13348 complete and 0 interrupted iterations
+failure_drill   [  96% ] 5 VUs  7m40.7s/8m0s
+
+running (7m44.0s), 5/5 VUs, 13383 complete and 0 interrupted iterations
+failure_drill   [  96% ] 5 VUs  7m41.7s/8m0s
+
+running (7m45.0s), 5/5 VUs, 13413 complete and 0 interrupted iterations
+failure_drill   [  96% ] 5 VUs  7m42.7s/8m0s
+
+running (7m46.0s), 5/5 VUs, 13443 complete and 0 interrupted iterations
+failure_drill   [  97% ] 5 VUs  7m43.7s/8m0s
+
+running (7m47.0s), 5/5 VUs, 13473 complete and 0 interrupted iterations
+failure_drill   [  97% ] 5 VUs  7m44.7s/8m0s
+
+running (7m48.0s), 5/5 VUs, 13507 complete and 0 interrupted iterations
+failure_drill   [  97% ] 5 VUs  7m45.7s/8m0s
+
+running (7m49.0s), 5/5 VUs, 13538 complete and 0 interrupted iterations
+failure_drill   [  97% ] 5 VUs  7m46.7s/8m0s
+
+running (7m50.0s), 5/5 VUs, 13568 complete and 0 interrupted iterations
+failure_drill   [  97% ] 5 VUs  7m47.7s/8m0s
+
+running (7m51.0s), 5/5 VUs, 13598 complete and 0 interrupted iterations
+failure_drill   [  98% ] 5 VUs  7m48.7s/8m0s
+
+running (7m52.0s), 5/5 VUs, 13628 complete and 0 interrupted iterations
+failure_drill   [  98% ] 5 VUs  7m49.7s/8m0s
+
+running (7m53.0s), 5/5 VUs, 13663 complete and 0 interrupted iterations
+failure_drill   [  98% ] 5 VUs  7m50.7s/8m0s
+
+running (7m54.0s), 5/5 VUs, 13693 complete and 0 interrupted iterations
+failure_drill   [  98% ] 5 VUs  7m51.7s/8m0s
+
+running (7m55.0s), 5/5 VUs, 13723 complete and 0 interrupted iterations
+failure_drill   [  98% ] 5 VUs  7m52.7s/8m0s
+
+running (7m56.0s), 5/5 VUs, 13753 complete and 0 interrupted iterations
+failure_drill   [  99% ] 5 VUs  7m53.7s/8m0s
+
+running (7m57.0s), 5/5 VUs, 13788 complete and 0 interrupted iterations
+failure_drill   [  99% ] 5 VUs  7m54.7s/8m0s
+
+running (7m58.0s), 5/5 VUs, 13818 complete and 0 interrupted iterations
+failure_drill   [  99% ] 5 VUs  7m55.7s/8m0s
+
+running (7m59.0s), 5/5 VUs, 13848 complete and 0 interrupted iterations
+failure_drill   [  99% ] 5 VUs  7m56.7s/8m0s
+
+running (8m00.0s), 5/5 VUs, 13878 complete and 0 interrupted iterations
+failure_drill   [ 100% ] 5 VUs  7m57.7s/8m0s
+
+running (8m01.0s), 5/5 VUs, 13911 complete and 0 interrupted iterations
+failure_drill   [ 100% ] 5 VUs  7m58.7s/8m0s
+
+running (8m02.0s), 5/5 VUs, 13943 complete and 0 interrupted iterations
+failure_drill   [ 100% ] 5 VUs  7m59.7s/8m0s
+
+
+  █ THRESHOLDS 
+
+    checks
+    ✓ 'rate==1' rate=100.00%
+
+    errors_sold_out
+    ✓ 'count==0' count=0
+
+    errors_user_limit
+    ✓ 'count==0' count=0
+
+    reservation_unexpected_responses
+    ✓ 'count==0' count=0
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 27906   57.861871/s
+    checks_succeeded...: 100.00% 27906 out of 27906
+    checks_failed......: 0.00%   0 out of 27906
+
+    ✓ reservation response has an id
+    ✓ reservation response is pending
+
+    CUSTOM
+    cancellations_succeeded............: 0      0/s
+    errors_idempotency_in_progress.....: 0      0/s
+    errors_rate_limited................: 0      0/s
+    errors_sold_out....................: 0      0/s
+    errors_user_limit..................: 0      0/s
+    logical_recovery_latency...........: avg=9.27s    min=692ms    med=14.25s   p(90)=14.52s  p(95)=14.74s   p(99)=14.91s   max=14.95s
+    logical_reservations_failed........: 0      0/s
+    logical_reservations_recovered.....: 8      0.016588/s
+    logical_reservations_started.......: 13953  28.930935/s
+    logical_reservations_succeeded.....: 13953  28.930935/s
+    reservation_retry_attempts.........: 15     0.031102/s
+    reservation_server_faults..........: 15     0.031102/s
+    reservation_unexpected_responses...: 0      0/s
+    reservations_accepted..............: 13953  28.930935/s
+    reservations_created...............: 13950  28.924715/s
+    reservations_replayed..............: 3      0.00622/s
+    reserve_latency....................: avg=70.88ms  min=28.99ms  med=61.66ms  p(90)=68.36ms p(95)=71.54ms  p(99)=90.38ms  max=5s    
+
+    HTTP
+    http_req_duration..................: avg=71.03ms  min=28.99ms  med=61.66ms  p(90)=68.36ms p(95)=71.55ms  p(99)=90.61ms  max=5s    
+      { expected_response:true }.......: avg=67.51ms  min=28.99ms  med=61.66ms  p(90)=68.35ms p(95)=71.5ms   p(99)=88.45ms  max=3.94s 
+    http_req_failed....................: 0.10%  15 out of 13971
+    http_reqs..........................: 13971  28.968258/s
+
+    EXECUTION
+    iteration_duration.................: avg=172.01ms min=129.76ms med=162.15ms p(90)=169ms   p(95)=172.11ms p(99)=189.44ms max=15.05s
+    iterations.........................: 13953  28.930935/s
+    vus................................: 5      min=0           max=5
+    vus_max............................: 5      min=5           max=5
+
+    NETWORK
+    data_received......................: 11 MB  22 kB/s
+    data_sent..........................: 8.2 MB 17 kB/s
+
+
+
+
+running (8m02.3s), 0/5 VUs, 13953 complete and 0 interrupted iterations
+failure_drill ✓ [ 100% ] 5 VUs  8m0s
