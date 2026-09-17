@@ -1,7 +1,6 @@
 package com.ticketsystem.shared.ratelimit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -21,7 +20,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -118,10 +116,7 @@ class RateLimitApiIT extends AbstractPostgresRedisIT {
 
     private MockHttpServletRequestBuilder reserve(UUID userId, String remoteAddress) {
         return post("/api/v1/events/{eventId}/reservations", HOT_EVENT)
-                .with(jwt().jwt(token -> token
-                                .subject(userId.toString())
-                                .claim("role", "USER"))
-                        .authorities(new SimpleGrantedAuthority("ROLE_USER")))
+                .with(bearer(userId.toString(), "USER"))
                 .with(request -> {
                     request.setRemoteAddr(remoteAddress);
                     return request;

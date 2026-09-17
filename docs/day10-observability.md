@@ -95,7 +95,11 @@ $env:VUS = '200'
 $env:ARRIVAL_SPREAD_SECONDS = '1'
 $env:RUN_ID = 'day10-smoke'
 $env:SUITE_NAME = 'day10'
-$env:JWT_SIGNING_KEY = 'day10-shared-signing-key-0123456789abcdef'
+$keyBytes = [byte[]]::new(48)
+[Security.Cryptography.RandomNumberGenerator]::Fill($keyBytes)
+$env:JWT_ACCESS_SECRET = [Convert]::ToBase64String($keyBytes)
+[Security.Cryptography.RandomNumberGenerator]::Fill($keyBytes)
+$env:JWT_REFRESH_SECRET = [Convert]::ToBase64String($keyBytes)
 k6 run load-tests/k6/day9-hot-row.js
 ```
 

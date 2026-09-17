@@ -122,6 +122,11 @@ WHERE e.name = '$eventName';
 
 try {
     Push-Location $repoRoot
+    $keyBytes = [byte[]]::new(48)
+    [Security.Cryptography.RandomNumberGenerator]::Fill($keyBytes)
+    $env:JWT_ACCESS_SECRET = [Convert]::ToBase64String($keyBytes)
+    [Security.Cryptography.RandomNumberGenerator]::Fill($keyBytes)
+    $env:JWT_REFRESH_SECRET = [Convert]::ToBase64String($keyBytes)
     & docker compose --project-name $projectName -f $composeFile down --volumes --remove-orphans
     & docker compose --project-name $projectName -f $composeFile up -d --build --wait
     if ($LASTEXITCODE -ne 0) { throw 'Day 11 soak topology failed to start.' }
@@ -135,9 +140,6 @@ try {
     $env:SUITE_NAME = 'day11'
     $env:VUS = $VirtualUsers.ToString()
     $env:SOAK_DURATION = $Duration
-    $env:JWT_SIGNING_KEY = 'day10-shared-signing-key-0123456789abcdef'
-    $env:JWT_ISSUER = 'ticket-system-load'
-    $env:JWT_AUDIENCE = 'ticket-system-api'
     $env:ADMIN_USERNAME = 'load-admin'
     $env:ADMIN_PASSWORD = 'password'
     $env:K6_SUMMARY_TREND_STATS = 'avg,min,med,p(90),p(95),p(99),max'
@@ -246,7 +248,7 @@ finally {
     if (-not $KeepRunning) {
         & docker compose --project-name $projectName -f $composeFile down --volumes --remove-orphans
     }
-    @('BASE_URL', 'RUN_ID', 'SUITE_NAME', 'VUS', 'SOAK_DURATION', 'JWT_SIGNING_KEY',
+    @('BASE_URL', 'RUN_ID', 'SUITE_NAME', 'VUS', 'SOAK_DURATION', 'JWT_ACCESS_SECRET', 'JWT_REFRESH_SECRET',
       'JWT_ISSUER', 'JWT_AUDIENCE', 'ADMIN_USERNAME', 'ADMIN_PASSWORD',
       'K6_SUMMARY_TREND_STATS') | ForEach-Object {
         Remove-Item "Env:$_" -ErrorAction SilentlyContinue

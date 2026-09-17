@@ -8,11 +8,10 @@ import com.ticketsystem.reservation.application.ReserveTicketsResult;
 import com.ticketsystem.reservation.application.ReservationRequestService;
 import com.ticketsystem.reservation.domain.Reservation;
 import com.ticketsystem.reservation.domain.InvalidQuantityException;
-import com.ticketsystem.security.AuthenticatedUser;
-import com.ticketsystem.security.Role;
+import com.ticketsystem.auth.security.AuthenticatedUser;
+import com.ticketsystem.auth.enums.Role;
 import com.ticketsystem.shared.api.RequestCorrelation;
 import com.ticketsystem.shared.config.TicketingProperties;
-import com.ticketsystem.shared.error.InvalidRequestException;
 import com.ticketsystem.shared.ratelimit.ReserveRateLimiter;
 import com.ticketsystem.order.api.ConfirmReservationRequest;
 import com.ticketsystem.order.api.ConfirmationResponse;
@@ -65,23 +64,17 @@ public class ReservationController {
      * An identical retry returns the reservation already owned by the key, while reuse for a
      * different request is rejected. PostgreSQL arbitrates concurrent callers across replicas.
      *
-     * <p>The acting user is derived exclusively from the verified JWT. The former
-     * {@code X-User-Id} development header is explicitly rejected.
+     * <p>The acting user is derived exclusively from the verified JWT.
      */
     @PostMapping("/events/{eventId}/reservations")
     public ResponseEntity<ReservationResponse> reserve(
             @PathVariable UUID eventId,
             @RequestHeader("Idempotency-Key") String idempotencyKey,
-            @RequestHeader(name = "X-User-Id", required = false) String legacyUserId,
             @RequestHeader(RequestCorrelation.HEADER_NAME) String requestId,
             @Valid @RequestBody CreateReservationRequest request,
             Authentication authentication,
             HttpServletRequest httpRequest) {
 
-        if (legacyUserId != null) {
-            throw new InvalidRequestException(
-                    "X-User-Id is not accepted; identity comes from the bearer token.");
-        }
         AuthenticatedUser actor = AuthenticatedUser.from(authentication);
         UUID userId = actor.userId();
         int quantity = request.quantity();

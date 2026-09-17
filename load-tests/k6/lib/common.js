@@ -1,7 +1,5 @@
 import http from 'k6/http';
 import { check, fail } from 'k6';
-import crypto from 'k6/crypto';
-import encoding from 'k6/encoding';
 import { Counter, Trend } from 'k6/metrics';
 
 // Business rejections are correct HTTP outcomes, not transport failures. Every unexpected
@@ -23,10 +21,7 @@ export const unexpectedResponses = new Counter('reservation_unexpected_responses
 
 const baseUrl = __ENV.BASE_URL || 'http://127.0.0.1:8080';
 const runId = __ENV.RUN_ID || 'manual';
-const signingKey = __ENV.JWT_SIGNING_KEY
-  || 'day6-load-only-signing-key-0123456789abcdef';
-const issuer = __ENV.JWT_ISSUER || 'ticket-system-load';
-const audience = __ENV.JWT_AUDIENCE || 'ticket-system-api';
+const userTokens = {};
 
 export function initializeOutcomeMetrics() {
   // A zero sample keeps exact-count thresholds evaluable even when the correct count is 0.
@@ -156,20 +151,27 @@ export function scenarioKey(scenarioName, vuNumber) {
 }
 
 function userToken(subject) {
-  const now = Math.floor(Date.now() / 1000);
-  const header = encoding.b64encode(JSON.stringify({ alg: 'HS256', typ: 'JWT' }), 'rawurl');
-  const payload = encoding.b64encode(JSON.stringify({
-    iss: issuer,
-    aud: audience,
-    sub: subject,
-    role: 'USER',
-    iat: now,
-    nbf: now - 5,
-    exp: now + 3600,
-  }), 'rawurl');
-  const unsigned = `${header}.${payload}`;
-  const signature = crypto.hmac('sha256', signingKey, unsigned, 'base64rawurl');
-  return `${unsigned}.${signature}`;
+  if (userTokens[subject]) {
+    return userTokens[subject];
+  }
+  const username = `load-${subject.replaceAll('-', '')}`;
+  const password = 'load-only-user-password';
+  const registration = http.post(`${baseUrl}/api/v1/auth/register`, JSON.stringify({
+    username,
+    password,
+  }), jsonParams(null, 'setup-register-user'));
+  if (registration.status !== 201 && registration.status !== 409) {
+    fail(`user registration failed: HTTP ${registration.status} ${registration.body}`);
+  }
+  const login = http.post(`${baseUrl}/api/v1/auth/login`, JSON.stringify({
+    username,
+    password,
+  }), jsonParams(null, 'setup-login-user'));
+  if (login.status !== 200) {
+    fail(`user login failed: HTTP ${login.status} ${login.body}`);
+  }
+  userTokens[subject] = login.json('accessToken');
+  return userTokens[subject];
 }
 
 function jsonParams(token, operation) {

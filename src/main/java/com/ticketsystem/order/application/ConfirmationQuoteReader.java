@@ -9,7 +9,7 @@ import com.ticketsystem.reservation.domain.ReservationExpiredException;
 import com.ticketsystem.reservation.domain.ReservationNotFoundException;
 import com.ticketsystem.reservation.domain.ReservationStatus;
 import com.ticketsystem.reservation.repository.ReservationRepository;
-import com.ticketsystem.security.ForbiddenOperationException;
+import com.ticketsystem.auth.exception.ForbiddenOperationException;
 import com.ticketsystem.shared.time.DatabaseTimeProvider;
 import java.time.Instant;
 import java.util.UUID;

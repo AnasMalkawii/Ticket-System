@@ -1,7 +1,6 @@
 package com.ticketsystem.shared.ratelimit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -101,13 +99,11 @@ class RedisUnavailableIT extends AbstractPostgresIT {
                 Integer.class, HOT_EVENT)).isEqualTo(103);
     }
 
-    private static RequestPostProcessor asUser() {
-        return jwt().jwt(token -> token.subject(USER.toString()).claim("role", "USER"))
-                .authorities(new SimpleGrantedAuthority("ROLE_USER"));
+    private RequestPostProcessor asUser() {
+        return bearer(USER.toString(), "USER");
     }
 
-    private static RequestPostProcessor asAdmin() {
-        return jwt().jwt(token -> token.subject(ADMIN.toString()).claim("role", "ADMIN"))
-                .authorities(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    private RequestPostProcessor asAdmin() {
+        return bearer(ADMIN.toString(), "ADMIN");
     }
 }

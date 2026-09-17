@@ -6,7 +6,7 @@ import com.ticketsystem.inventory.repository.TicketInventoryRepository;
 import com.ticketsystem.reservation.domain.Reservation;
 import com.ticketsystem.reservation.domain.ReservationNotFoundException;
 import com.ticketsystem.reservation.repository.ReservationRepository;
-import com.ticketsystem.security.ForbiddenOperationException;
+import com.ticketsystem.auth.exception.ForbiddenOperationException;
 import com.ticketsystem.shared.time.DatabaseTimeProvider;
 import java.time.Instant;
 import java.util.UUID;

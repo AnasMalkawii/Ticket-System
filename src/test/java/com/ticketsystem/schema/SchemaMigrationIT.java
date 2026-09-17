@@ -28,7 +28,7 @@ class SchemaMigrationIT extends AbstractPostgresIT {
         assertThat(applied).isNotEmpty();
         assertThat(applied).allSatisfy(row -> assertThat(row.get("success")).isEqualTo(true));
         assertThat(applied).extracting(row -> row.get("version"))
-                .contains("1", "2", "3", "4", "5", "6", "7", "9001");
+                .contains("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "9001", "9002");
 
         List<String> tables = jdbc().queryForList(
                 "SELECT table_name FROM information_schema.tables "
@@ -37,7 +37,7 @@ class SchemaMigrationIT extends AbstractPostgresIT {
                 String.class);
 
         assertThat(tables).contains("event", "ticket_inventory", "reservation",
-                "ticket_order", "outbox_event", "processed_event");
+                "ticket_order", "outbox_event", "processed_event", "app_user", "auth_session");
     }
 
     @Test

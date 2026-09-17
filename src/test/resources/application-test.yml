@@ -1,8 +1,12 @@
 # Integration-test profile. The datasource is supplied by Testcontainers via
 # @ServiceConnection, so no URL is configured here.
 spring:
+  rabbitmq:
+    username: test-only
+    password: test-only
   flyway:
     locations: classpath:db/migration,classpath:db/seed
+    out-of-order: true
   jpa:
     hibernate:
       ddl-auto: validate
@@ -21,16 +25,25 @@ ticketing:
   security:
     issuer: ticket-system-test
     audience: ticket-system-api
-    token-ttl: 1h
-    signing-key: 0123456789abcdef0123456789abcdef-test-only
-    user:
-      id: aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa
-      username: test-user
-      password-hash: "{noop}test-user-password"
-    admin:
-      id: bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb
-      username: test-admin
-      password-hash: "{noop}test-admin-password"
+    access-token-ttl: 15m
+    refresh-token-ttl: 7d
+    clock-skew: 5s
+    # Public, test-only keys. Production has no fallback values.
+    access-secret: MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=
+    refresh-secret: ZmVkY2JhOTg3NjU0MzIxMGZlZGNiYTk4NzY1NDMyMTA=
+    cookie:
+      refresh-name: __Host-ticket_refresh
+      csrf-name: __Host-ticket_csrf
+      path: /
+      secure: true
+      same-site: Strict
+    login-protection:
+      max-failed-attempts: 5
+      lock-duration: 15m
+      rate-window: 1m
+      max-attempts-per-ip: 1000
+      max-attempts-per-username: 1000
+    allowed-origins: https://ticket-ui.example.test
   # Existing Day 1-4 integration tests exercise the reservation service, not Redis. Dedicated
   # Day 5 tests enable the limiter against Redis explicitly.
   rate-limit:

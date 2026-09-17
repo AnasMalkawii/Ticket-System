@@ -122,6 +122,11 @@ WHERE e.name = '$eventName';
 
 try {
     Push-Location $repoRoot
+    $keyBytes = [byte[]]::new(48)
+    [Security.Cryptography.RandomNumberGenerator]::Fill($keyBytes)
+    $env:JWT_ACCESS_SECRET = [Convert]::ToBase64String($keyBytes)
+    [Security.Cryptography.RandomNumberGenerator]::Fill($keyBytes)
+    $env:JWT_REFRESH_SECRET = [Convert]::ToBase64String($keyBytes)
     $env:INVENTORY_STRATEGY = $Strategies[0]
     & docker compose --project-name $projectName -f $composeFile down --volumes --remove-orphans
     & docker compose --project-name $projectName -f $composeFile up -d --build --wait
@@ -152,9 +157,6 @@ try {
             $env:SUITE_NAME = 'day9'
             $env:VUS = $vus.ToString()
             $env:ARRIVAL_SPREAD_SECONDS = '2'
-            $env:JWT_SIGNING_KEY = 'day9-shared-signing-key-0123456789abcdef'
-            $env:JWT_ISSUER = 'ticket-system-load'
-            $env:JWT_AUDIENCE = 'ticket-system-api'
             $env:ADMIN_USERNAME = 'load-admin'
             $env:ADMIN_PASSWORD = 'password'
             $env:K6_SUMMARY_TREND_STATS = 'avg,min,med,p(90),p(95),p(99),max'

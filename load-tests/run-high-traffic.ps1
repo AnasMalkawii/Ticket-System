@@ -110,6 +110,11 @@ WHERE e.name = '$eventName';
 
 try {
     Push-Location $repoRoot
+    $keyBytes = [byte[]]::new(48)
+    [Security.Cryptography.RandomNumberGenerator]::Fill($keyBytes)
+    $env:JWT_ACCESS_SECRET = [Convert]::ToBase64String($keyBytes)
+    [Security.Cryptography.RandomNumberGenerator]::Fill($keyBytes)
+    $env:JWT_REFRESH_SECRET = [Convert]::ToBase64String($keyBytes)
     & docker compose --project-name $projectName -f $composeFile down --volumes --remove-orphans
     & docker compose --project-name $projectName -f $composeFile up -d --build --wait
     if ($LASTEXITCODE -ne 0) { throw 'High-traffic topology failed to start.' }
@@ -121,9 +126,6 @@ try {
     $env:BASE_URL = $apiBase
     $env:RUN_ID = $RunId
     $env:SUITE_NAME = 'high-traffic'
-    $env:JWT_SIGNING_KEY = 'day10-shared-signing-key-0123456789abcdef'
-    $env:JWT_ISSUER = 'ticket-system-load'
-    $env:JWT_AUDIENCE = 'ticket-system-api'
     $env:ADMIN_USERNAME = 'load-admin'
     $env:ADMIN_PASSWORD = 'password'
     $env:VUS = $VirtualUsers
@@ -143,9 +145,6 @@ try {
                 '-e', 'BASE_URL=http://nginx:8080',
                 '-e', "RUN_ID=$RunId",
                 '-e', 'SUITE_NAME=high-traffic',
-                '-e', 'JWT_SIGNING_KEY=day10-shared-signing-key-0123456789abcdef',
-                '-e', 'JWT_ISSUER=ticket-system-load',
-                '-e', 'JWT_AUDIENCE=ticket-system-api',
                 '-e', 'ADMIN_USERNAME=load-admin',
                 '-e', 'ADMIN_PASSWORD=password',
                 '-e', "VUS=$VirtualUsers",
@@ -297,7 +296,7 @@ finally {
     if (-not $KeepRunning) {
         & docker compose --project-name $projectName -f $composeFile down --volumes --remove-orphans
     }
-    @('BASE_URL', 'RUN_ID', 'SUITE_NAME', 'JWT_SIGNING_KEY', 'JWT_ISSUER',
+    @('BASE_URL', 'RUN_ID', 'SUITE_NAME', 'JWT_ACCESS_SECRET', 'JWT_REFRESH_SECRET', 'JWT_ISSUER',
       'JWT_AUDIENCE', 'ADMIN_USERNAME', 'ADMIN_PASSWORD', 'VUS', 'REQUESTS',
       'K6_SUMMARY_TREND_STATS') |
         ForEach-Object { Remove-Item "Env:$_" -ErrorAction SilentlyContinue }

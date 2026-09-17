@@ -1,0 +1,19 @@
+# Production overrides. Activate with: SPRING_PROFILES_ACTIVE=prod
+# All secrets (DB_PASSWORD, JWT_ACCESS_SECRET, JWT_REFRESH_SECRET) must be
+# supplied via environment variables - never commit them.
+
+spring:
+  jpa:
+    hibernate:
+      # Never auto-mutate a production schema. Use validate + migrations (Flyway/Liquibase).
+      ddl-auto: validate
+    show-sql: false
+
+springdoc:
+  swagger-ui:
+    enabled: false
+
+app:
+  cookie:
+    secure: true
+    same-site: Strict

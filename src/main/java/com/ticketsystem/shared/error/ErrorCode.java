@@ -20,6 +20,7 @@ public enum ErrorCode {
     FORBIDDEN(403),
     EVENT_NOT_FOUND(404),
     RESERVATION_NOT_FOUND(404),
+    USERNAME_UNAVAILABLE(409),
 
     // --- Business rejections: the answer is "no", and that is a correct answer ----
     SALE_NOT_STARTED(409),

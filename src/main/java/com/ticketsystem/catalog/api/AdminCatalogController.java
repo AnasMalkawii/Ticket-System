@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 /** ADMIN-only catalog mutations; path authorization is enforced by the security policy. */
 @RestController
 @RequestMapping("/api/v1/admin/events")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminCatalogController {
 
     private final AdminCatalogService adminCatalogService;

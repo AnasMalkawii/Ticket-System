@@ -23,6 +23,38 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 @ActiveProfiles("test")
 public abstract class AbstractPostgresIT {
 
+    @Autowired
+    private com.ticketsystem.auth.util.TokenIssuer testTokenIssuer;
+    @Autowired
+    private com.ticketsystem.user.repository.UserRepository testUsers;
+    @Autowired
+    private org.springframework.transaction.PlatformTransactionManager testTransactions;
+    private final java.util.Map<String, String> testAccessTokens = new java.util.HashMap<>();
+
+    /** Real signed JWTs and persisted sessions exercise the actual auth filter in every API test. */
+    protected synchronized org.springframework.test.web.servlet.request.RequestPostProcessor bearer(
+            String userId, String role) {
+        String token = testAccessTokens.computeIfAbsent(userId + ":" + role, ignored -> {
+            jdbc().update("""
+                    INSERT INTO app_user (id, username, password_hash, role, enabled, created_at, updated_at)
+                    SELECT ?::uuid, ?, password_hash, ?, TRUE, now(), now()
+                    FROM app_user WHERE username = 'test-user'
+                    ON CONFLICT (id) DO NOTHING
+                    """, userId, "fixture-" + userId, role);
+            return new org.springframework.transaction.support.TransactionTemplate(testTransactions)
+                    .execute(status -> {
+                        var user = testUsers.findById(java.util.UUID.fromString(userId)).orElseThrow();
+                        if (!user.getRole().name().equals(role)) throw new IllegalArgumentException("Fixture role mismatch");
+                        return testTokenIssuer.issueTokens(user, java.util.UUID.randomUUID(), "127.0.0.1",
+                                "integration-test", java.time.Instant.now()).accessToken();
+                    });
+        });
+        return request -> {
+            request.addHeader(org.springframework.http.HttpHeaders.AUTHORIZATION, "Bearer " + token);
+            return request;
+        };
+    }
+
     static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:16-alpine")
             .withDatabaseName("ticketsystem")
             .withUsername("ticketsystem")
@@ -70,6 +102,8 @@ public abstract class AbstractPostgresIT {
      */
     @BeforeEach
     void restoreSeededFixture() {
+        testAccessTokens.clear();
+        jdbc().update("DELETE FROM auth_session");
         jdbc().update("DELETE FROM outbox_event");
         jdbc().update("DELETE FROM processed_event");
         jdbc().update("DELETE FROM ticket_order");
@@ -79,6 +113,11 @@ public abstract class AbstractPostgresIT {
                 HOT_EVENT, SCHEDULED_EVENT, CLOSED_EVENT);
         jdbc().update("DELETE FROM event WHERE id NOT IN (?::uuid, ?::uuid, ?::uuid)",
                 HOT_EVENT, SCHEDULED_EVENT, CLOSED_EVENT);
+        jdbc().update("DELETE FROM app_user WHERE id NOT IN (?::uuid, ?::uuid)",
+                "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb");
+        jdbc().update("UPDATE app_user SET enabled = TRUE, failed_login_attempts = 0, "
+                + "locked_until = NULL, version = 0, updated_at = now()");
 
         jdbc().update("""
                 UPDATE event SET name = 'Aurora Live - Opening Night',

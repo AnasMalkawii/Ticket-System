@@ -2,8 +2,14 @@
 # protection/maintenance jobs that would obscure the inventory-lock baseline; production
 # keeps the defaults in application.yml.
 spring:
+  rabbitmq:
+    # Messaging is disabled in this profile. Explicit load-only values keep the production
+    # configuration fail-closed without requiring a broker secret for an isolated benchmark.
+    username: load-only
+    password: load-only
   flyway:
-    locations: classpath:db/migration
+    locations: classpath:db/migration,classpath:db/load
+    out-of-order: true
   jpa:
     properties:
       hibernate:
@@ -28,17 +34,17 @@ ticketing:
   security:
     issuer: ticket-system-load
     audience: ticket-system-api
-    token-ttl: 1h
-    signing-key: ${JWT_SIGNING_KEY:day6-load-only-signing-key-0123456789abcdef}
-    user:
-      id: aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa
-      username: load-user
-      # BCrypt for the literal local-only password "password".
-      password-hash: "{bcrypt}$2a$10$E48nxbwy9iQvsYkKValg6ectOZrSx/ZCaZRBcEh5LTZIsUY9mD0uO"
-    admin:
-      id: bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb
-      username: load-admin
-      password-hash: "{bcrypt}$2a$10$E48nxbwy9iQvsYkKValg6ectOZrSx/ZCaZRBcEh5LTZIsUY9mD0uO"
+    access-token-ttl: 1h
+    refresh-token-ttl: 2h
+    access-secret: ${JWT_ACCESS_SECRET}
+    refresh-secret: ${JWT_REFRESH_SECRET}
+    cookie:
+      refresh-name: ticket_refresh
+      csrf-name: ticket_csrf
+      secure: false
+    login-protection:
+      max-attempts-per-ip: 1000000
+      max-attempts-per-username: 100
 
 logging:
   level:
