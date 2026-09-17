@@ -1,7 +1,6 @@
 package com.ticketsystem.catalog;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -24,7 +23,6 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
@@ -186,13 +184,11 @@ class CatalogApiIT extends AbstractPostgresRedisIT {
         assertThat(ttl).as("TTL for %s", key).isBetween(minimum, maximum);
     }
 
-    private static RequestPostProcessor asAdmin() {
-        return jwt().jwt(token -> token.subject(ADMIN.toString()).claim("role", "ADMIN"))
-                .authorities(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    private RequestPostProcessor asAdmin() {
+        return bearer(ADMIN.toString(), "ADMIN");
     }
 
-    private static RequestPostProcessor asUser() {
-        return jwt().jwt(token -> token.subject(USER.toString()).claim("role", "USER"))
-                .authorities(new SimpleGrantedAuthority("ROLE_USER"));
+    private RequestPostProcessor asUser() {
+        return bearer(USER.toString(), "USER");
     }
 }

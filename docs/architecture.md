@@ -85,7 +85,7 @@ rather than a new class of bug.
 | `reservation` | Hold lifecycle, TTL, per-user caps, idempotency | `reservation` | API layer, `order` |
 | `order` | Confirmation flow and the (mock) payment boundary | `ticket_order` | API layer |
 | `messaging` | Outbox publisher, RabbitMQ consumers, DLQ handling | `outbox_event`, `processed_event` | infrastructure only |
-| `security` | JWT authentication, RBAC, request validation, rate limiting | — | cross-cutting filter chain |
+| `auth`, `user` | Custom JWT filter, account identity, rotating JWT refresh tokens, RBAC | `app_user`, `auth_session` | cross-cutting filter chain |
 | `observability` | Metrics, health indicators, correlation IDs | — | cross-cutting |
 
 ### 3.1 Dependency rules
@@ -386,8 +386,16 @@ SLO error budget counts only 5xx (see [slo.md](slo.md)).
 
 ## 10. Security
 
-- **JWT bearer authentication**, roles `USER` and `ADMIN`; the app is stateless, so no
-  server-side session store is needed for replicas to be interchangeable.
+- **Short-lived JWT bearer authentication**, roles `USER` and `ADMIN`. Every access token is
+  tied to a hashed, database-backed session, so logout, user disablement, and refresh-token
+  replay revoke access across every replica immediately.
+- **Rotating refresh credentials** are stored only as SHA-256 hashes in PostgreSQL. A replay
+  revokes the complete refresh family under a row lock. Refresh and logout require a matching
+  readable CSRF cookie and `X-CSRF-TOKEN`; the refresh credential itself is HttpOnly,
+  Secure, SameSite, and scoped to `/`.
+- **Password protection** uses Spring's delegating BCrypt encoder, a 15-character minimum for
+  registration, a 72-byte BCrypt input bound, uniform login failures, per-account lockout,
+  and bounded pre-authentication throttles.
 - **Ownership checks** on every reservation operation — a valid token for user A must not
   cancel user B's hold.
 - **Validation at the boundary**: quantity bounds, body size limits, UUID format, and a

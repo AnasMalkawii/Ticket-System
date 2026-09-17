@@ -2,7 +2,6 @@ package com.ticketsystem.reservation.api;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -19,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -52,10 +50,7 @@ class ReserveApiIT extends AbstractPostgresIT {
                                                     int quantity) {
         return post("/api/v1/events/{eventId}/reservations", eventId)
                 .header("Idempotency-Key", key)
-                .with(jwt().jwt(token -> token
-                                .subject(userId)
-                                .claim("role", "USER"))
-                        .authorities(new SimpleGrantedAuthority("ROLE_USER")))
+                .with(bearer(userId, "USER"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"quantity\": %d}".formatted(quantity));
     }
@@ -66,10 +61,7 @@ class ReserveApiIT extends AbstractPostgresIT {
 
     private MockHttpServletRequestBuilder confirm(String reservationId, String paymentToken) {
         return post("/api/v1/reservations/{reservationId}/confirm", reservationId)
-                .with(jwt().jwt(token -> token
-                                .subject(DEFAULT_USER)
-                                .claim("role", "USER"))
-                        .authorities(new SimpleGrantedAuthority("ROLE_USER")))
+                .with(bearer(DEFAULT_USER, "USER"))
                 .header("X-Request-Id", "confirm-api-test")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"paymentToken\": \"%s\"}".formatted(paymentToken));
@@ -134,10 +126,7 @@ class ReserveApiIT extends AbstractPostgresIT {
     @DisplayName("400 IDEMPOTENCY_KEY_REQUIRED when the header is absent")
     void missingIdempotencyKey() throws Exception {
         mockMvc.perform(post("/api/v1/events/{eventId}/reservations", HOT_EVENT)
-                        .with(jwt().jwt(token -> token
-                                        .subject(DEFAULT_USER)
-                                        .claim("role", "USER"))
-                                .authorities(new SimpleGrantedAuthority("ROLE_USER")))
+                        .with(bearer(DEFAULT_USER, "USER"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"quantity\": 1}"))
                 .andExpect(status().isBadRequest())
@@ -260,10 +249,7 @@ class ReserveApiIT extends AbstractPostgresIT {
         String reservationId = JsonPath.read(created.getResponse().getContentAsString(), "$.id");
 
         mockMvc.perform(delete("/api/v1/reservations/{reservationId}", reservationId)
-                        .with(jwt().jwt(token -> token
-                                        .subject(DEFAULT_USER)
-                                        .claim("role", "USER"))
-                                .authorities(new SimpleGrantedAuthority("ROLE_USER")))
+                        .with(bearer(DEFAULT_USER, "USER"))
                         .header("X-Request-Id", "cancel-api-test"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(reservationId))
@@ -271,10 +257,7 @@ class ReserveApiIT extends AbstractPostgresIT {
                 .andExpect(jsonPath("$.terminatedAt").exists());
 
         mockMvc.perform(delete("/api/v1/reservations/{reservationId}", reservationId)
-                        .with(jwt().jwt(token -> token
-                                        .subject(DEFAULT_USER)
-                                        .claim("role", "USER"))
-                                .authorities(new SimpleGrantedAuthority("ROLE_USER"))))
+                        .with(bearer(DEFAULT_USER, "USER")))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.code").value("INVALID_STATE"));
 
@@ -392,10 +375,7 @@ class ReserveApiIT extends AbstractPostgresIT {
     @DisplayName("DELETE returns 404 for an unknown reservation")
     void cancellationOfUnknownReservation() throws Exception {
         mockMvc.perform(delete("/api/v1/reservations/{reservationId}", UUID.randomUUID())
-                        .with(jwt().jwt(token -> token
-                                        .subject(DEFAULT_USER)
-                                        .claim("role", "USER"))
-                                .authorities(new SimpleGrantedAuthority("ROLE_USER"))))
+                        .with(bearer(DEFAULT_USER, "USER")))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value("RESERVATION_NOT_FOUND"));
     }

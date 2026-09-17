@@ -202,6 +202,11 @@ try {
     $env:DB_PASSWORD = 'ticketsystem'
     $env:REDIS_HOST = '127.0.0.1'
     $env:REDIS_PORT = $redisPort
+    $keyBytes = [byte[]]::new(48)
+    [Security.Cryptography.RandomNumberGenerator]::Fill($keyBytes)
+    $env:JWT_ACCESS_SECRET = [Convert]::ToBase64String($keyBytes)
+    [Security.Cryptography.RandomNumberGenerator]::Fill($keyBytes)
+    $env:JWT_REFRESH_SECRET = [Convert]::ToBase64String($keyBytes)
     $jarPath = Join-Path $repoRoot 'target/ticket-system-0.2.0-SNAPSHOT.jar'
     # Oracle's Windows javapath executable launches a child JVM and exits immediately,
     # which makes process cleanup track the wrong PID. Resolve java.home and launch the
@@ -250,9 +255,6 @@ try {
 
     $env:BASE_URL = $baseUrl
     $env:RUN_ID = $RunId
-    $env:JWT_SIGNING_KEY = 'day6-load-only-signing-key-0123456789abcdef'
-    $env:JWT_ISSUER = 'ticket-system-load'
-    $env:JWT_AUDIENCE = 'ticket-system-api'
     $env:ADMIN_USERNAME = 'load-admin'
     $env:ADMIN_PASSWORD = 'password'
     $env:K6_SUMMARY_TREND_STATS = 'avg,min,med,p(90),p(95),p(99),max'

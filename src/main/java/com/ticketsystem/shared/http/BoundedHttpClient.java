@@ -15,20 +15,33 @@ import org.springframework.stereotype.Component;
 @Component
 public class BoundedHttpClient {
 
-    private final HttpClient client;
+    private volatile HttpClient client;
     private final OutboundHttpProperties properties;
 
     public BoundedHttpClient(OutboundHttpProperties properties) {
-        this.client = HttpClient.newBuilder()
-                .connectTimeout(properties.connectTimeout())
-                .followRedirects(HttpClient.Redirect.NEVER)
-                .build();
         this.properties = properties;
     }
 
     public <T> HttpResponse<T> send(
             HttpRequest.Builder request, HttpResponse.BodyHandler<T> bodyHandler)
             throws IOException, InterruptedException {
-        return client.send(request.timeout(properties.requestTimeout()).build(), bodyHandler);
+        return client().send(request.timeout(properties.requestTimeout()).build(), bodyHandler);
+    }
+
+    private HttpClient client() {
+        HttpClient current = client;
+        if (current == null) {
+            synchronized (this) {
+                current = client;
+                if (current == null) {
+                    current = HttpClient.newBuilder()
+                            .connectTimeout(properties.connectTimeout())
+                            .followRedirects(HttpClient.Redirect.NEVER)
+                            .build();
+                    client = current;
+                }
+            }
+        }
+        return current;
     }
 }

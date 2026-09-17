@@ -151,6 +151,11 @@ $monitorJob = $null
 $k6 = $null
 try {
     Push-Location $repoRoot
+    $keyBytes = [byte[]]::new(48)
+    [Security.Cryptography.RandomNumberGenerator]::Fill($keyBytes)
+    $env:JWT_ACCESS_SECRET = [Convert]::ToBase64String($keyBytes)
+    [Security.Cryptography.RandomNumberGenerator]::Fill($keyBytes)
+    $env:JWT_REFRESH_SECRET = [Convert]::ToBase64String($keyBytes)
     & docker compose --project-name $projectName -f $composeFile down --volumes --remove-orphans
     & docker compose --project-name $projectName -f $composeFile up -d --build --wait
     if ($LASTEXITCODE -ne 0) { throw 'Resilience topology failed to start.' }
@@ -163,9 +168,6 @@ try {
     $env:VUS = $VirtualUsers.ToString()
     $env:DRILL_DURATION = $Duration
     $env:MAXIMUM_ATTEMPTS = '30'
-    $env:JWT_SIGNING_KEY = 'day10-shared-signing-key-0123456789abcdef'
-    $env:JWT_ISSUER = 'ticket-system-load'
-    $env:JWT_AUDIENCE = 'ticket-system-api'
     $env:ADMIN_USERNAME = 'load-admin'
     $env:ADMIN_PASSWORD = 'password'
     $env:K6_SUMMARY_TREND_STATS = 'avg,min,med,p(90),p(95),p(99),max'
@@ -379,7 +381,7 @@ finally {
         & docker compose --project-name $projectName -f $composeFile down --volumes --remove-orphans
     }
     @('BASE_URL', 'RUN_ID', 'SUITE_NAME', 'VUS', 'DRILL_DURATION', 'MAXIMUM_ATTEMPTS',
-      'JWT_SIGNING_KEY', 'JWT_ISSUER', 'JWT_AUDIENCE', 'ADMIN_USERNAME', 'ADMIN_PASSWORD',
+      'JWT_ACCESS_SECRET', 'JWT_REFRESH_SECRET', 'JWT_ISSUER', 'JWT_AUDIENCE', 'ADMIN_USERNAME', 'ADMIN_PASSWORD',
       'K6_SUMMARY_TREND_STATS') | ForEach-Object {
         Remove-Item "Env:$_" -ErrorAction SilentlyContinue
     }

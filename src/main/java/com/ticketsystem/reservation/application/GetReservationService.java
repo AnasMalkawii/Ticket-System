@@ -3,7 +3,7 @@ package com.ticketsystem.reservation.application;
 import com.ticketsystem.reservation.domain.Reservation;
 import com.ticketsystem.reservation.domain.ReservationNotFoundException;
 import com.ticketsystem.reservation.repository.ReservationRepository;
-import com.ticketsystem.security.ForbiddenOperationException;
+import com.ticketsystem.auth.exception.ForbiddenOperationException;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

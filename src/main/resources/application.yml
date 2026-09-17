@@ -4,8 +4,8 @@ spring:
 
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/ticketsystem}
-    username: ${DB_USERNAME:ticketsystem}
-    password: ${DB_PASSWORD:ticketsystem}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     hikari:
       # Intentional, not a default. Sized against PostgreSQL max_connections and revisited
       # with measurements on Day 9 - more connections are not automatically faster.
@@ -76,8 +76,8 @@ spring:
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
     port: ${RABBITMQ_PORT:5672}
-    username: ${RABBITMQ_USERNAME:guest}
-    password: ${RABBITMQ_PASSWORD:guest}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
     connection-timeout: 2s
     publisher-confirm-type: correlated
     publisher-returns: true
@@ -156,18 +156,31 @@ ticketing:
   security:
     issuer: ${JWT_ISSUER:ticket-system}
     audience: ${JWT_AUDIENCE:ticket-system-api}
-    token-ttl: 1h
+    access-token-ttl: ${ACCESS_TOKEN_TTL:15m}
+    refresh-token-ttl: ${REFRESH_TOKEN_TTL:7d}
+    clock-skew: 30s
     # There is intentionally no committed fallback. Every deployed replica must receive the
-    # same secret (at least 32 bytes) from its environment or secret store.
-    signing-key: ${JWT_SIGNING_KEY}
-    user:
-      id: ${APP_USER_ID}
-      username: ${APP_USER_USERNAME}
-      password-hash: ${APP_USER_PASSWORD_HASH}
-    admin:
-      id: ${APP_ADMIN_ID}
-      username: ${APP_ADMIN_USERNAME}
-      password-hash: ${APP_ADMIN_PASSWORD_HASH}
+    # two distinct Base64 secrets (each encoding at least 32 random bytes).
+    access-secret: ${JWT_ACCESS_SECRET}
+    refresh-secret: ${JWT_REFRESH_SECRET}
+    cookie:
+      refresh-name: __Host-ticket_refresh
+      csrf-name: __Host-ticket_csrf
+      path: /
+      secure: ${AUTH_COOKIE_SECURE:true}
+      same-site: ${AUTH_COOKIE_SAME_SITE:Strict}
+    login-protection:
+      max-failed-attempts: 5
+      lock-duration: 15m
+      rate-window: 1m
+      max-attempts-per-ip: 30
+      max-attempts-per-username: 10
+    bootstrap-admin:
+      # Optional first-deployment bootstrap. The encoded hash is persisted; no plaintext
+      # password is accepted. Remove these secret-store values after the first successful boot.
+      username: ${BOOTSTRAP_ADMIN_USERNAME:}
+      password-hash: ${BOOTSTRAP_ADMIN_PASSWORD_HASH:}
+    allowed-origins: ${AUTH_ALLOWED_ORIGINS:}
   catalog-cache:
     event-ttl: 60s
     availability-ttl: 5s
@@ -204,7 +217,7 @@ logging:
 
 # Health and Prometheus are public to orchestration and the private monitoring network.
 # Nginx blocks /actuator externally in the Day 10 deployment. The human-readable metrics
-# endpoint remains ADMIN-only in SecurityConfiguration.
+# endpoint remains ADMIN-only in auth/config/SecurityConfig.
 management:
   endpoints:
     web:
@@ -252,6 +265,8 @@ spring:
       on-profile: local
   flyway:
     locations: classpath:db/migration,classpath:db/seed
+    # Local seed versions are 9000+, so later normal schema migrations sort before them.
+    out-of-order: true
   jpa:
     properties:
       hibernate:

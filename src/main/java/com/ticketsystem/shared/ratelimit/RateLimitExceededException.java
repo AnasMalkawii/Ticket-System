@@ -9,9 +9,12 @@ public class RateLimitExceededException extends DomainException {
     private final int retryAfterSeconds;
 
     public RateLimitExceededException(int retryAfterSeconds) {
+        this(retryAfterSeconds, "Too many reservation attempts.");
+    }
+
+    public RateLimitExceededException(int retryAfterSeconds, String message) {
         super(ErrorCode.RATE_LIMITED,
-                "Too many reservation attempts. Retry after %d seconds."
-                        .formatted(retryAfterSeconds));
+                "%s Retry after %d seconds.".formatted(message, retryAfterSeconds));
         this.retryAfterSeconds = Math.max(1, retryAfterSeconds);
     }
 

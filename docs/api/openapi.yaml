@@ -66,7 +66,7 @@ tags:
   - name: Admin
     description: Catalog management. Requires the ADMIN role.
   - name: Auth
-    description: Token issuance.
+    description: Database-backed accounts and revocable token sessions.
 
 security:
   - bearerAuth: []
@@ -87,14 +87,84 @@ paths:
               $ref: '#/components/schemas/LoginRequest'
       responses:
         '200':
-          description: Token issued
+          description: |
+            Access JWT issued (15 minutes by default). Also sets an HttpOnly refresh JWT
+            cookie (7 days by default, rotated on refresh) and a readable CSRF
+            cookie; send the CSRF cookie value in `X-CSRF-TOKEN` when refreshing or logging out.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginResponse'
         '400': { $ref: '#/components/responses/BadRequest' }
         '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
         '500': { $ref: '#/components/responses/InternalError' }
+
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Register a USER account
+      operationId: register
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RegisterRequest' }
+      responses:
+        '201':
+          description: Account created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RegisteredUser' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '409':
+          description: Username unavailable. Code `USERNAME_UNAVAILABLE`.
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      summary: Rotate the refresh credential and issue a new access token
+      operationId: refresh
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/CsrfToken'
+      responses:
+        '200':
+          description: Credentials rotated; replacement refresh and CSRF cookies are set.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/LoginResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Revoke the refresh-token family and clear authentication cookies
+      operationId: logout
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/CsrfToken'
+      responses:
+        '204': { description: Session revoked and cookies cleared. }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: Return the current database-backed identity
+      operationId: currentUser
+      responses:
+        '200':
+          description: Current identity
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CurrentUser' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
 
   /events:
     get:
@@ -499,9 +569,9 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: |
-        JWT bearer token from `POST /auth/login`. Claims carry the user id and role
-        (`USER` or `ADMIN`). The application is stateless, so any replica accepts any
-        valid token.
+        Short-lived JWT bearer token from `POST /auth/login` or `POST /auth/refresh`.
+        Every request also verifies the token's session and current account state in
+        PostgreSQL, so logout and account disablement take effect immediately on all replicas.
 
   parameters:
     EventId:
@@ -545,6 +615,13 @@ components:
         response, attached to every log line for the request, and propagated onto emitted
         outbox events.
       schema: { type: string, maxLength: 128 }
+
+    CsrfToken:
+      name: X-CSRF-TOKEN
+      in: header
+      required: true
+      description: Exact value of the readable CSRF cookie issued with the refresh cookie.
+      schema: { type: string, minLength: 32, maxLength: 512 }
 
   headers:
     RetryAfter:
@@ -665,6 +742,7 @@ components:
         - FORBIDDEN
         - EVENT_NOT_FOUND
         - RESERVATION_NOT_FOUND
+        - USERNAME_UNAVAILABLE
         - SALE_NOT_STARTED
         - SALE_ENDED
         - SOLD_OUT
@@ -681,16 +759,47 @@ components:
       type: object
       required: [username, password]
       properties:
-        username: { type: string, minLength: 1, maxLength: 64 }
-        password: { type: string, minLength: 8, maxLength: 128, format: password }
+        username: { type: string, minLength: 3, maxLength: 64 }
+        password: { type: string, minLength: 1, maxLength: 128, format: password }
+
+    RegisterRequest:
+      type: object
+      additionalProperties: false
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 64
+          pattern: '^[A-Za-z0-9._-]+$'
+        password: { type: string, minLength: 15, maxLength: 72, format: password }
+
+    RegisteredUser:
+      type: object
+      additionalProperties: false
+      required: [id, username, role]
+      properties:
+        id: { type: string, format: uuid }
+        username: { type: string }
+        role: { type: string, const: USER }
+
+    CurrentUser:
+      type: object
+      additionalProperties: false
+      required: [id, username, role]
+      properties:
+        id: { type: string, format: uuid }
+        username: { type: string }
+        role: { type: string, enum: [USER, ADMIN] }
 
     LoginResponse:
       type: object
-      required: [accessToken, tokenType, expiresIn]
+      additionalProperties: false
+      required: [accessToken, tokenType, expiresIn, role]
       properties:
         accessToken: { type: string }
         tokenType: { type: string, const: Bearer }
-        expiresIn: { type: integer, description: Token lifetime in seconds., example: 3600 }
+        expiresIn: { type: integer, description: Token lifetime in seconds., example: 900 }
         role: { type: string, enum: [USER, ADMIN] }
 
     EventStatus:

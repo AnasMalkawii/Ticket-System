@@ -4,4 +4,6 @@ tmp
 .idea
 load-tests/results
 docs
+auth
+**/secrets.properties
 *.log

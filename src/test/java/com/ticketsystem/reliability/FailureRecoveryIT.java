@@ -1,7 +1,6 @@
 package com.ticketsystem.reliability;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -27,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 
 /** Real PostgreSQL drills for an abrupt replica loss and a slow/locked database. */
@@ -95,9 +93,7 @@ class FailureRecoveryIT extends AbstractPostgresIT {
 
             long started = System.nanoTime();
             mockMvc.perform(post("/api/v1/events/{eventId}/reservations", HOT_EVENT)
-                            .with(jwt().jwt(token -> token.subject(USER.toString())
-                                            .claim("role", "USER"))
-                                    .authorities(new SimpleGrantedAuthority("ROLE_USER")))
+                            .with(bearer(USER.toString(), "USER"))
                             .header("Idempotency-Key", key)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content("{\"quantity\":1}"))
@@ -111,9 +107,7 @@ class FailureRecoveryIT extends AbstractPostgresIT {
         assertState(100, 0, 0, 0);
 
         mockMvc.perform(post("/api/v1/events/{eventId}/reservations", HOT_EVENT)
-                        .with(jwt().jwt(token -> token.subject(USER.toString())
-                                        .claim("role", "USER"))
-                                .authorities(new SimpleGrantedAuthority("ROLE_USER")))
+                        .with(bearer(USER.toString(), "USER"))
                         .header("Idempotency-Key", key)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"quantity\":1}"))
