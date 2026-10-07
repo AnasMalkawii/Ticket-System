@@ -41,23 +41,23 @@ long-running k6 scenarios. Normal application and integration-test profiles use 
 ## Required runtime secrets
 
 Supply `DB_USERNAME`, `DB_PASSWORD`, `RABBITMQ_USERNAME`, `RABBITMQ_PASSWORD`,
-`JWT_ACCESS_SECRET`, and `JWT_REFRESH_SECRET` through environment variables.
+`JWT_ACCESS_SECRET`, and `JWT_REFRESH_SECRET` through environment variables in deployments, or the private local configuration file during development.
 The two JWT secrets must be different Base64 values, each encoding at least 32 random bytes.
 All replicas must receive the same pair. There are no production key defaults.
 The old `JWT_SIGNING_KEY` setting is no longer used.
 
-To generate the pair in a PowerShell process without printing the secrets:
-
-```powershell
-$authKeyBytes = [byte[]]::new(48)
-[Security.Cryptography.RandomNumberGenerator]::Fill($authKeyBytes)
-$env:JWT_ACCESS_SECRET = [Convert]::ToBase64String($authKeyBytes)
-[Security.Cryptography.RandomNumberGenerator]::Fill($authKeyBytes)
-$env:JWT_REFRESH_SECRET = [Convert]::ToBase64String($authKeyBytes)
-```
+For local development, supply the keys in the private root `application.properties` file. The existing pair has been migrated on this computer. For deployment, supply them through your runtime configuration or secret store.
 
 Persist deployment values in your secret store. Rotating the access key invalidates access tokens;
 a valid refresh token can obtain a replacement. Rotating the refresh key requires users to log in again.
+
+## Local development
+
+Local settings are saved in the repository-root `application.properties`, which Spring Boot automatically loads. It selects the `local` profile by default for this working checkout and contains database/broker settings, JWT secrets, Docker startup settings, port, allowed origins, and local HTTP cookie overrides.
+
+Docker Compose reads this same properties file, so service credentials have one source. Spring Boot's optional Docker Compose module starts PostgreSQL, Redis, and RabbitMQ and waits for readiness when the backend starts from IntelliJ. The module is excluded from packaged applications. The local settings document is inactive for explicit `test`, `load`, or `prod` profiles.
+
+See [the root README](../README.md#run-locally) for the short startup instructions. For a new checkout, copy `application.properties.example` to `application.properties` and fill the secrets once. No environment-loading commands or startup scripts are required. Local secrets stay outside the classpath, Git, and Docker build context.
 
 ## Browser client flow
 
@@ -99,11 +99,12 @@ Run `mvn verify` with Docker available. Integration tests use real PostgreSQL an
 tokens through the custom filter; they cover admin routes, ownership, malformed/expired/wrong-type
 tokens, refresh concurrency and replay, disabled users, logout, CSRF, and database role changes.
 
-If this Windows JDK reports `Unable to establish loopback connection`, the verified workaround
-is to clear TEMP/TMP only in a child test process (no persistent environment changes):
+Normal application startup handles the Windows NIO socket-directory workaround automatically.
+If an integration-test JVM reports `Unable to establish loopback connection`, its socket directory
+can be supplied directly to Maven without changing Windows environment variables:
 
-```powershell
-powershell -NoProfile -Command 'Remove-Item -LiteralPath Env:TEMP,Env:TMP -ErrorAction SilentlyContinue; mvn verify'
+```text
+mvn verify -Djdk.net.unixdomain.tmpdir=target
 ```
 
 PostgreSQL is needed for authenticated requests. The login throttle is bounded per process,

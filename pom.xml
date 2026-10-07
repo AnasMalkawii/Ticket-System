@@ -81,6 +81,13 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-amqp</artifactId>
     </dependency>
+    <!-- Development only: starting the app also starts its local Docker services.
+         Spring Boot excludes this module from the packaged application. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-docker-compose</artifactId>
+      <optional>true</optional>
+    </dependency>
     <!-- Override Boot's older client: 5.35.0 fixes the 2026 frame/length advisories. -->
     <dependency>
       <groupId>com.rabbitmq</groupId>
