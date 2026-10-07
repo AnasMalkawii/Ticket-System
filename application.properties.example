@@ -1,0 +1,41 @@
+# Copy to application.properties in the repository root and fill in the secrets once.
+# Spring Boot loads that file automatically when IntelliJ runs from the project root.
+spring.profiles.default=local
+spring.docker.compose.enabled=false
+
+#---
+spring.config.activate.on-profile=local
+spring.docker.compose.enabled=true
+spring.docker.compose.file=compose.yaml
+spring.docker.compose.arguments=--env-file=application.properties
+spring.docker.compose.lifecycle-management=start-only
+spring.docker.compose.readiness.timeout=2m
+
+# Local Docker services. Passwords must match any existing database/broker volumes.
+POSTGRES_DB=ticketsystem
+POSTGRES_PORT=15432
+DB_USERNAME=ticketsystem
+DB_PASSWORD=REPLACE_WITH_YOUR_LOCAL_DATABASE_PASSWORD
+DB_URL=jdbc:postgresql://localhost:${POSTGRES_PORT}/${POSTGRES_DB}
+REDIS_HOST=localhost
+REDIS_PORT=16379
+RABBITMQ_HOST=localhost
+RABBITMQ_PORT=15673
+RABBITMQ_MANAGEMENT_PORT=15674
+RABBITMQ_HOSTNAME=ticket-system-rabbitmq
+RABBITMQ_USERNAME=ticketing
+RABBITMQ_PASSWORD=REPLACE_WITH_YOUR_LOCAL_RABBITMQ_PASSWORD
+
+# Different Base64 values, each encoding at least 32 random bytes. Keep them stable.
+JWT_ACCESS_SECRET=REPLACE_WITH_YOUR_BASE64_ACCESS_SECRET
+JWT_REFRESH_SECRET=REPLACE_WITH_YOUR_BASE64_REFRESH_SECRET
+
+# Backend and browser settings for local HTTP.
+server.port=8080
+AUTH_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+ticketing.security.cookie.refresh-name=ticket_refresh
+ticketing.security.cookie.csrf-name=ticket_csrf
+ticketing.security.cookie.secure=false
+
+# Reduce background SQL noise during ordinary development.
+logging.level.org.hibernate.SQL=INFO

@@ -13,6 +13,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class TicketSystemApplication {
 
     public static void main(String[] args) {
+//        if (System.getProperty("os.name").startsWith("Windows")) {
+//            System.getProperties().putIfAbsent("jdk.net.unixdomain.tmpdir", System.getProperty("user.dir"));
+//        }
         SpringApplication.run(TicketSystemApplication.class, args);
     }
 }

@@ -274,3 +274,63 @@ spring:
 logging:
   level:
     org.hibernate.SQL: DEBUG
+
+---
+# Local-only profile used by the reproducible Day 6 k6 harness. It deliberately disables
+# protection/maintenance jobs that would obscure the inventory-lock baseline; production
+# keeps the defaults in application.yml.
+spring:
+  config:
+    activate:
+      on-profile: load
+  rabbitmq:
+    # Messaging is disabled in this profile. Explicit load-only values keep the production
+    # configuration fail-closed without requiring a broker secret for an isolated benchmark.
+    username: load-only
+    password: load-only
+  flyway:
+    locations: classpath:db/migration,classpath:db/load
+    out-of-order: true
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          # Flash-sale batches create a reservation and an outbox row per accepted request.
+          # Fewer, larger JDBC groups reduce round trips while the inventory lock is held.
+          batch_size: 250
+
+ticketing:
+  reservation-batching:
+    enabled: true
+    window: 50ms
+    max-batch-size: 1000
+  expiry-worker:
+    scheduling-enabled: false
+  rate-limit:
+    enabled: false
+  # Day 6 measures the synchronous reservation path in isolation. Day 7 has its own
+  # PostgreSQL + RabbitMQ recovery test and enables messaging there.
+  messaging:
+    enabled: false
+  security:
+    issuer: ticket-system-load
+    audience: ticket-system-api
+    access-token-ttl: 1h
+    refresh-token-ttl: 2h
+    access-secret: ${JWT_ACCESS_SECRET}
+    refresh-secret: ${JWT_REFRESH_SECRET}
+    cookie:
+      refresh-name: ticket_refresh
+      csrf-name: ticket_csrf
+      secure: false
+    login-protection:
+      max-attempts-per-ip: 1000000
+      max-attempts-per-username: 100
+
+logging:
+  level:
+    root: WARN
+    com.ticketsystem: INFO
+    # k6 records every status and request ID. Avoid writing hundreds of identical stack
+    # traces when the experiment intentionally saturates the three-second pool timeout.
+    com.ticketsystem.shared.api.ApiExceptionHandler: OFF
