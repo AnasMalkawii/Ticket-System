@@ -1,0 +1,14 @@
+.git
+.github
+.idea
+.vscode
+target
+frontend
+deploy
+docs
+load-tests
+*.log
+.env
+*.local.env
+application.properties
+application-local-secrets.yml
