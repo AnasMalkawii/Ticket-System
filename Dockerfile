@@ -1,16 +1,25 @@
-FROM maven:3.9.11-eclipse-temurin-21-alpine AS build
+#stage 1: build
+FROM maven:3.9.11-eclipse-temurin-21-alpine AS build 
 
-WORKDIR /workspace
+WORKDIR /app
+
 COPY pom.xml .
-RUN mvn -B -q -DskipTests dependency:go-offline
-COPY src ./src
-RUN mvn -B -q -Dmaven.test.skip=true package
+RUN mvn -B -ntp dependency:go-offline
 
+COPY src ./src
+RUN mvn -B -ntp -Dmaven.test.skip=true package
+
+#stage 2: runtime(prod)
 FROM eclipse-temurin:21-jre-alpine
 
-RUN addgroup -S ticketing && adduser -S ticketing -G ticketing
 WORKDIR /app
-COPY --from=build /workspace/target/ticket-system-*.jar /app/ticket-system.jar
-USER ticketing
+
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+COPY --from=build /app/target/ticket-system-*.jar app.jar
+
+USER appuser
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/ticket-system.jar"]
+
+ENTRYPOINT ["java", "-jar", "app.jar"]

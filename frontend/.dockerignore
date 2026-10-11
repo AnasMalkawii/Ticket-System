@@ -1,9 +1,9 @@
+
 node_modules
 dist
-test-results
-playwright-report
+.git
 .env
 .env.*
-!.env.example
-.git
+test-results
+playwright-report
 *.log
