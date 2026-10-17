@@ -76,7 +76,7 @@ async function mockApi(
           role: options.role || 'USER',
         },
         200,
-        { 'Set-Cookie': '__Host-ticket_csrf=csrf-fixture; Secure; Path=/; SameSite=Strict' },
+        { 'Set-Cookie': 'ticket_csrf=csrf-fixture; Path=/; SameSite=Strict' },
       )
     }
     if (path === '/auth/logout') {
@@ -84,11 +84,14 @@ async function mockApi(
       authenticated = false
       return route.fulfill({
         status: 204,
-        headers: { 'Set-Cookie': '__Host-ticket_csrf=; Secure; Path=/; Max-Age=0' },
+        headers: { 'Set-Cookie': 'ticket_csrf=; Path=/; Max-Age=0' },
       })
     }
-    if (path === '/auth/register')
+    if (path === '/auth/register') {
+      if (Object.keys(body || {}).some((key) => !['username', 'password'].includes(key)))
+        return reply({ code: 'INVALID_REQUEST', detail: 'Unexpected registration field.' }, 400)
       return reply({ id: userId, username: body?.username, role: 'USER' }, 201)
+    }
     if (path === '/auth/me')
       return authenticated
         ? reply({
@@ -240,6 +243,29 @@ test('registration validates input before sending a request', async ({ page }, i
   await page.getByLabel('Confirm password').fill('correct horse battery staple')
   await page.getByRole('button', { name: 'Create account', exact: true }).click()
   await expect(page.getByRole('status')).toContainText('Your account is ready.')
+})
+
+test('registers and signs in with a six-character password, preserving the destination', async ({
+  page,
+}) => {
+  const api = await mockApi(page)
+  const credentials = { username: 'musicfan', password: 'abc123' }
+  await page.goto(`/register?redirect=${encodeURIComponent(`/events/${eventId}`)}`)
+  await page.getByLabel('Username', { exact: true }).fill(credentials.username)
+  await page.getByLabel('Password', { exact: true }).fill(credentials.password)
+  await page.getByLabel('Confirm password').fill('abc124')
+  await page.getByRole('button', { name: 'Create account', exact: true }).click()
+  await expect(page.getByText('Passwords do not match.')).toBeVisible()
+  expect(api.payloads).toHaveLength(0)
+  await page.getByLabel('Confirm password').fill(credentials.password)
+  await page.getByRole('button', { name: 'Create account', exact: true }).click()
+  await expect(page.getByRole('status')).toContainText('Your account is ready.')
+  expect(api.payloads).toEqual([{ path: '/auth/register', body: credentials }])
+  await page.getByLabel('Username', { exact: true }).fill(credentials.username)
+  await page.getByLabel('Password', { exact: true }).fill(credentials.password)
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click()
+  await expect(page).toHaveURL(`/events/${eventId}`)
+  expect(api.payloads.at(-1)).toEqual({ path: '/auth/login', body: credentials })
 })
 
 test('admin creates an event, changes sales, and adds inventory', async ({ page }, info) => {

@@ -772,7 +772,7 @@ components:
           minLength: 3
           maxLength: 64
           pattern: '^[A-Za-z0-9._-]+$'
-        password: { type: string, minLength: 15, maxLength: 72, format: password }
+        password: { type: string, minLength: 6, maxLength: 72, format: password }
 
     RegisteredUser:
       type: object

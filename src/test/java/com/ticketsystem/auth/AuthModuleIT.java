@@ -60,6 +60,24 @@ class AuthModuleIT extends AbstractPostgresIT {
     }
 
     @Test
+    void registrationAcceptsSixCharactersAndTheAccountCanLoginAndRefresh() throws Exception {
+        mvc.perform(post("/api/v1/auth/register").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"short-password\",\"password\":\"abc12\"}"))
+                .andExpect(status().isBadRequest());
+        mvc.perform(post("/api/v1/auth/register").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"new-fan\",\"password\":\"abc123\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.username").value("new-fan"));
+        mvc.perform(post("/api/v1/auth/login").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"new-fan\",\"password\":\"wrong1\"}"))
+                .andExpect(status().isUnauthorized());
+        Session session = login("NEW-FAN", "abc123");
+        mvc.perform(get("/api/v1/auth/me").header(HttpHeaders.AUTHORIZATION, "Bearer " + session.access()))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.username").value("new-fan"));
+        mvc.perform(refresh(session)).andExpect(status().isOk());
+    }
+
+    @Test
     void loginIssuesJwtPairButDatabaseNeverStoresTheRawCredentials() throws Exception {
         Session session = login("test-user", "test-user-password");
         var accessClaims = jwt.extractAllClaims(session.access(), TokenType.ACCESS);
