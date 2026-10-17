@@ -12,5 +12,5 @@ public record RegisterRequest(
         @Pattern(regexp = "^[A-Za-z0-9._-]+$",
                 message = "may contain only letters, numbers, dot, underscore, and hyphen")
         String username,
-        @NotBlank @Size(min = 15, max = 72) String password) {
+        @NotBlank @Size(min = 6, max = 72) String password) {
 }

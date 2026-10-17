@@ -19,7 +19,7 @@ export const registerSchema = z
     ),
     password: z
       .string()
-      .min(15, 'Use at least 15 characters.')
+      .min(6, 'Use at least 6 characters.')
       .max(72, 'Use at most 72 characters.')
       .refine(
         (value) => new TextEncoder().encode(value).length <= 72,

@@ -3,6 +3,14 @@ import { eventFormSchema, quantitySchema, registerSchema } from '../../src/lib/v
 import { money, saleIsOpen } from '../../src/lib/format'
 
 describe('backend validation boundaries', () => {
+  it('accepts six-character passwords and rejects shorter passwords', () => {
+    for (const password of ['abc123', 'abc12']) {
+      expect(
+        registerSchema.safeParse({ username: 'fan.user', password, confirmPassword: password })
+          .success,
+      ).toBe(password.length === 6)
+    }
+  })
   it('rejects a password that exceeds BCrypt’s UTF-8 byte limit', () => {
     const password = '界'.repeat(25)
     expect(

@@ -22,7 +22,8 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
       : '/tickets'
   const notice = (location.state as { notice?: string } | null)?.notice
   const submit = useMutation({
-    mutationFn: async (credentials: { username: string; password: string }) => {
+    mutationFn: async ({ username, password }: { username: string; password: string }) => {
+      const credentials = { username, password }
       if (registering) {
         await api('/auth/register', { method: 'POST', body: JSON.stringify(credentials) })
         navigate(`/login?redirect=${encodeURIComponent(redirect)}`, {
@@ -119,7 +120,7 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
               error={errors.password}
               hint={
                 registering
-                  ? 'At least 15 characters. A memorable passphrase works well.'
+                  ? 'At least 6 characters. A memorable passphrase works well.'
                   : undefined
               }
               placeholder={registering ? 'Choose a passphrase' : 'Your password'}
